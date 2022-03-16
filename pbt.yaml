@@ -1,0 +1,21 @@
+verbose: 0
+logger:
+  classname: salina.logger.TFLogger
+  log_dir: ./tmp
+  cache_size: 10000
+  every_n_seconds: 10
+  verbose: False
+
+algorithm:
+  env_seed: 1
+  n_processes: 8
+  max_epochs: 300
+  sigma: 0.2
+  noise_multiplier: 0.9
+  pop_size: 30
+  n_best: 5
+
+env:
+  classname: pbt.make_env
+  env_name: Pendulum-v1
+  max_episode_steps: 200
