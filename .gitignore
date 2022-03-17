@@ -1,3 +1,6 @@
+# Specific files to this repo
+outputs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
