@@ -56,7 +56,7 @@ class A2CAgent(salina.TAgent):
 
 class EnvironmentAgent(NoAutoResetGymAgent):
     def __init__(self, cfg, env):
-        super().__init__(cfg, 1) # TODO: What is the number of environments?
+        super().__init__(cfg, n_envs=1) # TODO: What is the number of environments?
         self.env = env
 
 def make_env(cfg) -> gym.Env:
@@ -71,6 +71,8 @@ def create_population(cfg):
     # Create the required number of agents
     population = []
     for i in range(cfg.algorithm.population_size):
+        # TODO: We can change the hyperparameters here (they're stored in cfg)
+        #       We could also create another wrapper for the A2C agent which is in charge of changing them
         environment = make_env(cfg)
         # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
         observation_size = environment.observation_space.shape[0]
