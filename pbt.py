@@ -8,6 +8,7 @@ import gym
 from gym.wrappers import TimeLimit
 import copy
 import time
+import omegaconf
 
 import torch
 import torch.nn as nn
@@ -23,8 +24,10 @@ from omegaconf import DictConfig, OmegaConf
 
 class A2CAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
-    r'''This agent implements an Advantage Actor-Critic agent (A2C)'''
-    def __init__(self, observation_size, hidden_layer_size, action_size, stochastic=True):
+    r'''This agent implements an Advantage Actor-Critic agent (A2C).
+    The hyperparameters of the agent are customizable.'''
+
+    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, mutation_rate, stochastic=True):
         super().__init__()
         self.action_model = torch.nn.Sequential(
             torch.nn.Linear(observation_size, hidden_layer_size),
@@ -38,6 +41,7 @@ class A2CAgent(salina.TAgent):
         )
 
         self.stochastic = stochastic
+        self.params = omegaconf.DictConfig(content=parameters)
 
     def forward(self, time, **kwargs):
         observation = self.get(('env/env_obs', time))
@@ -53,6 +57,45 @@ class A2CAgent(salina.TAgent):
         self.set(('action', time), action)
         self.set(('action_probabilities', time), probabilities)
         self.set(('critic', time), critic)
+    
+    def get_hyperparameter(self, param_name):
+        return self.params.param_name
+
+    def set_hyperparameter(self, param_name, value):
+        self.params.param_name = value
+
+class A2CParameterizedAgent(salina.TAgent):
+    # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
+    r'''This agent implements an Advantage Actor-Critic agent (A2C).
+    The hyperparameters of the agent are customizable.'''
+
+
+    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, mutation_rate, stochastic=True):
+        super().__init__()
+
+        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_size=hidden_layer_size, action_size=action_size, stochastic=stochastic)
+
+        self.mutation_rate = mutation_rate
+        
+        simplified_parameters = omegaconf.DictConfig(content={}) # The A2C Agent only sees a dictionary of (param_name, param_value) entries
+        self.params_metadata = omegaconf.DictConfig(content={}) # This wrapper will store the metadata for the parameters of the A2C agent, so it knows how to change them when needed
+        for param in parameters:
+            generated_val = torch.distributions.Uniform(parameters[param].min, parameters[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
+            self.params_metadata.param = {'min': parameters[param].min, 'max': parameters[param].max}
+            simplified_parameters.param = generated_val
+        
+    def mutate_hyperparameters(self):
+        r'''This function mutates, randomly, all the hyperparameters of this agent, according to the mutation rate'''
+        for param in self.params:
+            # We'll generate a completely random value, and mutate the original one according to the mutation rate.
+            old_val = self.a2c_agent.get_hyperparameter(param)
+            generated_val = torch.distributions.Uniform(self.params[param].min, self.params[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
+            mutated_val = (1.0 - self.mutation_rate) * old_val + self.mutation_rate * generated_val # For example, 0.8 * old_val + 0.2 * mutated_val
+            self.a2c_agent.set_hyperparameter(param, mutated_val)
+
+    def copy(self, other):
+        self.a2c_agent = other.get_agent().deepcopy()
+
 
 class EnvironmentAgent(NoAutoResetGymAgent):
     def __init__(self, cfg, env):
@@ -81,7 +124,7 @@ def create_population(cfg):
         # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
         action_size = environment.action_space.shape[0]
         # The agent that we'll train will use the A2C algorithm
-        a2c_agent = A2CAgent(observation_size, hidden_layer_size, action_size)
+        a2c_agent = A2CAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
         # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
         environment_agent = EnvironmentAgent(cfg, environment)
         temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
