@@ -23,6 +23,31 @@ from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import NoAutoResetGymAgent, GymAgent
 from omegaconf import DictConfig, OmegaConf
 
+class EnvAgent(GymAgent):
+    def __init__(self, cfg: OmegaConf, input="action", output="env/", use_seed=True):
+        super().__init__(
+            get_class(cfg.algorithm.env),
+            get_arguments(cfg.algorithm.env),
+            n_envs=cfg.algorithm.number_environments
+        )
+        self.env = instantiate_class(cfg.algorithm.env)
+
+    def get_observation_size(self):
+        if self.observation_space.isinstance(gym.spaces.Box):
+            return self.observation_space.shape[0]
+        elif self.observation_space.isinstance(gym.spaces.Discrete):
+            return self.observation_space.n
+        else:
+            ValueError("Incorrect space type")
+
+    def get_action_size(self):
+        if self.action_space.isinstance(gym.spaces.Box):
+            return self.action_space.shape[0]
+        elif self.action_space.isinstance(gym.spaces.Discrete):
+            return self.action_space.n
+        else:
+            ValueError("Incorrect space type")
+
 class A2CAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
     r'''This agent implements an Advantage Actor-Critic agent (A2C).
