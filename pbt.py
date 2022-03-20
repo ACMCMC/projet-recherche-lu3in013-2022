@@ -105,8 +105,18 @@ class A2CAgent(salina.TAgent):
         critic_loss = td_error.mean()
         return critic_loss, td
     
-    def compute_a2c_loss(self, action_probs, action, td):
-        action_logp = _index(action_probs, action)
+    @staticmethod
+    def _index_3d_tensor_with_2d_tensor(tensor_3d: torch.Tensor, tensor_2d: torch.Tensor):
+        # TODO: What is the purpose of this function?
+        x, y, z = tensor_3d.size()
+        t = tensor_3d.reshape(x*y, z)
+        tt = tensor_2d.reshape(x*y)
+        v = t[torch.arrange(x*y), tt]
+        v = v.reshape(x, y)
+        return v
+    
+    def compute_a2c_loss(self, action_probs: torch.Tensor, action: torch.Tensor, td: float) -> float:
+        action_logp = self._index_3d_tensor_with_2d_tensor(action_probs, action)
         a2c_loss = action_logp[:-1] * td.detach()
         return a2c_loss.mean()
     
