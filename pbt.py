@@ -1,6 +1,7 @@
 import multiprocessing
 import time
 from turtle import forward
+from typing import Union
 from typing_extensions import Self
 import numpy as np
 import copy # used for multiprocessing
@@ -23,8 +24,15 @@ from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import NoAutoResetGymAgent, GymAgent
 from omegaconf import DictConfig, OmegaConf
 
+def sort_performance(agents_list):
+    pass
+
+def select_pbt(portion, agents_list):
+    random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
+    return agents_list[random_index]
+
 class EnvAgent(GymAgent):
-    def __init__(self, cfg: OmegaConf, input="action", output="env/", use_seed=True):
+    def __init__(self, cfg: OmegaConf):
         super().__init__(
             get_class(cfg.algorithm.env),
             get_arguments(cfg.algorithm.env),
@@ -86,6 +94,21 @@ class A2CAgent(salina.TAgent):
         self.set(('action', time), action)
         self.set(('action_probabilities', time), probabilities)
         self.set(('critic', time), critic)
+    
+    def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
+        # Compute temporal difference
+        target = reward[1:] + self.discount_factor * critic[1:].detach() * (1 - done[1:].float())
+        td = target - critic[:-1]
+
+        # Compute critic loss
+        td_error = td ** 2
+        critic_loss = td_error.mean()
+        return critic_loss, td
+    
+    def compute_a2c_loss(self, action_probs, action, td):
+        action_logp = _index(action_probs, action)
+        a2c_loss = action_logp[:-1] * td.detach()
+        return a2c_loss.mean()
     
     def get_hyperparameter(self, param_name):
         return self.params.param_name
