@@ -1,6 +1,7 @@
 import multiprocessing
 import time
 from turtle import forward
+from typing_extensions import Self
 import numpy as np
 import copy # used for multiprocessing
 
@@ -27,7 +28,7 @@ class A2CAgent(salina.TAgent):
     r'''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
 
-    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, mutation_rate, stochastic=True):
+    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, stochastic=True):
         super().__init__()
         self.action_model = torch.nn.Sequential(
             torch.nn.Linear(observation_size, hidden_layer_size),
@@ -40,6 +41,9 @@ class A2CAgent(salina.TAgent):
             torch.nn.Linear(hidden_layer_size, 1) # Because we only want one output feature: the score of the action taken
         )
 
+        self.observation_size = observation_size
+        self.hidden_layer_size = hidden_layer_size
+        self.action_size = action_size
         self.stochastic = stochastic
         self.params = omegaconf.DictConfig(content=parameters)
 
@@ -63,6 +67,10 @@ class A2CAgent(salina.TAgent):
 
     def set_hyperparameter(self, param_name, value):
         self.params.param_name = value
+
+    def clone(self):
+        new = A2CAgent(self.parameters, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic)
+        return new
 
 class A2CParameterizedAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
@@ -92,9 +100,12 @@ class A2CParameterizedAgent(salina.TAgent):
             generated_val = torch.distributions.Uniform(self.params[param].min, self.params[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
             mutated_val = (1.0 - self.mutation_rate) * old_val + self.mutation_rate * generated_val # For example, 0.8 * old_val + 0.2 * mutated_val
             self.a2c_agent.set_hyperparameter(param, mutated_val)
+    
+    def get_agent(self):
+        return self.a2c_agent
 
-    def copy(self, other):
-        self.a2c_agent = other.get_agent().deepcopy()
+    def copy(self, other: Self):
+        self.a2c_agent = other.get_agent().clone()
 
 
 class EnvironmentAgent(NoAutoResetGymAgent):
