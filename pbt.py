@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 from turtle import forward
-from typing import Union
+from typing import List, Union
 from typing_extensions import Self
 import numpy as np
 import copy # used for multiprocessing
@@ -24,12 +24,6 @@ from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import NoAutoResetGymAgent, GymAgent
 from omegaconf import DictConfig, OmegaConf
 
-def sort_performance(agents_list):
-    pass
-
-def select_pbt(portion, agents_list):
-    random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
-    return agents_list[random_index]
 
 class EnvAgent(GymAgent):
     def __init__(self, cfg: OmegaConf):
@@ -162,6 +156,12 @@ class A2CParameterizedAgent(salina.TAgent):
     def get_agent(self):
         return self.a2c_agent
 
+    def compute_critic_loss(self, reward, done, critic):
+        return self.a2c_agent.compute_critic_loss(reward, done, critic)
+    
+    def compute_a2c_loss(self, action_probs, action, td):
+        return self.a2c_agent.compute_a2c_loss(action_probs, action)
+
     def copy(self, other: Self):
         self.a2c_agent = other.get_agent().clone()
 
@@ -202,6 +202,13 @@ def create_population(cfg):
         population.append(async_agent)
 
     return population
+
+def sort_performance(agents_list: List[A2CParameterizedAgent]):
+    agents_list.sort(lambda agent: agent.compute_a2c_loss(), reverse=True)
+
+def select_pbt(portion, agents_list):
+    random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
+    return agents_list[random_index]
 
 def train(cfg, population):
     for epoch in range(cfg.algorithm.max_epochs):
