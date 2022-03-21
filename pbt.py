@@ -210,7 +210,7 @@ def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
     return agents_list[random_index]
 
-def train(cfg, population):
+def train(cfg, population: List[Agent]):
     for epoch in range(cfg.algorithm.max_epochs):
         scores = []
 
@@ -223,6 +223,14 @@ def train(cfg, population):
         
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
+
+        # We sort the agents by their performance
+        sort_performance(population)
+
+        for bad_agent in population[:cfg.algorithm.portion * len(population)]:
+            # Select randomly one agent to replace the current one
+            bad_agent.copy(select_pbt(cfg.algorithm.portion, population))
+            bad_agent.mutate_hyperparameters()
 
 
 @hydra.main(config_path=".", config_name="pbt.yaml")
