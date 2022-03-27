@@ -5,6 +5,7 @@ from typing import List, Union
 from typing_extensions import Self
 import numpy as np
 import copy # used for multiprocessing
+import random
 
 import gym
 from gym.wrappers import TimeLimit
@@ -155,7 +156,12 @@ class A2CParameterizedAgent(salina.TAgent):
             old_val = self.a2c_agent.get_hyperparameter(param)
             generated_val = torch.distributions.Uniform(self.params[param].min, self.params[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
             # TODO: if > 0.5, 0.8
-            mutated_val = (1.0 - self.mutation_rate) * old_val + self.mutation_rate * generated_val # For example, 0.8 * old_val + 0.2 * mutated_val
+            discriminator = torch.distributions.Uniform(0, 1).sample().item()
+            if discriminator > 0.5:
+                mutation_rate = 1.0 - self.mutation_rate
+            else:
+                mutation_rate = self.mutation_rate
+            mutated_val = (1.0 - mutation_rate) * old_val + mutation_rate * generated_val # For example, 0.8 * old_val + 0.2 * mutated_val
             self.a2c_agent.set_hyperparameter(param, mutated_val)
     
     def get_agent(self):

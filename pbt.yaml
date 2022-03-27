@@ -17,6 +17,7 @@ algorithm:
   mutation_rate: 0.2
   pbt_portion: 0.2
   hyperparameters:
+  # change for the real ones
     sigma:
       min: 0
       max: 1
