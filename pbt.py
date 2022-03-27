@@ -180,15 +180,15 @@ class A2CParameterizedAgent(salina.TAgent):
         return self.a2c_agent(time=t, workspace=workspace, kwargs=kwargs)
 
 
-class EnvironmentAgent(NoAutoResetGymAgent):
+class EnvironmentAgent(GymAgent):
     def __init__(self, cfg, env):
-        super().__init__(cfg, n_envs=1) # TODO: What is the number of environments?
+        super().__init__(n_envs=1, make_env_fn=make_env, make_env_args=cfg) # TODO: What is the number of environments?
         self.env = env
 
-def make_env(cfg) -> gym.Env:
+def make_env(**kwargs) -> gym.Env:
     # We set a timestep limit on the environment of max_episode_steps
     # We can also add a seed to the environment here
-    return TimeLimit(gym.make(cfg.env.env_name), cfg.env.max_episode_steps)
+    return TimeLimit(gym.make(kwargs['env']['env_name']), kwargs['env']['max_episode_steps'])
 
 def create_population(cfg):
     # We'll run this number of agents in parallel
@@ -197,7 +197,7 @@ def create_population(cfg):
     # Create the required number of agents
     population = []
     for i in range(cfg.algorithm.population_size):
-        environment = make_env(cfg)
+        environment = make_env(**cfg)
         # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
         observation_size = environment.observation_space.shape[0]
         # hidden_layer_size: the number of neurons in the hidden layer
