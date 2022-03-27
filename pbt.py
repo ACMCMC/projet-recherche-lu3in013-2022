@@ -52,7 +52,7 @@ class EnvAgent(GymAgent):
 
 class A2CAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
-    r'''This agent implements an Advantage Actor-Critic agent (A2C).
+    '''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
 
     def __init__(self, parameters, observation_size, hidden_layer_size, action_size, stochastic=True):
@@ -113,12 +113,16 @@ class A2CAgent(salina.TAgent):
         action_logp = self._index_3d_tensor_with_2d_tensor(action_probs, action)
         a2c_loss = action_logp[:-1] * td.detach()
         return a2c_loss.mean()
+
+    def get_cumulated_reward(self, timestep):
+        crewards = self.workspace['env/cumulated_reward']
+        return crewards[timestep]
     
     def get_hyperparameter(self, param_name):
-        return self.params.param_name
+        return self.params[param_name]
 
     def set_hyperparameter(self, param_name, value):
-        self.params.param_name = value
+        self.params[param_name] = value
 
     def clone(self):
         new = A2CAgent(self.parameters, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic)
@@ -126,14 +130,12 @@ class A2CAgent(salina.TAgent):
 
 class A2CParameterizedAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
-    r'''This agent implements an Advantage Actor-Critic agent (A2C).
+    '''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
 
 
     def __init__(self, parameters, observation_size, hidden_layer_size, action_size, mutation_rate, stochastic=True):
         super().__init__()
-
-        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_size=hidden_layer_size, action_size=action_size, stochastic=stochastic)
 
         self.mutation_rate = mutation_rate
         
@@ -143,13 +145,16 @@ class A2CParameterizedAgent(salina.TAgent):
             generated_val = torch.distributions.Uniform(parameters[param].min, parameters[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
             self.params_metadata.param = {'min': parameters[param].min, 'max': parameters[param].max}
             simplified_parameters.param = generated_val
+
+        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_size=hidden_layer_size, action_size=action_size, stochastic=stochastic)
         
     def mutate_hyperparameters(self):
-        r'''This function mutates, randomly, all the hyperparameters of this agent, according to the mutation rate'''
+        '''This function mutates, randomly, all the hyperparameters of this agent, according to the mutation rate'''
         for param in self.params:
             # We'll generate a completely random value, and mutate the original one according to the mutation rate.
             old_val = self.a2c_agent.get_hyperparameter(param)
             generated_val = torch.distributions.Uniform(self.params[param].min, self.params[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
+            # TODO: if > 0.5, 0.8
             mutated_val = (1.0 - self.mutation_rate) * old_val + self.mutation_rate * generated_val # For example, 0.8 * old_val + 0.2 * mutated_val
             self.a2c_agent.set_hyperparameter(param, mutated_val)
     
@@ -164,6 +169,9 @@ class A2CParameterizedAgent(salina.TAgent):
 
     def copy(self, other: Self):
         self.a2c_agent = other.get_agent().clone()
+
+    def __call__(self, workspace, t, **kwargs):
+        return self.a2c_agent(time=t, workspace=workspace, kwargs=kwargs)
 
 
 class EnvironmentAgent(NoAutoResetGymAgent):
@@ -183,8 +191,6 @@ def create_population(cfg):
     # Create the required number of agents
     population = []
     for i in range(cfg.algorithm.population_size):
-        # TODO: We can change the hyperparameters here (they're stored in cfg)
-        #       We could also create another wrapper for the A2C agent which is in charge of changing them
         environment = make_env(cfg)
         # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
         observation_size = environment.observation_space.shape[0]
@@ -193,18 +199,18 @@ def create_population(cfg):
         # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
         action_size = environment.action_space.shape[0]
         # The agent that we'll train will use the A2C algorithm
-        a2c_agent = A2CAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
+        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
         # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
         environment_agent = EnvironmentAgent(cfg, environment)
         temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
         temporal_agent.seed(cfg.algorithm.stochasticity_seed)
-        async_agent = AsynchronousAgent(temporal_agent)
-        population.append(async_agent)
+        population.append(temporal_agent)
+        async_agent = AsynchronousAgent(temporal_agent) # TODO: Implement async operation
 
     return population
 
 def sort_performance(agents_list: List[A2CParameterizedAgent]):
-    agents_list.sort(lambda agent: agent.compute_a2c_loss(), reverse=True)
+    agents_list.sort(lambda agent: agent.get_cumulated_reward(), reverse=True)
 
 def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
@@ -212,15 +218,10 @@ def select_pbt(portion, agents_list):
 
 def train(cfg, population: List[Agent]):
     for epoch in range(cfg.algorithm.max_epochs):
-        scores = []
-
         for agent in population:
-            agent(time=0, stop_variable='env/done')
+            workspace = Workspace()
+            agent(time=0, stop_variable='env/done', workspace=workspace)
 
-        agents_running = True
-        while agents_running:
-            agents_running = any([agent.is_running() for agent in population])
-        
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
 
