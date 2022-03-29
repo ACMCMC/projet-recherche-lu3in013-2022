@@ -77,12 +77,12 @@ class A2CAgent(salina.TAgent):
         self.action_size = action_size
         self.stochastic = stochastic
         self.params = omegaconf.DictConfig(content=parameters)
-        self.std_param = nn.parameter.Parameter(torch.randn(num_outputs,1))
+        self.std_param = nn.parameter.Parameter(torch.randn(action_size,1))
 
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
-        mean = torch.tanh(self.model(input))
-        dist = self.numpy.distributions;(mean, torch.nn.Softplus()(self.std_param))
+        mean = torch.tanh(self.action_model(input))
+        dist = torch.distributions.Normal(mean, torch.nn.Softplus()(self.std_param))
         # dist = Normal(mean, torch.exp(self.std_param))
         self.set(("entropy", time), dist.entropy())
         if self.stochastic:
@@ -90,8 +90,8 @@ class A2CAgent(salina.TAgent):
         else : 
             action = mean 
         logp_pi = dist.log_prob(action).sum(axis=-1)
-        self.set(("action", t), action)
-        self.set(("action_logprobs", tlogp_pi)
+        self.set(("action", time), action)
+        self.set(("action_logprobs", time), logp_pi)
 
     def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
         # Compute temporal difference
@@ -214,7 +214,7 @@ def create_population(cfg):
     return population
 
 def sort_performance(agents_list: List[A2CParameterizedAgent]):
-    agents_list.sort(lambda agent: agent.get_cumulated_reward(), reverse=True)
+    agents_list.sort(key=lambda agent: agent.get_cumulated_reward(), reverse=True)
 
 def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
