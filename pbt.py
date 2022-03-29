@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 from turtle import forward
-from typing import List, Union
+from typing import Dict, List, Union
 from typing_extensions import Self
 import numpy as np
 import copy # used for multiprocessing
@@ -77,7 +77,7 @@ class A2CAgent(salina.TAgent):
         self.action_size = action_size
         self.stochastic = stochastic
         self.params = omegaconf.DictConfig(content=parameters)
-        self.std_param = nn.parameter.Parameter(torch.randn(action_size,1))
+        self.std_param = nn.parameter.Parameter(torch.randn(action_size,1)) # TODO: What is this? Should we copy it too?
 
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
@@ -118,10 +118,6 @@ class A2CAgent(salina.TAgent):
         a2c_loss = action_logp[:-1] * td.detach()
         return a2c_loss.mean()
 
-    def get_cumulated_reward(self, timestep):
-        crewards = self.workspace['env/cumulated_reward']
-        return crewards[timestep]
-    
     def get_hyperparameter(self, param_name):
         return self.params[param_name]
 
@@ -129,7 +125,7 @@ class A2CAgent(salina.TAgent):
         self.params[param_name] = value
 
     def clone(self):
-        new = A2CAgent(self.parameters, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic)
+        new = A2CAgent(self.params, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic)
         return new
 
 class A2CParameterizedAgent(salina.TAgent):
@@ -154,10 +150,10 @@ class A2CParameterizedAgent(salina.TAgent):
         
     def mutate_hyperparameters(self):
         '''This function mutates, randomly, all the hyperparameters of this agent, according to the mutation rate'''
-        for param in self.params:
+        for param in self.params_metadata:
             # We'll generate a completely random value, and mutate the original one according to the mutation rate.
             old_val = self.a2c_agent.get_hyperparameter(param)
-            generated_val = torch.distributions.Uniform(self.params[param].min, self.params[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
+            generated_val = torch.distributions.Uniform(self.params_metadata[param].min, self.params_metadata[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
             # TODO: if > 0.5, 0.8
             discriminator = torch.distributions.Uniform(0, 1).sample().item()
             if discriminator > 0.5:
@@ -179,6 +175,9 @@ class A2CParameterizedAgent(salina.TAgent):
     def copy(self, other: Self):
         self.a2c_agent = other.get_agent().clone()
 
+    def get_cumulated_reward(self):
+        return self.a2c_agent.get_cumulated_reward()
+
     def __call__(self, workspace, t, **kwargs):
         return self.a2c_agent(time=t, workspace=workspace, kwargs=kwargs)
 
@@ -194,6 +193,7 @@ def create_population(cfg):
 
     # Create the required number of agents
     population = []
+    workspaces = {} # A dictionary of the workspace of each agent
     for i in range(cfg.algorithm.population_size):
         environment = make_env(**cfg.env)
         # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
@@ -202,6 +202,10 @@ def create_population(cfg):
         hidden_layer_size = cfg.algorithm.neural_network.hidden_layer_size
         # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
         action_size = environment.action_space.shape[0]
+
+        # TODO: Is this the right way to do it? Should the environment be passed as a parameter?
+        workspace = Workspace()
+
         # The agent that we'll train will use the A2C algorithm
         a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
         # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
@@ -209,39 +213,47 @@ def create_population(cfg):
         temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
         temporal_agent.seed(cfg.algorithm.stochasticity_seed)
         population.append(temporal_agent)
+        
+        workspaces[temporal_agent] = workspace
+        
         async_agent = AsynchronousAgent(temporal_agent) # TODO: Implement async operation
 
-    return population
+    return population, workspaces
 
-def sort_performance(agents_list: List[A2CParameterizedAgent]):
-    agents_list.sort(key=lambda agent: agent.get_cumulated_reward(), reverse=True)
+def get_cumulated_reward(workspace):
+    crewards = workspace['env/cumulated_reward']
+    done = workspace['env/done']
+    return torch.mean(crewards[done]) # TODO: Should we get the mean of the cumulated rewards?
+    
+def sort_performance(agents_list: List[TemporalAgent], agents_workspaces: Dict[TemporalAgent, Workspace]):
+    agents_list.sort(key=lambda agent: get_cumulated_reward(agents_workspaces[agent]), reverse=True) # TODO: Is this the right way to access the agent?
 
 def select_pbt(portion, agents_list):
-    random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample()
-    return agents_list[random_index]
+    random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample().item()
+    return agents_list[int(random_index)]
 
-def train(cfg, population: List[Agent]):
+def train(cfg, population: List[Agent], workspaces: Dict[Agent, Workspace]):
     for epoch in range(cfg.algorithm.max_epochs):
         for agent in population:
-            workspace = Workspace()
+            workspace = workspaces[agent]
             agent(time=0, stop_variable='env/done', workspace=workspace)
 
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
 
         # We sort the agents by their performance
-        sort_performance(population)
+        sort_performance(population, agents_workspaces=workspaces)
 
-        for bad_agent in population[:cfg.algorithm.portion * len(population)]:
+        for bad_agent in population[: -1 * int(cfg.algorithm.pbt_portion * len(population))]:
             # Select randomly one agent to replace the current one
-            bad_agent.copy(select_pbt(cfg.algorithm.portion, population))
-            bad_agent.mutate_hyperparameters()
+            bad_agent.agent[1].copy(select_pbt(cfg.algorithm.pbt_portion, population).agent[1])
+            bad_agent.agent[1].mutate_hyperparameters()
 
 
 @hydra.main(config_path=".", config_name="pbt.yaml")
 def main(cfg):
-    population = create_population(cfg)
-    train(cfg, population)
+    population, workspaces = create_population(cfg)
+    train(cfg, population, workspaces)
 
 if __name__ == '__main__':
     main()
