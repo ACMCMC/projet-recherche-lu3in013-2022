@@ -90,8 +90,8 @@ class A2CAgent(salina.TAgent):
         else : 
             action = mean 
         logp_pi = dist.log_prob(action).sum(axis=-1)
-        self.set(("action", t), action)
-        self.set(("action_logprobs", tlogp_pi)
+        self.set(("action", time), action)
+        self.set(("action_logprobs", time), logp_pi)
 
     def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
         # Compute temporal difference
