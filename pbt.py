@@ -1,3 +1,4 @@
+from msilib.schema import Error
 import multiprocessing
 import time
 from turtle import forward
@@ -78,6 +79,7 @@ class A2CAgent(salina.TAgent):
         self.stochastic = stochastic
         self.params = omegaconf.DictConfig(content=parameters)
         self.std_param = nn.parameter.Parameter(torch.randn(action_size,1)) # TODO: What is this? Should we copy it too?
+        raise Error()
 
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
@@ -155,6 +157,7 @@ class A2CParameterizedAgent(salina.TAgent):
             old_val = self.a2c_agent.get_hyperparameter(param)
             generated_val = torch.distributions.Uniform(self.params_metadata[param].min, self.params_metadata[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
             # TODO: if > 0.5, 0.8
+            raise Error()
             discriminator = torch.distributions.Uniform(0, 1).sample().item()
             if discriminator > 0.5:
                 mutation_rate = 1.0 - self.mutation_rate
@@ -205,6 +208,7 @@ def create_population(cfg):
 
         # TODO: Is this the right way to do it? Should the environment be passed as a parameter?
         workspace = Workspace()
+        raise Error()
 
         # The agent that we'll train will use the A2C algorithm
         a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
