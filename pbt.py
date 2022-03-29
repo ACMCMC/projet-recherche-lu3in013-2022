@@ -29,11 +29,14 @@ from omegaconf import DictConfig, OmegaConf
 class EnvAgent(GymAgent):
     def __init__(self, cfg: OmegaConf):
         super().__init__(
-            get_class(cfg.algorithm.env),
-            get_arguments(cfg.algorithm.env),
+            get_class(cfg.env),
+            get_arguments(cfg.env),
             n_envs=cfg.algorithm.number_environments
         )
-        self.env = instantiate_class(cfg.algorithm.env)
+        env = instantiate_class(cfg.env)
+        self.observation_space = env.observation_space
+        self.action_space = env.action_space
+        del(env)
 
     def get_observation_size(self):
         if self.observation_space.isinstance(gym.spaces.Box):
@@ -74,22 +77,22 @@ class A2CAgent(salina.TAgent):
         self.action_size = action_size
         self.stochastic = stochastic
         self.params = omegaconf.DictConfig(content=parameters)
+        self.std_param = nn.parameter.Parameter(torch.randn(num_outputs,1))
 
     def forward(self, time, **kwargs):
-        observation = self.get(('env/env_obs', time))
-        scores = self.action_model(observation)
-        probabilities = torch.softmax(scores, dim=-1)
-        critic = self.critic_model(observation).squeeze(-1) # squeeze() removes the last dimension of the tensor
-
+        input = self.get(("env/env_obs", time))
+        mean = torch.tanh(self.model(input))
+        dist = self.numpy.distributions;(mean, torch.nn.Softplus()(self.std_param))
+        # dist = Normal(mean, torch.exp(self.std_param))
+        self.set(("entropy", time), dist.entropy())
         if self.stochastic:
-            action = torch.distributions.Categorical(probabilities).sample() # Create a statictical distribution, and take a sample from there (this will usually return the action we think is the best, but at times, it will return a different one)
-        else:
-            action = probabilities.argmax(1)
+            action = dist.sample()
+        else : 
+            action = mean 
+        logp_pi = dist.log_prob(action).sum(axis=-1)
+        self.set(("action", t), action)
+        self.set(("action_logprobs", tlogp_pi)
 
-        self.set(('action', time), action)
-        self.set(('action_probabilities', time), probabilities)
-        self.set(('critic', time), critic)
-    
     def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
         # Compute temporal difference
         target = reward[1:] + self.discount_factor * critic[1:].detach() * (1 - done[1:].float())
@@ -180,15 +183,10 @@ class A2CParameterizedAgent(salina.TAgent):
         return self.a2c_agent(time=t, workspace=workspace, kwargs=kwargs)
 
 
-class EnvironmentAgent(GymAgent):
-    def __init__(self, cfg, env):
-        super().__init__(n_envs=1, make_env_fn=make_env, make_env_args=cfg) # TODO: What is the number of environments?
-        self.env = env
-
 def make_env(**kwargs) -> gym.Env:
     # We set a timestep limit on the environment of max_episode_steps
     # We can also add a seed to the environment here
-    return TimeLimit(gym.make(kwargs['env']['env_name']), kwargs['env']['max_episode_steps'])
+    return TimeLimit(gym.make(kwargs['env_name']), kwargs['max_episode_steps'])
 
 def create_population(cfg):
     # We'll run this number of agents in parallel
@@ -197,7 +195,7 @@ def create_population(cfg):
     # Create the required number of agents
     population = []
     for i in range(cfg.algorithm.population_size):
-        environment = make_env(**cfg)
+        environment = make_env(**cfg.env)
         # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
         observation_size = environment.observation_space.shape[0]
         # hidden_layer_size: the number of neurons in the hidden layer
@@ -207,7 +205,7 @@ def create_population(cfg):
         # The agent that we'll train will use the A2C algorithm
         a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
         # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
-        environment_agent = EnvironmentAgent(cfg, environment)
+        environment_agent = EnvAgent(cfg)
         temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
         temporal_agent.seed(cfg.algorithm.stochasticity_seed)
         population.append(temporal_agent)
