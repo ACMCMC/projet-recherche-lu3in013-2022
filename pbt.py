@@ -251,7 +251,7 @@ def train(cfg, population: List[Agent], workspaces: Dict[Agent, Workspace]):
         
         print('Cumulated rewards at epoch {}: {}'.format(epoch, [get_cumulated_reward(workspaces[agent]) for agent in population]))
 
-        for bad_agent in population[: -1 * int(cfg.algorithm.pbt_portion * len(population))]:
+        for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
             bad_agent.agent[1].copy(select_pbt(cfg.algorithm.pbt_portion, population).agent[1])
             bad_agent.agent[1].mutate_hyperparameters()
