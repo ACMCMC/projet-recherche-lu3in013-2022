@@ -1,4 +1,3 @@
-from msilib.schema import Error
 import multiprocessing
 import time
 from turtle import forward
@@ -60,7 +59,7 @@ class A2CAgent(salina.TAgent):
     '''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
 
-    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, stochastic=True):
+    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, stochastic=True, std_param=None):
         super().__init__()
         self.action_model = torch.nn.Sequential(
             torch.nn.Linear(observation_size, hidden_layer_size),
@@ -78,8 +77,10 @@ class A2CAgent(salina.TAgent):
         self.action_size = action_size
         self.stochastic = stochastic
         self.params = omegaconf.DictConfig(content=parameters)
-        self.std_param = nn.parameter.Parameter(torch.randn(action_size,1)) # TODO: What is this? Should we copy it too?
-        raise Error()
+        if std_param is None:
+            self.std_param = nn.parameter.Parameter(torch.randn(action_size,1)) # TODO: What is this? Should we copy it too?
+        else:
+            self.std_param = std_param.clone()
 
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
@@ -127,7 +128,7 @@ class A2CAgent(salina.TAgent):
         self.params[param_name] = value
 
     def clone(self):
-        new = A2CAgent(self.params, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic)
+        new = A2CAgent(self.params, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic, std_param=self.std_param)
         return new
 
 class A2CParameterizedAgent(salina.TAgent):
@@ -157,7 +158,7 @@ class A2CParameterizedAgent(salina.TAgent):
             old_val = self.a2c_agent.get_hyperparameter(param)
             generated_val = torch.distributions.Uniform(self.params_metadata[param].min, self.params_metadata[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
             # TODO: if > 0.5, 0.8
-            raise Error()
+            # raise Error()
             discriminator = torch.distributions.Uniform(0, 1).sample().item()
             if discriminator > 0.5:
                 mutation_rate = 1.0 - self.mutation_rate
@@ -208,7 +209,7 @@ def create_population(cfg):
 
         # TODO: Is this the right way to do it? Should the environment be passed as a parameter?
         workspace = Workspace()
-        raise Error()
+        # raise Error()
 
         # The agent that we'll train will use the A2C algorithm
         a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
@@ -247,6 +248,8 @@ def train(cfg, population: List[Agent], workspaces: Dict[Agent, Workspace]):
 
         # We sort the agents by their performance
         sort_performance(population, agents_workspaces=workspaces)
+        
+        print('Cumulated rewards at epoch {}: {}'.format(epoch, [get_cumulated_reward(workspaces[agent]) for agent in population]))
 
         for bad_agent in population[: -1 * int(cfg.algorithm.pbt_portion * len(population))]:
             # Select randomly one agent to replace the current one
