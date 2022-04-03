@@ -253,7 +253,9 @@ def train(cfg, population: List[Agent], workspaces: Dict[Agent, Workspace]):
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
-            bad_agent.agent[1].copy(select_pbt(cfg.algorithm.pbt_portion, population).agent[1])
+            agent_to_copy = select_pbt(cfg.algorithm.pbt_portion, population)
+            print('Copying agent with creward = {} into agent with creward {}'.format(get_cumulated_reward(workspaces[agent_to_copy]), get_cumulated_reward(workspaces[bad_agent])))
+            bad_agent.agent[1].copy(agent_to_copy.agent[1])
             bad_agent.agent[1].mutate_hyperparameters()
 
 
