@@ -25,6 +25,8 @@ from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import NoAutoResetGymAgent, GymAgent
 from omegaconf import DictConfig, OmegaConf
 
+from salina.logger import TFLogger
+
 
 class EnvAgent(GymAgent):
     def __init__(self, cfg: OmegaConf):
@@ -96,16 +98,11 @@ class A2CAgent(salina.TAgent):
         self.set(("action", time), action)
         self.set(("action_logprobs", time), logp_pi)
 
-    def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
-        # Compute temporal difference
-        target = reward[1:] + self.discount_factor * critic[1:].detach() * (1 - done[1:].float())
-        td = target - critic[:-1]
+        # Compute critic
+        observation = self.get(("env/env_obs", time))
+        critic = self.critic_model(observation).squeeze(-1)
+        self.set(("critic", time), critic)
 
-        # Compute critic loss
-        td_error = td ** 2
-        critic_loss = td_error.mean()
-        return critic_loss, td
-    
     @staticmethod
     def _index_3d_tensor_with_2d_tensor(tensor_3d: torch.Tensor, tensor_2d: torch.Tensor):
         # TODO: What is the purpose of this function?
@@ -130,6 +127,16 @@ class A2CAgent(salina.TAgent):
     def clone(self):
         new = A2CAgent(self.params, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic, std_param=self.std_param)
         return new
+
+def compute_critic_loss(reward, done, critic, discount_factor) -> Union[float, float]:
+    # Compute temporal difference
+    target = reward[1:] + discount_factor * critic[1:].detach() * (1 - done[1:].float())
+    td = target - critic[:-1]
+
+    # Compute critic loss
+    td_error = td ** 2
+    critic_loss = td_error.mean()
+    return critic_loss, td
 
 class A2CParameterizedAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
@@ -157,14 +164,11 @@ class A2CParameterizedAgent(salina.TAgent):
             # We'll generate a completely random value, and mutate the original one according to the mutation rate.
             old_val = self.a2c_agent.get_hyperparameter(param)
             generated_val = torch.distributions.Uniform(self.params_metadata[param].min, self.params_metadata[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
-            # TODO: if > 0.5, 0.8
-            # raise Error()
             discriminator = torch.distributions.Uniform(0, 1).sample().item()
             if discriminator > 0.5:
-                mutation_rate = 1.0 - self.mutation_rate
+                mutated_val = 0.8 * old_val
             else:
-                mutation_rate = self.mutation_rate
-            mutated_val = (1.0 - mutation_rate) * old_val + mutation_rate * generated_val # For example, 0.8 * old_val + 0.2 * mutated_val
+                mutated_val = 1.2 * old_val
             self.a2c_agent.set_hyperparameter(param, mutated_val)
     
     def get_agent(self):
@@ -237,11 +241,60 @@ def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample().item()
     return agents_list[int(random_index)]
 
-def train(cfg, population: List[Agent], workspaces: Dict[Agent, Workspace]):
+def _index_3d_2d(tensor_3d, tensor_2d):
+    """This function is used to index a 3d tensors using a 2d tensor"""
+    x, y, z = tensor_3d.size()
+    t = tensor_3d.reshape(x * y, z)
+    tt = tensor_2d.reshape(x * y)
+    v = t[torch.arange(x * y), tt]
+    v = v.reshape(x, y)
+    return v
+
+def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
+
     for epoch in range(cfg.algorithm.max_epochs):
         for agent in population:
             workspace = workspaces[agent]
-            agent(time=0, stop_variable='env/done', workspace=workspace)
+            if epoch > 0:
+                workspace.copy_n_last_steps(1)
+                agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
+            else:
+                agent(time=0, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
+            
+            critic, done, action_logprobs, reward, entropy, action = workspace[
+                "critic", "env/done", "action_logprobs", "env/reward", "entropy", "action"
+            ] # TODO: Can we use action_logprobs instead of action_probs?
+
+            critic_loss, td = compute_critic_loss(reward, done, critic, cfg.algorithm.discount_factor)
+
+            entropy_loss = entropy.mean() # TODO: What's the difference between entropy and entropy_loss?
+            a2c_loss = action_logprobs[:-1] * td.detach()
+            a2c_loss = a2c_loss.mean()
+
+            logger.add_scalar("critic_loss", critic_loss.item(), epoch)
+            logger.add_scalar("entropy_loss", entropy_loss.item(), epoch)
+            logger.add_scalar("a2c_loss", a2c_loss.item(), epoch)
+
+            loss = (
+                - cfg.algorithm.entropy_coef * entropy_loss
+                + cfg.algorithm.critic_coef * critic_loss
+                - cfg.algorithm.a2c_coef * a2c_loss
+            )
+            
+            # 7) Confgure the optimizer over the a2c agent
+            optimizer_args = get_arguments(cfg.optimizer)
+            optimizer = get_class(cfg.optimizer)(
+                agent.parameters(), **optimizer_args
+            )
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            creward = workspace["env/cumulated_reward"]
+            creward = creward[done]
+            if creward.size()[0] > 0:
+                logger.add_scalar("reward", creward.mean().item(), epoch)
 
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
@@ -257,12 +310,18 @@ def train(cfg, population: List[Agent], workspaces: Dict[Agent, Workspace]):
             print('Copying agent with creward = {} into agent with creward {}'.format(get_cumulated_reward(workspaces[agent_to_copy]), get_cumulated_reward(workspaces[bad_agent])))
             bad_agent.agent[1].copy(agent_to_copy.agent[1])
             bad_agent.agent[1].mutate_hyperparameters()
+        
+        for _, workspace in workspaces.items():
+            workspace.copy_n_last_steps(1)
+            pass
 
 
 @hydra.main(config_path=".", config_name="pbt.yaml")
 def main(cfg):
+    # First, build the  logger
+    logger = instantiate_class(cfg.logger)
     population, workspaces = create_population(cfg)
-    train(cfg, population, workspaces)
+    train(cfg, population, workspaces, logger=logger)
 
 if __name__ == '__main__':
     main()
