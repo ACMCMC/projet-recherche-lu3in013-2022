@@ -282,7 +282,7 @@ def _index_3d_2d(tensor_3d, tensor_2d):
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     optimizers = {}
     for agent in population:
-        # Confgure the optimizer over the a2c agent
+        # Configure the optimizer over the a2c agent
         optimizer_args = get_arguments(cfg.optimizer)
         optimizer = get_class(cfg.optimizer)(
             agent.parameters(), **optimizer_args
@@ -291,9 +291,11 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
 
     for epoch in range(cfg.algorithm.max_epochs):
         for i in range(10):
+            epoch_slice = epoch * cfg.algorithm.max_steps_per_epoch + i
             for agent in population:
                 workspace = workspaces[agent]
-                if epoch > 0:
+                workspace.zero_grad()
+                if i > 0:
                     workspace.copy_n_last_steps(1)
                     agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
                 else:
@@ -301,7 +303,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                 
                 done = workspace["env/done"]
 
-                loss = agent.agent[1].compute_loss(workspace=workspace, epoch=epoch, logger=logger)
+                loss = agent.agent[1].compute_loss(workspace=workspace, epoch=epoch_slice, logger=logger)
 
                 optimizer = optimizers[agent]
                 optimizer.zero_grad()
@@ -311,7 +313,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                 creward = workspace["env/cumulated_reward"]
                 creward = creward[done]
                 if creward.size()[0] > 0:
-                    logger.add_scalar("reward", creward.mean().item(), epoch)
+                    logger.add_scalar("reward", creward.mean().item(), epoch_slice)
             
             # stop = [workspace['env/done'][-1].all() for workspace in workspaces.values()]
             # if all(stop):
