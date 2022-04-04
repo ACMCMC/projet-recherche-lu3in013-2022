@@ -24,6 +24,20 @@ from salina.agents.gyma import GymAgent, NoAutoResetGymAgent
 from salina.logger import TFLogger
 
 
+class Logger():
+
+  def __init__(self, cfg):
+    self.logger = instantiate_class(cfg.logger)
+
+  def add_log(self, log_string, loss, epoch):
+    self.logger.add_scalar(log_string, loss.item(), epoch)
+
+  # Log losses
+  def log_losses(self, epoch, critic_loss, entropy_loss, a2c_loss):
+    self.add_log("critic_loss", critic_loss, epoch)
+    self.add_log("entropy_loss", entropy_loss, epoch)
+    self.add_log("a2c_loss", a2c_loss, epoch)
+
 class EnvAgent(GymAgent):
     def __init__(self, cfg: OmegaConf):
         super().__init__(
@@ -37,17 +51,17 @@ class EnvAgent(GymAgent):
         del(env)
 
     def get_observation_size(self):
-        if self.observation_space.isinstance(gym.spaces.Box):
+        if isinstance(self.observation_space, gym.spaces.Box):
             return self.observation_space.shape[0]
-        elif self.observation_space.isinstance(gym.spaces.Discrete):
+        elif isinstance(self.observation_space, gym.spaces.Discrete):
             return self.observation_space.n
         else:
             ValueError("Incorrect space type")
 
     def get_action_size(self):
-        if self.action_space.isinstance(gym.spaces.Box):
+        if isinstance(self.action_space, gym.spaces.Box):
             return self.action_space.shape[0]
-        elif self.action_space.isinstance(gym.spaces.Discrete):
+        elif isinstance(self.action_space, gym.spaces.Discrete):
             return self.action_space.n
         else:
             ValueError("Incorrect space type")
@@ -82,21 +96,18 @@ class A2CAgent(salina.TAgent):
 
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
-        mean = torch.tanh(self.action_model(input))
-        dist = torch.distributions.Normal(mean, torch.nn.Softplus()(self.std_param))
-        # dist = Normal(mean, torch.exp(self.std_param))
-        self.set(("entropy", time), dist.entropy())
-        if self.stochastic:
-            action = dist.sample()
-        else : 
-            action = mean 
-        logp_pi = dist.log_prob(action).sum(axis=-1)
-        self.set(("action", time), action)
-        self.set(("action_logprobs", time), logp_pi)
+        scores = self.action_model(input)
+        probs = torch.softmax(scores, dim=-1)
+        self.set(("action_probs", time), probs)
 
-        # Compute critic
-        observation = self.get(("env/env_obs", time))
-        critic = self.critic_model(observation).squeeze(-1)
+        if self.stochastic:
+            action = torch.distributions.Categorical(probs).sample()
+        else:
+            action = probs.argmax(1)
+
+        self.set(("action", time), action)
+
+        critic = self.critic_model(input).squeeze(-1)
         self.set(("critic", time), critic)
 
     @staticmethod
@@ -133,23 +144,27 @@ class A2CAgent(salina.TAgent):
         td_error = td ** 2
         critic_loss = td_error.mean()
         return critic_loss, td
-    
-    def compute_loss(self, workspace: Workspace, epoch, logger: TFLogger = None) -> float:
-        critic, done, action_logprobs, reward, entropy = workspace[
-            "critic", "env/done", "action_logprobs", "env/reward", "entropy"
-        ] # TODO: Can we use action_logprobs instead of action_probs?
 
+    def compute_a2c_loss(self, action_probs, action, td):
+        action_logprobs = _index_3d_2d(action_probs, action).log()
+        a2c_loss = action_logprobs[:-1] * td.detach()
+        return a2c_loss.mean()
+    
+    def compute_entropy_loss(self, action_probs):
+        return torch.distributions.Categorical(action_probs).entropy().mean()
+    
+    def compute_loss(self, workspace: Workspace, epoch, logger) -> float:
+        critic, done, action_probs, reward, action = workspace[
+            "critic", "env/done", "action_probs", "env/reward", "action"
+        ] # TODO: Can we use action_logprobs instead of action_probs?
 
         critic_loss, td = self.compute_critic_loss(reward, done, critic)
 
-        entropy_loss = entropy.mean() # TODO: What's the difference between entropy and entropy_loss?
+        entropy_loss = self.compute_entropy_loss(action_probs) # TODO: What's the difference between entropy and entropy_loss?
 
-        a2c_loss = action_logprobs[:-1] * td.detach()
-        a2c_loss = a2c_loss.mean()
+        a2c_loss = self.compute_a2c_loss(action_probs, action, td)
 
-        logger.add_scalar("critic_loss", critic_loss.item(), epoch)
-        logger.add_scalar("entropy_loss", entropy_loss.item(), epoch)
-        logger.add_scalar("a2c_loss", a2c_loss.item(), epoch)
+        logger.log_losses(epoch, critic_loss, entropy_loss, a2c_loss)
 
         loss = (
             - self.params.entropy_coef * entropy_loss
@@ -243,14 +258,16 @@ def create_population(cfg):
     # Create the required number of agents
     population = []
     workspaces = {} # A dictionary of the workspace of each agent
+
+    environment = EnvAgent(cfg)
+    # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
+    observation_size = environment.get_observation_size()
+    # hidden_layer_size: the number of neurons in the hidden layer
+    hidden_layer_size = cfg.algorithm.neural_network.hidden_layer_size
+    # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
+    action_size = environment.get_action_size()
+
     for i in range(cfg.algorithm.population_size):
-        environment = make_env(**cfg.env)
-        # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
-        observation_size = environment.observation_space.shape[0]
-        # hidden_layer_size: the number of neurons in the hidden layer
-        hidden_layer_size = cfg.algorithm.neural_network.hidden_layer_size
-        # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
-        action_size = environment.action_space.shape[0]
 
         # TODO: Is this the right way to do it? Should the environment be passed as a parameter?
         workspace = Workspace()
@@ -273,7 +290,7 @@ def create_population(cfg):
 def get_cumulated_reward(workspace):
     crewards = workspace['env/cumulated_reward']
     done = workspace['env/done']
-    return torch.mean(crewards[-1]) # TODO: Should we get the mean of the cumulated rewards?
+    return torch.mean(crewards[done]) # TODO: Should we get the mean of the cumulated rewards?
     
 def sort_performance(agents_list: List[TemporalAgent], agents_workspaces: Dict[TemporalAgent, Workspace]):
     agents_list.sort(key=lambda agent: get_cumulated_reward(agents_workspaces[agent]), reverse=True) # TODO: Is this the right way to access the agent?
@@ -324,8 +341,8 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
             epoch_slice = epoch * cfg.algorithm.max_steps_per_epoch + i
             for agent in population:
                 workspace = workspaces[agent]
-                workspace.zero_grad()
                 if i > 0:
+                    workspace.zero_grad()
                     workspace.copy_n_last_steps(1)
                     agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
                 else:
@@ -344,7 +361,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                 creward = workspace["env/cumulated_reward"]
                 creward = creward[done]
                 if creward.size()[0] > 0:
-                    logger.add_scalar("reward", creward.mean().item(), epoch_slice)
+                    logger.add_log("reward", creward.mean(), epoch_slice)
             
             print("Epoch: {}, Step: {}".format(epoch, i))
 
@@ -373,13 +390,14 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         
         for _, workspace in workspaces.items():
             # workspace.clear() # TODO: Is this the right way to do it?
+            workspace.zero_grad()
             pass
 
 
 @hydra.main(config_path=".", config_name="pbt.yaml")
 def main(cfg):
     # First, build the  logger
-    logger = instantiate_class(cfg.logger)
+    logger = Logger(cfg)
     population, workspaces = create_population(cfg)
     train(cfg, population, workspaces, logger=logger)
 
