@@ -269,7 +269,6 @@ def create_population(cfg):
 
     for i in range(cfg.algorithm.population_size):
 
-        # TODO: Is this the right way to do it? Should the environment be passed as a parameter?
         workspace = Workspace()
         # raise Error()
 
@@ -293,7 +292,7 @@ def get_cumulated_reward(workspace):
     return torch.mean(crewards[done]) # TODO: Should we get the mean of the cumulated rewards?
     
 def sort_performance(agents_list: List[TemporalAgent], agents_workspaces: Dict[TemporalAgent, Workspace]):
-    agents_list.sort(key=lambda agent: get_cumulated_reward(agents_workspaces[agent]), reverse=True) # TODO: Is this the right way to access the agent?
+    agents_list.sort(key=lambda agent: get_cumulated_reward(agents_workspaces[agent]), reverse=True)
 
 def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample().item()
