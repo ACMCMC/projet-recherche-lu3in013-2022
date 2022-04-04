@@ -26,11 +26,9 @@ try:
   import salina
 except ImportError:
   from IPython.display import clear_output 
-  !pip install git+https://github.com/facebookresearch/salina.git@main
   clear_output()
   import salina
 
-!pip install pygame
 import pygame
 
 """## Imports
