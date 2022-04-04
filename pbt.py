@@ -153,8 +153,8 @@ class A2CParameterizedAgent(salina.TAgent):
         self.params_metadata = omegaconf.DictConfig(content={}) # This wrapper will store the metadata for the parameters of the A2C agent, so it knows how to change them when needed
         for param in parameters:
             generated_val = torch.distributions.Uniform(parameters[param].min, parameters[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
-            self.params_metadata.param = {'min': parameters[param].min, 'max': parameters[param].max}
-            simplified_parameters.param = generated_val
+            self.params_metadata[param] = {'min': parameters[param].min, 'max': parameters[param].max}
+            simplified_parameters[param] = generated_val
 
         self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_size=hidden_layer_size, action_size=action_size, stochastic=stochastic)
         
