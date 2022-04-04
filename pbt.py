@@ -128,15 +128,41 @@ class A2CAgent(salina.TAgent):
         new = A2CAgent(self.params, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic, std_param=self.std_param)
         return new
 
-def compute_critic_loss(reward, done, critic, discount_factor) -> Union[float, float]:
-    # Compute temporal difference
-    target = reward[1:] + discount_factor * critic[1:].detach() * (1 - done[1:].float())
-    td = target - critic[:-1]
+    def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
+        # Compute temporal difference
+        target = reward[1:] + self.params.discount_factor * critic[1:].detach() * (1 - done[1:].float())
+        td = target - critic[:-1]
 
-    # Compute critic loss
-    td_error = td ** 2
-    critic_loss = td_error.mean()
-    return critic_loss, td
+        # Compute critic loss
+        td_error = td ** 2
+        critic_loss = td_error.mean()
+        return critic_loss, td
+    
+    def compute_loss(self, workspace: Workspace, epoch, logger: TFLogger = None) -> float:
+        critic, done, action_logprobs, reward, entropy = workspace[
+            "critic", "env/done", "action_logprobs", "env/reward", "entropy"
+        ] # TODO: Can we use action_logprobs instead of action_probs?
+
+
+        critic_loss, td = self.compute_critic_loss(reward, done, critic)
+
+        entropy_loss = entropy.mean() # TODO: What's the difference between entropy and entropy_loss?
+
+        a2c_loss = action_logprobs[:-1] * td.detach()
+        a2c_loss = a2c_loss.mean()
+
+        logger.add_scalar("critic_loss", critic_loss.item(), epoch)
+        logger.add_scalar("entropy_loss", entropy_loss.item(), epoch)
+        logger.add_scalar("a2c_loss", a2c_loss.item(), epoch)
+
+        loss = (
+            - self.params.entropy_coef * entropy_loss
+            + self.params.critic_coef * critic_loss
+            - self.params.a2c_coef * a2c_loss
+        )
+
+        return loss
+
 
 class A2CParameterizedAgent(salina.TAgent):
     # TAgent != TemporalAgent, TAgent is only an extension of the Agent interface to say that this agent accepts the current timestep parameter in the forward method
@@ -188,6 +214,9 @@ class A2CParameterizedAgent(salina.TAgent):
 
     def __call__(self, workspace, t, **kwargs):
         return self.a2c_agent(time=t, workspace=workspace, kwargs=kwargs)
+    
+    def compute_loss(self, **kwargs):
+        return self.a2c_agent.compute_loss(**kwargs)
 
 
 def make_env(**kwargs) -> gym.Env:
@@ -232,7 +261,7 @@ def create_population(cfg):
 def get_cumulated_reward(workspace):
     crewards = workspace['env/cumulated_reward']
     done = workspace['env/done']
-    return torch.mean(crewards[done]) # TODO: Should we get the mean of the cumulated rewards?
+    return torch.mean(crewards[-1]) # TODO: Should we get the mean of the cumulated rewards?
     
 def sort_performance(agents_list: List[TemporalAgent], agents_workspaces: Dict[TemporalAgent, Workspace]):
     agents_list.sort(key=lambda agent: get_cumulated_reward(agents_workspaces[agent]), reverse=True) # TODO: Is this the right way to access the agent?
@@ -242,7 +271,7 @@ def select_pbt(portion, agents_list):
     return agents_list[int(random_index)]
 
 def _index_3d_2d(tensor_3d, tensor_2d):
-    """This function is used to index a 3d tensors using a 2d tensor"""
+    """This function is used to index a 3d tensor using a 2d tensor"""
     x, y, z = tensor_3d.size()
     t = tensor_3d.reshape(x * y, z)
     tt = tensor_2d.reshape(x * y)
@@ -251,50 +280,42 @@ def _index_3d_2d(tensor_3d, tensor_2d):
     return v
 
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
+    optimizers = {}
+    for agent in population:
+        # Confgure the optimizer over the a2c agent
+        optimizer_args = get_arguments(cfg.optimizer)
+        optimizer = get_class(cfg.optimizer)(
+            agent.parameters(), **optimizer_args
+        )
+        optimizers[agent] = optimizer
 
     for epoch in range(cfg.algorithm.max_epochs):
-        for agent in population:
-            workspace = workspaces[agent]
-            if epoch > 0:
-                workspace.copy_n_last_steps(1)
-                agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
-            else:
-                agent(time=0, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
+        for i in range(10):
+            for agent in population:
+                workspace = workspaces[agent]
+                if epoch > 0:
+                    workspace.copy_n_last_steps(1)
+                    agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
+                else:
+                    agent(time=0, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
+                
+                done = workspace["env/done"]
+
+                loss = agent.agent[1].compute_loss(workspace=workspace, epoch=epoch, logger=logger)
+
+                optimizer = optimizers[agent]
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+
+                creward = workspace["env/cumulated_reward"]
+                creward = creward[done]
+                if creward.size()[0] > 0:
+                    logger.add_scalar("reward", creward.mean().item(), epoch)
             
-            critic, done, action_logprobs, reward, entropy, action = workspace[
-                "critic", "env/done", "action_logprobs", "env/reward", "entropy", "action"
-            ] # TODO: Can we use action_logprobs instead of action_probs?
-
-            critic_loss, td = compute_critic_loss(reward, done, critic, cfg.algorithm.discount_factor)
-
-            entropy_loss = entropy.mean() # TODO: What's the difference between entropy and entropy_loss?
-            a2c_loss = action_logprobs[:-1] * td.detach()
-            a2c_loss = a2c_loss.mean()
-
-            logger.add_scalar("critic_loss", critic_loss.item(), epoch)
-            logger.add_scalar("entropy_loss", entropy_loss.item(), epoch)
-            logger.add_scalar("a2c_loss", a2c_loss.item(), epoch)
-
-            loss = (
-                - cfg.algorithm.entropy_coef * entropy_loss
-                + cfg.algorithm.critic_coef * critic_loss
-                - cfg.algorithm.a2c_coef * a2c_loss
-            )
-            
-            # 7) Confgure the optimizer over the a2c agent
-            optimizer_args = get_arguments(cfg.optimizer)
-            optimizer = get_class(cfg.optimizer)(
-                agent.parameters(), **optimizer_args
-            )
-
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            creward = workspace["env/cumulated_reward"]
-            creward = creward[done]
-            if creward.size()[0] > 0:
-                logger.add_scalar("reward", creward.mean().item(), epoch)
+            # stop = [workspace['env/done'][-1].all() for workspace in workspaces.values()]
+            # if all(stop):
+            #     break
 
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
@@ -312,7 +333,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
             bad_agent.agent[1].mutate_hyperparameters()
         
         for _, workspace in workspaces.items():
-            workspace.copy_n_last_steps(1)
+            workspace.clear() # TODO: Is this the right way to do it?
             pass
 
 

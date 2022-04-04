@@ -9,7 +9,7 @@ logger:
 algorithm:
   max_epochs: 300
   population_size: 30
-  max_steps_per_epoch: 1000 # TODO: Should we use this? Or jusy run until we are done?
+  max_steps_per_epoch: 20 # TODO: Should we use this? Or jusy run until we are done?
   stochasticity_seed: 123
   number_environments: 8
   neural_network:
