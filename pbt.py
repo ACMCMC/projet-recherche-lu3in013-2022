@@ -1,30 +1,26 @@
+import copy  # used for multiprocessing
 import multiprocessing
+import random
 import time
 from turtle import forward
 from typing import Dict, List, Union
-from typing_extensions import Self
-import numpy as np
-import copy # used for multiprocessing
-import random
 
 import gym
-from gym.wrappers import TimeLimit
-import copy
-import time
+import hydra
+import matplotlib.pyplot as plt
+import numpy as np
 import omegaconf
-
+import salina
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import hydra
-
-import salina
-from salina import Agent, get_arguments, instantiate_class, Workspace, get_class, instantiate_class
-from salina.agents import Agents, RemoteAgent, TemporalAgent, NRemoteAgent
-from salina.agents.asynchronous import AsynchronousAgent
-from salina.agents.gyma import NoAutoResetGymAgent, GymAgent
+from gym.wrappers import TimeLimit
 from omegaconf import DictConfig, OmegaConf
-
+from salina import (Agent, Workspace, get_arguments, get_class,
+                    instantiate_class)
+from salina.agents import Agents, NRemoteAgent, RemoteAgent, TemporalAgent
+from salina.agents.asynchronous import AsynchronousAgent
+from salina.agents.gyma import GymAgent, NoAutoResetGymAgent
 from salina.logger import TFLogger
 
 
@@ -206,7 +202,7 @@ class A2CParameterizedAgent(salina.TAgent):
     def compute_a2c_loss(self, action_probs, action, td):
         return self.a2c_agent.compute_a2c_loss(action_probs, action)
 
-    def copy(self, other: Self):
+    def copy(self, other):
         self.a2c_agent = other.get_agent().clone()
 
     def get_cumulated_reward(self):
@@ -223,6 +219,22 @@ def make_env(**kwargs) -> gym.Env:
     # We set a timestep limit on the environment of max_episode_steps
     # We can also add a seed to the environment here
     return TimeLimit(gym.make(kwargs['env_name']), kwargs['max_episode_steps'])
+
+def visualize_performances(workspaces: List[Workspace]):
+    # We visualize the performances of the agents
+    fig, ax = plt.subplots()
+    for workspace in workspaces:
+        visualize_performance(ax, workspace)
+    ax.set(xlabel='timestep', ylabel='creward',
+       title='Evolution of crewards')
+    ax.grid()
+
+    fig.savefig("test.png")
+    plt.show()
+
+def visualize_performance(axes, workspace: Workspace):
+    axes.plot(workspace['env/cumulated_reward'].mean(dim=1))
+
 
 def create_population(cfg):
     # We'll run this number of agents in parallel
@@ -279,7 +291,25 @@ def _index_3d_2d(tensor_3d, tensor_2d):
     v = v.reshape(x, y)
     return v
 
+class CrewardsLogger:
+    def __init__(self) -> None:
+        self.fig, self.ax = plt.subplots()
+        self.ax.set(xlabel='epoch', ylabel='creward', title='Evolution of crewards')
+        self.ax.grid()
+        self.crewards: torch.Tensor = torch.tensor([])
+
+    def log_epoch(self, crewards):
+        mean_of_crewards = crewards.mean()
+        self.crewards = torch.cat((self.crewards, mean_of_crewards.unsqueeze(0)))
+        self.ax.set_ylim([self.crewards.min(0)[0].item(), 0])
+        plt.scatter(range(self.crewards.size(0)), self.crewards)
+        plt.plot(self.crewards)
+        plt.show()
+
+
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
+    epoch_logger = CrewardsLogger()
+
     optimizers = {}
     for agent in population:
         # Configure the optimizer over the a2c agent
@@ -300,6 +330,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                     agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
                 else:
                     agent(time=0, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
+
                 
                 done = workspace["env/done"]
 
@@ -315,6 +346,8 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                 if creward.size()[0] > 0:
                     logger.add_scalar("reward", creward.mean().item(), epoch_slice)
             
+            print("Epoch: {}, Step: {}".format(epoch, i))
+
             # stop = [workspace['env/done'][-1].all() for workspace in workspaces.values()]
             # if all(stop):
             #     break
@@ -324,8 +357,12 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
 
         # We sort the agents by their performance
         sort_performance(population, agents_workspaces=workspaces)
+
+        cumulated_rewards = torch.tensor([get_cumulated_reward(workspaces[agent]).item() for agent in population])
         
-        print('Cumulated rewards at epoch {}: {}'.format(epoch, [get_cumulated_reward(workspaces[agent]) for agent in population]))
+        print('Cumulated rewards at epoch {}: {}'.format(epoch, cumulated_rewards))
+
+        epoch_logger.log_epoch(cumulated_rewards)
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
@@ -335,7 +372,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
             bad_agent.agent[1].mutate_hyperparameters()
         
         for _, workspace in workspaces.items():
-            workspace.clear() # TODO: Is this the right way to do it?
+            # workspace.clear() # TODO: Is this the right way to do it?
             pass
 
 
