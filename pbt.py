@@ -97,15 +97,19 @@ class A2CAgent(salina.TAgent):
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
         scores = self.action_model(input)
-        probs = torch.softmax(scores, dim=-1)
-        self.set(("action_probs", time), probs)
+        mean = torch.tanh(scores)
+        dist = torch.distributions.Normal(mean, torch.nn.Softplus()(self.std_param))
 
         if self.stochastic:
-            action = torch.distributions.Categorical(probs).sample()
+            action = dist.sample()
         else:
-            action = probs.argmax(1)
+            action = mean
+
+        logprobs = dist.log_prob(action).sum(axis=-1)
 
         self.set(("action", time), action)
+        self.set(("action_logprobs", time), logprobs)
+        self.set(("entropy", time), dist.entropy())
 
         critic = self.critic_model(input).squeeze(-1)
         self.set(("critic", time), critic)
@@ -120,9 +124,8 @@ class A2CAgent(salina.TAgent):
         v = v.reshape(x, y)
         return v
     
-    def compute_a2c_loss(self, action_probs: torch.Tensor, action: torch.Tensor, td: float) -> float:
-        action_logp = self._index_3d_tensor_with_2d_tensor(action_probs, action)
-        a2c_loss = action_logp[:-1] * td.detach()
+    def compute_a2c_loss(self, action_logprobs: torch.Tensor, td: float) -> float:
+        a2c_loss = action_logprobs[:-1] * td.detach()
         return a2c_loss.mean()
 
     def get_hyperparameter(self, param_name):
@@ -150,19 +153,16 @@ class A2CAgent(salina.TAgent):
         a2c_loss = action_logprobs[:-1] * td.detach()
         return a2c_loss.mean()
     
-    def compute_entropy_loss(self, action_probs):
-        return torch.distributions.Categorical(action_probs).entropy().mean()
-    
     def compute_loss(self, workspace: Workspace, epoch, logger) -> float:
-        critic, done, action_probs, reward, action = workspace[
-            "critic", "env/done", "action_probs", "env/reward", "action"
+        critic, done, action_logprobs, reward, action, entropy = workspace[
+            "critic", "env/done", "action_logprobs", "env/reward", "action", "entropy"
         ] # TODO: Can we use action_logprobs instead of action_probs?
 
         critic_loss, td = self.compute_critic_loss(reward, done, critic)
 
-        entropy_loss = self.compute_entropy_loss(action_probs) # TODO: What's the difference between entropy and entropy_loss?
+        entropy_loss = entropy.mean() # TODO: What's the difference between entropy and entropy_loss?
 
-        a2c_loss = self.compute_a2c_loss(action_probs, action, td)
+        a2c_loss = self.compute_a2c_loss(action_logprobs, action, td)
 
         logger.log_losses(epoch, critic_loss, entropy_loss, a2c_loss)
 
@@ -343,9 +343,9 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                 if i > 0:
                     workspace.zero_grad()
                     workspace.copy_n_last_steps(1)
-                    agent(time=1, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
+                    agent(t=1, workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
                 else:
-                    agent(time=0, stop_variable='env/done', workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
+                    agent(t=0, workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
 
                 
                 done = workspace["env/done"]
