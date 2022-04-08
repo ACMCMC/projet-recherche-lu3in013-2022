@@ -20,7 +20,7 @@ from salina import (Agent, Workspace, get_arguments, get_class,
                     instantiate_class)
 from salina.agents import Agents, NRemoteAgent, RemoteAgent, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
-from salina.agents.gyma import GymAgent, NoAutoResetGymAgent
+from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
 
 
@@ -38,7 +38,7 @@ class Logger():
     self.add_log("entropy_loss", entropy_loss, epoch)
     self.add_log("a2c_loss", a2c_loss, epoch)
 
-class EnvAgent(GymAgent):
+class EnvAgent(AutoResetGymAgent):
     def __init__(self, cfg: OmegaConf):
         super().__init__(
             get_class(cfg.env),
