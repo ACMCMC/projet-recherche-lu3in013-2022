@@ -1,5 +1,6 @@
 # Specific files to this repo
 outputs/
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
