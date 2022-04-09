@@ -23,6 +23,8 @@ from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
 
+import my_gym
+
 
 class Logger():
 

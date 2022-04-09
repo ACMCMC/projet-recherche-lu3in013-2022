@@ -33,7 +33,7 @@ algorithm:
 
 env:
   classname: pbt.make_env
-  env_name: Pendulum-v1
+  env_name: CartPoleContinuous-v1
   max_episode_steps: 200
 
 optimizer:
