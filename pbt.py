@@ -125,7 +125,7 @@ class A2CAgent(salina.TAgent):
         return v
     
     def compute_a2c_loss(self, action_logprobs: torch.Tensor, td: float) -> float:
-        a2c_loss = action_logprobs[:-1] * td.detach()
+        a2c_loss = action_logprobs[:-1] * td.detach() # TODO: Is it OK to calculate it like this?
         return a2c_loss.mean()
 
     def get_hyperparameter(self, param_name):
@@ -147,11 +147,6 @@ class A2CAgent(salina.TAgent):
         td_error = td ** 2
         critic_loss = td_error.mean()
         return critic_loss, td
-
-    def compute_a2c_loss(self, action_probs, action, td):
-        action_logprobs = _index_3d_2d(action_probs, action).log()
-        a2c_loss = action_logprobs[:-1] * td.detach()
-        return a2c_loss.mean()
     
     def compute_loss(self, workspace: Workspace, epoch, logger) -> float:
         critic, done, action_logprobs, reward, action, entropy = workspace[
@@ -162,7 +157,7 @@ class A2CAgent(salina.TAgent):
 
         entropy_loss = entropy.mean() # TODO: What's the difference between entropy and entropy_loss?
 
-        a2c_loss = self.compute_a2c_loss(action_logprobs, action, td)
+        a2c_loss = self.compute_a2c_loss(action_logprobs, td)
 
         logger.log_losses(epoch, critic_loss, entropy_loss, a2c_loss)
 
