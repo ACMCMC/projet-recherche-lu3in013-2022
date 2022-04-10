@@ -306,17 +306,20 @@ def _index_3d_2d(tensor_3d, tensor_2d):
 
 class CrewardsLogger:
     def __init__(self) -> None:
-        self.fig, self.ax = plt.subplots()
-        self.ax.set(xlabel='epoch', ylabel='creward', title='Evolution of crewards')
-        self.ax.grid()
         self.crewards: torch.Tensor = torch.tensor([])
 
     def log_epoch(self, crewards):
         mean_of_crewards = crewards.mean()
         self.crewards = torch.cat((self.crewards, mean_of_crewards.unsqueeze(0)))
-        self.ax.set_ylim([self.crewards.min(0)[0].item(), 0])
+        self.fig, self.ax = plt.subplots()
+        self.ax.set_ylim([0, self.crewards.max(0)[0].item()])
         plt.scatter(range(self.crewards.size(0)), self.crewards)
         plt.plot(self.crewards)
+        self.ax.set(xlabel='epoch', ylabel='creward', title='Evolution of crewards')
+        self.ax.grid()
+        plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/fig.png')
+    
+    def show(self):
         plt.show()
 
 
@@ -388,6 +391,8 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
             # workspace.clear() # TODO: Is this the right way to do it?
             workspace.zero_grad()
             pass
+    
+    epoch_logger.show()
 
 
 @hydra.main(config_path=".", config_name="pbt.yaml")
