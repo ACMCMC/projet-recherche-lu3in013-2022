@@ -13,7 +13,7 @@ algorithm:
   stochasticity_seed: 123
   number_environments: 8
   neural_network:
-    hidden_layer_size: 8
+    hidden_layer_size: 24
   mutation_rate: 0.2
   pbt_portion: 0.2
   hyperparameters:
