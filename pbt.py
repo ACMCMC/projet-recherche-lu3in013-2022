@@ -283,13 +283,12 @@ def create_population(cfg):
 
     return population, workspaces
 
-def get_cumulated_reward(workspace):
-    crewards = workspace['env/cumulated_reward']
-    done = workspace['env/done']
-    return torch.mean(crewards[done]) # TODO: Should we get the mean of the cumulated rewards?
+def get_cumulated_reward(cumulated_rewards_dict: Dict[Agent, torch.Tensor], agent: Agent):
+    cumulated_rewards_of_agent = cumulated_rewards_dict[agent]
+    return torch.mean(cumulated_rewards_of_agent)
     
-def sort_performance(agents_list: List[TemporalAgent], agents_workspaces: Dict[TemporalAgent, Workspace]):
-    agents_list.sort(key=lambda agent: get_cumulated_reward(agents_workspaces[agent]), reverse=True)
+def sort_performance(agents_list: List[TemporalAgent], five_last_rewards: Dict[TemporalAgent, torch.Tensor]):
+    agents_list.sort(key=lambda agent: get_cumulated_reward(five_last_rewards,agent), reverse=True)
 
 def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample().item()
@@ -326,6 +325,10 @@ class CrewardsLogger:
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     epoch_logger = CrewardsLogger()
 
+    five_last_rewards = {}
+    for agent in population:
+        five_last_rewards[agent] = torch.tensor([])
+
     optimizers = {}
     for agent in population:
         # Configure the optimizer over the a2c agent
@@ -359,6 +362,9 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
 
                 creward = workspace["env/cumulated_reward"]
                 creward = creward[done]
+
+                five_last_rewards[agent] = torch.cat((five_last_rewards[agent], creward))[-5:]
+
                 if creward.size()[0] > 0:
                     logger.add_log("reward", creward.mean(), epoch_slice)
             
@@ -372,9 +378,9 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         print('Finished epoch {}'.format(epoch))
 
         # We sort the agents by their performance
-        sort_performance(population, agents_workspaces=workspaces)
+        sort_performance(population, five_last_rewards)
 
-        cumulated_rewards = torch.tensor([get_cumulated_reward(workspaces[agent]).item() for agent in population])
+        cumulated_rewards = torch.tensor([get_cumulated_reward(five_last_rewards, agent).item() for agent in population])
         
         print('Cumulated rewards at epoch {}: {}'.format(epoch, cumulated_rewards))
 
@@ -383,7 +389,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
             agent_to_copy = select_pbt(cfg.algorithm.pbt_portion, population)
-            print('Copying agent with creward = {} into agent with creward {}'.format(get_cumulated_reward(workspaces[agent_to_copy]), get_cumulated_reward(workspaces[bad_agent])))
+            print('Copying agent with creward = {} into agent with creward {}'.format(get_cumulated_reward(five_last_rewards, agent_to_copy), get_cumulated_reward(five_last_rewards, bad_agent)))
             bad_agent.agent[1].copy(agent_to_copy.agent[1])
             bad_agent.agent[1].mutate_hyperparameters()
         
