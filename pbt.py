@@ -221,6 +221,7 @@ class A2CParameterizedAgent(salina.TAgent):
     
     def compute_loss(self, **kwargs):
         return self.a2c_agent.compute_loss(**kwargs)
+    
 
 
 def make_env(**kwargs) -> gym.Env:
@@ -301,22 +302,35 @@ def _index_3d_2d(tensor_3d, tensor_2d):
 
 class CrewardsLogger:
     def __init__(self) -> None:
-        self.crewards: torch.Tensor = torch.tensor([])
+        self.crewards: torch.Tensor = torch.tensor([]) # An empty tensor of the form ([ [],[] ], [ [],[] ], ...)
 
-    def log_epoch(self, crewards):
+    def log_epoch(self, timestep, crewards):
+        plt.close() # Clear the last figure
         mean_of_crewards = crewards.mean()
-        self.crewards = torch.cat((self.crewards, mean_of_crewards.unsqueeze(0)))
+        tensor_to_cat = torch.tensor([timestep, mean_of_crewards]).unsqueeze(-1) # Gives us a tensor like [[timestep], [mean_of_crewards]] 
+        self.crewards = torch.cat((self.crewards, tensor_to_cat), dim=1)
         self.fig, self.ax = plt.subplots()
-        self.ax.set_ylim([0, self.crewards.max(0)[0].item()])
-        plt.scatter(range(self.crewards.size(0)), self.crewards)
-        plt.plot(self.crewards)
-        self.ax.set(xlabel='epoch', ylabel='creward', title='Evolution of crewards')
+        self.ax.set_ylim([0, self.crewards[1].max(0)[0].item()])
+        plt.scatter(self.crewards[0], self.crewards[1])
+        plt.plot(self.crewards[0], self.crewards[1])
+        self.ax.set(xlabel='timestep', ylabel='creward', title='Evolution of crewards')
         self.ax.grid()
         plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/fig.png')
     
     def show(self):
         plt.show()
 
+def plot_hyperparams(agents_list: List[A2CAgent]):
+    plt.close()
+    hyperparams = {} # Will contain the hyperparameters of each agent, in the form {'a2c_coef': [0.8, 0.7, ...], 'gamma': [0.2, 0.1, ...], ...}
+    for hyperparam in agents_list[0].params.keys():
+        hyperparams[hyperparam] = torch.tensor([]) # Put an empty tensor in the dictionary for each hyperparam, to be filled later
+    for hyperparam in hyperparams.keys():
+        for agent in agents_list:
+            hyperparams[hyperparam] = torch.cat((hyperparams[hyperparam], torch.tensor([agent.params[hyperparam]])))
+    plt.boxplot(hyperparams.values())
+    plt.xticks(range(1, len(hyperparams) + 1), hyperparams.keys())
+    plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/hyperparams.png')
 
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     epoch_logger = CrewardsLogger()
@@ -386,7 +400,8 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         
         print('Cumulated rewards at epoch {}: {}'.format(epoch, cumulated_rewards.values()))
 
-        epoch_logger.log_epoch(torch.tensor(list(cumulated_rewards.values())))
+        epoch_logger.log_epoch(total_timesteps, torch.tensor(list(cumulated_rewards.values())))
+        plot_hyperparams([a.agent[1].a2c_agent for a in population])
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
