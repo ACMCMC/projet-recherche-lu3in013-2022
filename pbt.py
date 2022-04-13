@@ -1,4 +1,5 @@
-import copy  # used for multiprocessing
+import copy
+import imp  # used for multiprocessing
 import multiprocessing
 import random
 import time
@@ -22,6 +23,8 @@ from salina.agents import Agents, NRemoteAgent, RemoteAgent, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
+
+from utils import build_nn
 
 import my_gym
 
@@ -73,45 +76,38 @@ class A2CAgent(salina.TAgent):
     '''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
 
-    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, stochastic=True, std_param=None):
+    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, stochastic=True, std_param=None, discount_factor=0.95):
         super().__init__()
-        self.action_model = torch.nn.Sequential(
-            torch.nn.Linear(observation_size, hidden_layer_size),
-            torch.nn.ReLU(), # -> min(0, val)
-            torch.nn.Linear(hidden_layer_size, action_size)
-        )
-        self.critic_model = torch.nn.Sequential(
-            torch.nn.Linear(observation_size, hidden_layer_size),
-            torch.nn.ReLU(),
-            torch.nn.Linear(hidden_layer_size, 1) # Because we only want one output feature: the score of the action taken
-        )
+        self.action_model = build_nn([observation_size] + hidden_layer_sizes + [action_size], output_activation=nn.Tanh, activation=nn.ReLU)
+        self.critic_model = build_nn([observation_size] + hidden_layer_sizes + [1], activation=nn.ReLU, output_activation=nn.Identity)
 
         self.observation_size = observation_size
-        self.hidden_layer_size = hidden_layer_size
+        self.hidden_layer_sizes = hidden_layer_sizes
         self.action_size = action_size
         self.stochastic = stochastic
+        self.discount_factor = discount_factor
         self.params = omegaconf.DictConfig(content=parameters)
         if std_param is None:
             self.std_param = nn.parameter.Parameter(torch.randn(action_size,1)) # TODO: What is this? Should we copy it too?
         else:
             self.std_param = std_param.clone()
+        self.softplus = torch.nn.Softplus()
 
     def forward(self, time, **kwargs):
         input = self.get(("env/env_obs", time))
         scores = self.action_model(input)
-        mean = torch.tanh(scores)
-        dist = torch.distributions.Normal(mean, torch.nn.Softplus()(self.std_param))
+        dist = torch.distributions.Normal(scores, self.softplus(self.std_param))
+        self.set(("entropy", time), dist.entropy())
 
         if self.stochastic:
-            action = dist.sample()
+            action = torch.tanh(dist.sample())
         else:
-            action = mean
+            action = torch.tanh(scores)
 
         logprobs = dist.log_prob(action).sum(axis=-1)
 
         self.set(("action", time), action)
         self.set(("action_logprobs", time), logprobs)
-        self.set(("entropy", time), dist.entropy())
 
         critic = self.critic_model(input).squeeze(-1)
         self.set(("critic", time), critic)
@@ -137,12 +133,12 @@ class A2CAgent(salina.TAgent):
         self.params[param_name] = value
 
     def clone(self):
-        new = A2CAgent(self.params, self.observation_size, self.hidden_layer_size, self.action_size, self.stochastic, std_param=self.std_param)
+        new = A2CAgent(self.params, self.observation_size, self.hidden_layer_sizes, self.action_size, self.stochastic, std_param=self.std_param)
         return new
 
     def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
         # Compute temporal difference
-        target = reward[1:] + self.params.discount_factor * critic[1:].detach() * (1 - done[1:].float())
+        target = reward[1:] + self.discount_factor * critic[1:].detach() * (1 - done[1:].float())
         td = target - critic[:-1]
 
         # Compute critic loss
@@ -150,7 +146,7 @@ class A2CAgent(salina.TAgent):
         critic_loss = td_error.mean()
         return critic_loss, td
     
-    def compute_loss(self, workspace: Workspace, epoch, logger) -> float:
+    def compute_loss(self, workspace: Workspace, timestep, logger) -> float:
         critic, done, action_logprobs, reward, action, entropy = workspace[
             "critic", "env/done", "action_logprobs", "env/reward", "action", "entropy"
         ] # TODO: Can we use action_logprobs instead of action_probs?
@@ -161,7 +157,7 @@ class A2CAgent(salina.TAgent):
 
         a2c_loss = self.compute_a2c_loss(action_logprobs, td)
 
-        logger.log_losses(epoch, critic_loss, entropy_loss, a2c_loss)
+        logger.log_losses(timestep, critic_loss, entropy_loss, a2c_loss)
 
         loss = (
             - self.params.entropy_coef * entropy_loss
@@ -178,7 +174,7 @@ class A2CParameterizedAgent(salina.TAgent):
     The hyperparameters of the agent are customizable.'''
 
 
-    def __init__(self, parameters, observation_size, hidden_layer_size, action_size, mutation_rate, stochastic=True):
+    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, mutation_rate, stochastic=True, discount_factor=0.95):
         super().__init__()
 
         self.mutation_rate = mutation_rate
@@ -190,7 +186,7 @@ class A2CParameterizedAgent(salina.TAgent):
             self.params_metadata[param] = {'min': parameters[param].min, 'max': parameters[param].max}
             simplified_parameters[param] = generated_val
 
-        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_size=hidden_layer_size, action_size=action_size, stochastic=stochastic)
+        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_sizes=hidden_layer_sizes, action_size=action_size, stochastic=stochastic, discount_factor=discount_factor)
         
     def mutate_hyperparameters(self):
         '''This function mutates, randomly, all the hyperparameters of this agent, according to the mutation rate'''
@@ -260,7 +256,7 @@ def create_population(cfg):
     # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
     observation_size = environment.get_observation_size()
     # hidden_layer_size: the number of neurons in the hidden layer
-    hidden_layer_size = cfg.algorithm.neural_network.hidden_layer_size
+    hidden_layer_sizes = list(cfg.algorithm.neural_network.hidden_layer_sizes)
     # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
     action_size = environment.get_action_size()
 
@@ -270,7 +266,7 @@ def create_population(cfg):
         # raise Error()
 
         # The agent that we'll train will use the A2C algorithm
-        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_size, action_size, cfg.algorithm.mutation_rate)
+        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
         # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
         environment_agent = EnvAgent(cfg)
         temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
@@ -325,6 +321,8 @@ class CrewardsLogger:
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     epoch_logger = CrewardsLogger()
 
+    total_timesteps = 0
+
     five_last_rewards = {}
     for agent in population:
         five_last_rewards[agent] = torch.tensor([])
@@ -339,21 +337,24 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         optimizers[agent] = optimizer
 
     for epoch in range(cfg.algorithm.max_epochs):
-        for i in range(10):
-            epoch_slice = epoch * cfg.algorithm.max_steps_per_epoch + i
-            for agent in population:
+        print("Epoch: {}".format(epoch))
+        for agent in population:
+            consumed_budget = 0
+            while consumed_budget < cfg.algorithm.train_budget:
                 workspace = workspaces[agent]
-                if i > 0:
+                if consumed_budget > 0:
                     workspace.zero_grad()
                     workspace.copy_n_last_steps(1)
-                    agent(t=1, workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch - 1)
+                    agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
                 else:
-                    agent(t=0, workspace=workspace, n_steps=cfg.algorithm.max_steps_per_epoch)
+                    agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
 
+                steps = (workspace.time_size() - 1) * workspace.batch_size()
+                consumed_budget += steps
                 
                 done = workspace["env/done"]
 
-                loss = agent.agent[1].compute_loss(workspace=workspace, epoch=epoch_slice, logger=logger)
+                loss = agent.agent[1].compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
                 optimizer = optimizers[agent]
                 optimizer.zero_grad()
@@ -366,13 +367,14 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
                 five_last_rewards[agent] = torch.cat((five_last_rewards[agent], creward))[-5:]
 
                 if creward.size()[0] > 0:
-                    logger.add_log("reward", creward.mean(), epoch_slice)
+                    logger.add_log("reward", creward.mean(), total_timesteps + consumed_budget)
             
-            print("Epoch: {}, Step: {}".format(epoch, i))
 
-            # stop = [workspace['env/done'][-1].all() for workspace in workspaces.values()]
-            # if all(stop):
-            #     break
+                # stop = [workspace['env/done'][-1].all() for workspace in workspaces.values()]
+                # if all(stop):
+                #     break
+        
+        total_timesteps += consumed_budget
 
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
@@ -380,16 +382,16 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         # We sort the agents by their performance
         sort_performance(population, five_last_rewards)
 
-        cumulated_rewards = torch.tensor([get_cumulated_reward(five_last_rewards, agent).item() for agent in population])
+        cumulated_rewards = {agent: get_cumulated_reward(five_last_rewards, agent).item() for agent in population}
         
-        print('Cumulated rewards at epoch {}: {}'.format(epoch, cumulated_rewards))
+        print('Cumulated rewards at epoch {}: {}'.format(epoch, cumulated_rewards.values()))
 
-        epoch_logger.log_epoch(cumulated_rewards)
+        epoch_logger.log_epoch(torch.tensor(list(cumulated_rewards.values())))
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
             agent_to_copy = select_pbt(cfg.algorithm.pbt_portion, population)
-            print('Copying agent with creward = {} into agent with creward {}'.format(get_cumulated_reward(five_last_rewards, agent_to_copy), get_cumulated_reward(five_last_rewards, bad_agent)))
+            print('Copying agent with creward = {} into agent with creward {}'.format(cumulated_rewards[agent_to_copy], cumulated_rewards[bad_agent]))
             bad_agent.agent[1].copy(agent_to_copy.agent[1])
             bad_agent.agent[1].mutate_hyperparameters()
         

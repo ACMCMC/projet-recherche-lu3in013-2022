@@ -7,20 +7,18 @@ logger:
   verbose: False
 
 algorithm:
-  max_epochs: 300
+  max_epochs: 50
   population_size: 30
-  max_steps_per_epoch: 20 # TODO: Should we use this? Or jusy run until we are done?
+  num_timesteps: 16
+  train_budget: 1000
   stochasticity_seed: 123
   number_environments: 8
   neural_network:
-    hidden_layer_size: 24
+    hidden_layer_sizes: [24, 36]
   mutation_rate: 0.2
   pbt_portion: 0.2
+  discount_factor: 0.95
   hyperparameters:
-  # change for the real ones
-    discount_factor:
-      min: 0.8
-      max: 1.0
     entropy_coef:
       min: 0.0
       max: 0.01
