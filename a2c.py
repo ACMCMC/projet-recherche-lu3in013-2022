@@ -16,6 +16,19 @@ from utils import build_nn
 from plot import CrewardsLogger, plot_hyperparams, Logger
 
 
+class CriticAgent(salina.TAgent):
+    def __init__(self, observation_size, hidden_layer_sizes):
+        super().__init__()
+        # Create the critic neural network
+        # We use a function that takes a list of layer sizes and returns the neural network
+        # TODO: This is for continuous actions, but we should be able to use it for discrete actions as well
+        self.critic_model = build_nn([observation_size] + hidden_layer_sizes + [1], activation=nn.ReLU, output_activation=nn.Tanh)
+
+    def forward(self, time, **kwargs):
+        input = self.get(("env/env_obs", time))
+        critic = self.critic_model(input).squeeze(-1)
+        self.set(("critic", time), critic)
+
 class A2CAgent(salina.TAgent):
     '''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
@@ -229,18 +242,17 @@ def a2c_train(cfg, agent, workspace, logger):
 
             five_last_rewards = torch.cat((five_last_rewards, creward))[-5:]
 
-            if creward.size()[0] > 0:
-                logger.add_log("reward", creward.mean(), total_timesteps + consumed_budget)
+            logger.add_log("reward", five_last_rewards.mean(), total_timesteps + consumed_budget)
         
         total_timesteps += consumed_budget
 
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
         
-        cumulated_reward = five_last_rewards.mean().item()
+        #cumulated_reward = five_last_rewards.mean().item()
         
-        epoch_logger.log_epoch(total_timesteps, torch.tensor([cumulated_reward]))
-        plot_hyperparams([agent.agent[1].get_agent()])
+        #epoch_logger.log_epoch(total_timesteps, torch.tensor([cumulated_reward]))
+        #plot_hyperparams([agent.agent[1].get_agent()])
 
 
 @hydra.main(config_path=".", config_name="pbt.yaml")

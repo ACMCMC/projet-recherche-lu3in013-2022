@@ -13,9 +13,10 @@ from salina.agents import Agents, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
-from a2c import A2CParameterizedAgent
+from a2c import A2CParameterizedAgent, CriticAgent
 
 from common import EnvAgent, get_cumulated_reward
+from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from plot import CrewardsLogger, Logger, plot_hyperparams
 
 #raise Error(run a2c alone)
@@ -63,51 +64,78 @@ def _index_3d_2d(tensor_3d, tensor_2d):
     v = v.reshape(x, y)
     return v
 
-def create_population(cfg):
-    # We'll run this number of agents in parallel
-    n_cpus = multiprocessing.cpu_count()
+def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
+    if train_env_agent.is_action_space_continuous():
+        observation_size = train_env_agent.get_observation_size()
+        action_size = train_env_agent.get_action_size()
+        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
+        train_agent = Agents(train_env_agent, a2c_agent)
+        eval_agent = Agents(eval_env_agent, a2c_agent)
+    else:
+        pass # TODO: Implement discrete action space
 
+    critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
+
+    train_agent = TemporalAgent(train_agent)
+    eval_agent = TemporalAgent(eval_agent)
+    train_agent.seed(cfg.algorithm.stochasticity_seed)
+    return train_agent, eval_agent, a2c_agent, critic_agent
+
+class PBTAgent():
+    '''
+    This class contains all the necessary agents for one member of the population.
+    '''
+    def __init__(self, cfg: OmegaConf) -> None:
+        # 1) Start by creating the environment agents
+        self.train_env_agent = AutoResetEnvAgent(cfg)
+        self.eval_env_agent = NoAutoResetEnvAgent(cfg)
+
+        # 2) Create all the agents that we'll use for training and evaluating
+        self.train_agent, self.eval_agent, self.action_agent, self.critic_agent = create_a2c_agents(cfg, self.train_env_agent, self.eval_env_agent)
+
+        # 3) Create the tcritic_agent, which will be used to compute the value of each state
+        self.tcritic_agent = TemporalAgent(self.critic_agent)
+
+        # 4) Create the workspace of this member of the population
+        self.workspace = Workspace()
+    
+    def get_train_agent(self):
+        return self.train_agent
+    
+    def get_creward(self):
+        eval_workspace = Workspace() # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
+
+        self.eval_agent(eval_workspace, t=0, stop_variable='env/done', stochastic=False) # Run the evaluation agent until it reaches a terminal state on all its environments
+
+        rewards = eval_workspace['env/cumulated_reward'][-1] # Get the last cumulated reward of the agent, which is the reward of the last timestep (terminal state)
+
+        return rewards.mean()
+
+
+def create_population(cfg):
     # Create the required number of agents
     population = []
     workspaces = {} # A dictionary of the workspace of each agent
 
-    environment = EnvAgent(cfg)
-    # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
-    observation_size = environment.get_observation_size()
-    # hidden_layer_size: the number of neurons in the hidden layer
-    hidden_layer_sizes = list(cfg.algorithm.neural_network.hidden_layer_sizes)
-    # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
-    action_size = environment.get_action_size()
-
     for i in range(cfg.algorithm.population_size):
+        # 1) Create the necessary agents
+        pbt_agent = PBTAgent(cfg)
 
+        # 2) Create the workspace of the agent
         workspace = Workspace()
-        # raise Error()
 
-        # The agent that we'll train will use the A2C algorithm
-        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
-        # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
-        environment_agent = EnvAgent(cfg)
-        temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
-        temporal_agent.seed(cfg.algorithm.stochasticity_seed)
-        population.append(temporal_agent)
+        # 3) Store them
+        population.append(pbt_agent)
+        workspaces[pbt_agent] = workspace
         
-        workspaces[temporal_agent] = workspace
-        
-        async_agent = AsynchronousAgent(temporal_agent) # TODO: Implement async operation
-
     return population, workspaces
 
 def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
+    # 1) Prepare the logger and initialize the variables
     epoch_logger = CrewardsLogger()
-
     total_timesteps = 0
 
-    five_last_rewards = {}
-    for agent in population:
-        five_last_rewards[agent] = torch.tensor([])
-
-    optimizers = {}
+    optimizers = {} # A dictionary of the optimizers of each agent
     for agent in population:
         # Configure the optimizer over the a2c agent
         optimizer_args = get_arguments(cfg.optimizer)
@@ -116,6 +144,7 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         )
         optimizers[agent] = optimizer
 
+    # 2) Train the agents
     for epoch in range(cfg.algorithm.max_epochs):
         print("Epoch: {}".format(epoch))
         for agent in population:
