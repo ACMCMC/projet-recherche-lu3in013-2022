@@ -15,15 +15,10 @@ from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
 from a2c import A2CParameterizedAgent, CriticAgent
 
-from common import EnvAgent, get_cumulated_reward
+from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from plot import CrewardsLogger, Logger, plot_hyperparams
-
-#raise Error(run a2c alone)
-#raise Error(use the train agent and the eval agent for the A2C agents, there's a function of sigaud to create them)
-
-
-
+from torch import nn
 
 def make_env(**kwargs) -> gym.Env:
     # We set a timestep limit on the environment of max_episode_steps
@@ -48,8 +43,8 @@ def visualize_performance(axes, workspace: Workspace):
 
 
     
-def sort_performance(agents_list: List[TemporalAgent], five_last_rewards: Dict[TemporalAgent, torch.Tensor]):
-    agents_list.sort(key=lambda agent: get_cumulated_reward(five_last_rewards,agent), reverse=True)
+def sort_performance(agents_list: List[TemporalAgent], crewards: Dict[TemporalAgent, torch.Tensor]):
+    agents_list.sort(key=lambda agent: crewards[agent], reverse=True)
 
 def select_pbt(portion, agents_list):
     random_index = torch.distributions.Uniform(0, portion * len(agents_list)).sample().item()
@@ -99,8 +94,8 @@ class PBTAgent():
         # 4) Create the workspace of this member of the population
         self.workspace = Workspace()
     
-    def get_train_agent(self):
-        return self.train_agent
+    def train(self, **kwargs):
+        return self.train_agent(**kwargs)
     
     def get_creward(self):
         eval_workspace = Workspace() # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
@@ -130,59 +125,53 @@ def create_population(cfg):
         
     return population, workspaces
 
-def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
+def create_optimizer(cfg: OmegaConf, action_agent: Agent, critic_agent: Agent):
+    optimizer_args = get_arguments(cfg.optimizer)
+    parameters = nn.Sequential(action_agent, critic_agent).parameters()
+    optimizer = get_class(cfg.optimizer)(parameters, **optimizer_args)
+    return optimizer
+
+def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     # 1) Prepare the logger and initialize the variables
     epoch_logger = CrewardsLogger()
     total_timesteps = 0
 
+    # 2) Create the optimizers of the agents
     optimizers = {} # A dictionary of the optimizers of each agent
     for agent in population:
         # Configure the optimizer over the a2c agent
-        optimizer_args = get_arguments(cfg.optimizer)
-        optimizer = get_class(cfg.optimizer)(
-            agent.parameters(), **optimizer_args
-        )
+        optimizer = create_optimizer(cfg, agent.action_agent, agent.critic_agent)
         optimizers[agent] = optimizer
 
-    # 2) Train the agents
+    # 3) Train the agents
     for epoch in range(cfg.algorithm.max_epochs):
         print("Epoch: {}".format(epoch))
         for agent in population:
             consumed_budget = 0
+            workspace = workspaces[agent]
             while consumed_budget < cfg.algorithm.train_budget:
-                workspace = workspaces[agent]
                 if consumed_budget > 0:
                     workspace.zero_grad()
                     workspace.copy_n_last_steps(1)
-                    agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
+                    agent.train(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
+                    # Compute the critic as well
+                    agent.tcritic_agent(t=1, workspace=workspace, n_steps=workspace.time_size() - 1)                
                 else:
-                    agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
+                    agent.train(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
+                    # Compute the critic as well
+                    agent.tcritic_agent(t=0, workspace=workspace, n_steps=workspace.time_size())                
 
                 steps = (workspace.time_size() - 1) * workspace.batch_size()
                 consumed_budget += steps
                 
-                done = workspace["env/done"]
-
-                loss = agent.agent[1].compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+                loss = agent.action_agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
                 optimizer = optimizers[agent]
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-
-                creward = workspace["env/cumulated_reward"]
-                creward = creward[done]
-
-                five_last_rewards[agent] = torch.cat((five_last_rewards[agent], creward))[-5:]
-
-                if creward.size()[0] > 0:
-                    logger.add_log("reward", creward.mean(), total_timesteps + consumed_budget)
             
-
-                # stop = [workspace['env/done'][-1].all() for workspace in workspaces.values()]
-                # if all(stop):
-                #     break
-        
+            
         total_timesteps += consumed_budget
 
         # They have all finished executing
@@ -192,27 +181,29 @@ def train(cfg, population: List[TemporalAgent], workspaces: Dict[Agent, Workspac
         ### PBT EXPLOIT/EXPLORE ###
         ###########################
 
+        crewards = {agent: agent.get_creward() for agent in population}
+
+        mean_crewards = crewards.values().mean()
+
+        logger.add_log("Mean cumulated reward", mean_crewards, total_timesteps + consumed_budget)
+
         # We sort the agents by their performance
-        sort_performance(population, five_last_rewards)
+        sort_performance(population, crewards)
 
-        cumulated_rewards = {agent: get_cumulated_reward(five_last_rewards, agent).item() for agent in population}
-        
-        print('Cumulated rewards at epoch {}: {}'.format(epoch, cumulated_rewards.values()))
+        print('Cumulated rewards at epoch {}: {}'.format(epoch, crewards.values()))
 
-        epoch_logger.log_epoch(total_timesteps, torch.tensor(list(cumulated_rewards.values())))
-        plot_hyperparams([a.agent[1].a2c_agent for a in population])
+        epoch_logger.log_epoch(total_timesteps, torch.tensor(list(crewards.values())))
+        plot_hyperparams([a.action_agent for a in population])
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
             agent_to_copy = select_pbt(cfg.algorithm.pbt_portion, population)
-            print('Copying agent with creward = {} into agent with creward {}'.format(cumulated_rewards[agent_to_copy], cumulated_rewards[bad_agent]))
-            bad_agent.agent[1].copy(agent_to_copy.agent[1])
-            bad_agent.agent[1].mutate_hyperparameters()
+            print('Copying agent with creward = {} into agent with creward {}'.format(crewards[agent_to_copy], crewards[bad_agent]))
+            bad_agent.action_agent.copy(agent_to_copy.action_agent)
+            bad_agent.action_agent.mutate_hyperparameters()
         
         for _, workspace in workspaces.items():
-            # workspace.clear() # TODO: Is this the right way to do it?
             workspace.zero_grad()
-            pass
     
     epoch_logger.show()
 

@@ -1,12 +1,7 @@
-
-import multiprocessing
 from typing import Dict
 
 import gym
 import my_gym
-from omegaconf import OmegaConf
-from salina import get_arguments, get_class, instantiate_class
-from salina.agents.gyma import AutoResetGymAgent
 from salina.agent import Agent
 import torch
 

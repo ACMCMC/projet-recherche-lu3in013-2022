@@ -11,7 +11,8 @@ from salina import Workspace, get_arguments, get_class
 from salina.agents import Agents, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
 
-from common import EnvAgent, get_cumulated_reward
+from common import get_cumulated_reward
+from env import AutoResetEnvAgent
 from utils import build_nn
 from plot import CrewardsLogger, plot_hyperparams, Logger
 
@@ -22,12 +23,12 @@ class CriticAgent(salina.TAgent):
         # Create the critic neural network
         # We use a function that takes a list of layer sizes and returns the neural network
         # TODO: This is for continuous actions, but we should be able to use it for discrete actions as well
-        self.critic_model = build_nn([observation_size] + hidden_layer_sizes + [1], activation=nn.ReLU, output_activation=nn.Tanh)
+        self.critic_model = build_nn([observation_size] + list(hidden_layer_sizes) + [1], activation=nn.ReLU, output_activation=nn.Identity)
 
-    def forward(self, time, **kwargs):
-        input = self.get(("env/env_obs", time))
+    def forward(self, t, **kwargs):
+        input = self.get(("env/env_obs", t))
         critic = self.critic_model(input).squeeze(-1)
-        self.set(("critic", time), critic)
+        self.set(("critic", t), critic)
 
 class A2CAgent(salina.TAgent):
     '''This agent implements an Advantage Actor-Critic agent (A2C).
@@ -37,9 +38,8 @@ class A2CAgent(salina.TAgent):
         super().__init__()
         # Create the action neural network
         # We use a function that takes a list of layer sizes and returns the neural network
-        self.action_model = build_nn([observation_size] + hidden_layer_sizes + [action_size], output_activation=nn.Tanh, activation=nn.ReLU)
+        self.action_model = build_nn([observation_size] + list(hidden_layer_sizes) + [action_size], output_activation=nn.Tanh, activation=nn.ReLU)
         # Create the critic neural network
-        self.critic_model = build_nn([observation_size] + hidden_layer_sizes + [1], activation=nn.ReLU, output_activation=nn.Identity)
 
         self.observation_size = observation_size # The size of the observations
         self.hidden_layer_sizes = hidden_layer_sizes # The sizes of the hidden layers
@@ -48,16 +48,17 @@ class A2CAgent(salina.TAgent):
         self.discount_factor = discount_factor # The discount factor for the temporal difference
         self.params = omegaconf.DictConfig(content=parameters) # The hyperparameters of the agent
         if std_param is None:
-            self.std_param = nn.parameter.Parameter(torch.randn(action_size,1))
+            init_variance = torch.randn(action_size, 1)
+            self.std_param = nn.parameter.Parameter(init_variance)
         else:
             self.std_param = std_param.clone()
         self.softplus = torch.nn.Softplus() # Like ReLU, but with a smooth gradient at zero
 
-    def forward(self, time, **kwargs):
-        input = self.get(("env/env_obs", time))
+    def forward(self, t, **kwargs):
+        input = self.get(("env/env_obs", t))
         scores = self.action_model(input)
         dist = torch.distributions.Normal(scores, self.softplus(self.std_param))
-        self.set(("entropy", time), dist.entropy())
+        self.set(("entropy", t), dist.entropy())
 
         if self.stochastic:
             action = torch.tanh(dist.sample())
@@ -66,11 +67,8 @@ class A2CAgent(salina.TAgent):
 
         logprobs = dist.log_prob(action).sum(axis=-1)
 
-        self.set(("action", time), action)
-        self.set(("action_logprobs", time), logprobs)
-
-        critic = self.critic_model(input).squeeze(-1)
-        self.set(("critic", time), critic)
+        self.set(("action", t), action)
+        self.set(("action_logprobs", t), logprobs)
 
     @staticmethod
     def _index_3d_tensor_with_2d_tensor(tensor_3d: torch.Tensor, tensor_2d: torch.Tensor):
@@ -176,13 +174,13 @@ class A2CParameterizedAgent(salina.TAgent):
         return self.a2c_agent.get_cumulated_reward()
 
     def __call__(self, workspace, t, **kwargs):
-        return self.a2c_agent(time=t, workspace=workspace, kwargs=kwargs)
+        return self.a2c_agent(t=t, workspace=workspace, kwargs=kwargs)
     
     def compute_loss(self, **kwargs):
         return self.a2c_agent.compute_loss(**kwargs)
 
 def create_agent(cfg):
-    environment = EnvAgent(cfg)
+    environment = AutoResetEnvAgent(cfg)
     # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
     observation_size = environment.get_observation_size()
     # hidden_layer_size: the number of neurons in the hidden layer
@@ -190,13 +188,12 @@ def create_agent(cfg):
     # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
     action_size = environment.get_action_size()
 
-
     workspace = Workspace()
 
     # The agent that we'll train will use the A2C algorithm
     a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
     # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
-    environment_agent = EnvAgent(cfg)
+    environment_agent = AutoResetEnvAgent(cfg)
     temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
     temporal_agent.seed(cfg.algorithm.stochasticity_seed)
 
@@ -225,6 +222,7 @@ def a2c_train(cfg, agent, workspace, logger):
                 agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
             else:
                 agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
+
 
             steps = (workspace.time_size() - 1) * workspace.batch_size()
             consumed_budget += steps

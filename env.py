@@ -54,6 +54,9 @@ class AutoResetEnvAgent(AutoResetGymAgent):
         self.action_space = env.action_space
         del env
 
+    def is_action_space_continuous(self):
+        return isinstance(self.action_space, gym.spaces.Box)
+
     def get_observation_size(self):
         if isinstance(self.observation_space, gym.spaces.Box):
             return self.observation_space.shape[0]
