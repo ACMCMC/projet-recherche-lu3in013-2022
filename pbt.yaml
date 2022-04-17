@@ -8,7 +8,7 @@ logger:
 
 algorithm:
   max_epochs: 2000
-  population_size: 40
+  population_size: 10
   num_timesteps: 16
   train_budget: 1000
   stochasticity_seed: 123
@@ -32,7 +32,7 @@ algorithm:
 env:
   classname: pbt.make_env
   env_name: CartPoleContinuous-v1
-  max_episode_steps: 400
+  max_episode_steps: 500
 
 optimizer:
   classname: torch.optim.Adam
