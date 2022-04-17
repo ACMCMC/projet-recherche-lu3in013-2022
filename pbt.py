@@ -1,3 +1,4 @@
+from copy import deepcopy
 import multiprocessing
 from typing import Dict, List
 
@@ -13,7 +14,7 @@ from salina.agents import Agents, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
 from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
-from a2c import A2CParameterizedAgent, CriticAgent
+from a2c import A2CParameterizedAgent, CriticAgent, create_a2c_agents
 
 from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
@@ -59,23 +60,6 @@ def _index_3d_2d(tensor_3d, tensor_2d):
     v = v.reshape(x, y)
     return v
 
-def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
-    if train_env_agent.is_action_space_continuous():
-        observation_size = train_env_agent.get_observation_size()
-        action_size = train_env_agent.get_action_size()
-        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
-        train_agent = Agents(train_env_agent, a2c_agent)
-        eval_agent = Agents(eval_env_agent, a2c_agent)
-    else:
-        pass # TODO: Implement discrete action space
-
-    critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
-
-    train_agent = TemporalAgent(train_agent)
-    eval_agent = TemporalAgent(eval_agent)
-    train_agent.seed(cfg.algorithm.stochasticity_seed)
-    return train_agent, eval_agent, a2c_agent, critic_agent
-
 class PBTAgent():
     '''
     This class contains all the necessary agents for one member of the population.
@@ -97,6 +81,9 @@ class PBTAgent():
     def train(self, **kwargs):
         return self.train_agent(**kwargs)
     
+    def run_critic(self, **kwargs):
+        return self.tcritic_agent(**kwargs)
+    
     def get_creward(self):
         eval_workspace = Workspace() # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
 
@@ -105,6 +92,19 @@ class PBTAgent():
         rewards = eval_workspace['env/cumulated_reward'][-1] # Get the last cumulated reward of the agent, which is the reward of the last timestep (terminal state)
 
         return rewards.mean()
+    
+    def compute_loss(self, **kwargs):
+        return self.action_agent.compute_loss(**kwargs)
+    
+    def mutate_hyperparameters(self, **kwargs):
+        return self.action_agent.mutate_hyperparameters(**kwargs)
+    
+    def copy(self, other):
+        self.critic_agent = deepcopy(other.critic_agent)
+        self.tcritic_agent = TemporalAgent(self.critic_agent)
+        self.action_agent = deepcopy(other.action_agent)
+        self.eval_agent = TemporalAgent(Agents(self.eval_env_agent, self.action_agent))
+        self.train_agent = TemporalAgent(Agents(self.train_env_agent, self.action_agent))
 
 
 def create_population(cfg):
@@ -155,16 +155,16 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
                     workspace.copy_n_last_steps(1)
                     agent.train(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
                     # Compute the critic as well
-                    agent.tcritic_agent(t=1, workspace=workspace, n_steps=workspace.time_size() - 1)                
+                    agent.run_critic(t=1, workspace=workspace, n_steps=workspace.time_size() - 1)                
                 else:
                     agent.train(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
                     # Compute the critic as well
-                    agent.tcritic_agent(t=0, workspace=workspace, n_steps=workspace.time_size())                
+                    agent.run_critic(t=0, workspace=workspace, n_steps=workspace.time_size())                
 
                 steps = (workspace.time_size() - 1) * workspace.batch_size()
                 consumed_budget += steps
                 
-                loss = agent.action_agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+                loss = agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
                 optimizer = optimizers[agent]
                 optimizer.zero_grad()
@@ -183,9 +183,9 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
 
         crewards = {agent: agent.get_creward() for agent in population}
 
-        mean_crewards = crewards.values().mean()
+        mean_crewards = torch.mean(torch.stack(list(crewards.values())))
 
-        logger.add_log("Mean cumulated reward", mean_crewards, total_timesteps + consumed_budget)
+        logger.add_log("reward", mean_crewards, total_timesteps + consumed_budget)
 
         # We sort the agents by their performance
         sort_performance(population, crewards)
@@ -193,14 +193,14 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
         print('Cumulated rewards at epoch {}: {}'.format(epoch, crewards.values()))
 
         epoch_logger.log_epoch(total_timesteps, torch.tensor(list(crewards.values())))
-        plot_hyperparams([a.action_agent for a in population])
+        plot_hyperparams([a.action_agent.a2c_agent for a in population])
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
             agent_to_copy = select_pbt(cfg.algorithm.pbt_portion, population)
             print('Copying agent with creward = {} into agent with creward {}'.format(crewards[agent_to_copy], crewards[bad_agent]))
-            bad_agent.action_agent.copy(agent_to_copy.action_agent)
-            bad_agent.action_agent.mutate_hyperparameters()
+            bad_agent.copy(agent_to_copy)
+            bad_agent.mutate_hyperparameters()
         
         for _, workspace in workspaces.items():
             workspace.zero_grad()
