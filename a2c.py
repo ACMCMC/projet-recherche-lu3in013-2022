@@ -12,9 +12,27 @@ from salina.agents import Agents, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
 
 from common import get_cumulated_reward
-from env import AutoResetEnvAgent
+from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from utils import build_nn
 from plot import CrewardsLogger, plot_hyperparams, Logger
+
+
+def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
+    if train_env_agent.is_action_space_continuous():
+        observation_size = train_env_agent.get_observation_size()
+        action_size = train_env_agent.get_action_size()
+        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
+        train_agent = Agents(train_env_agent, a2c_agent)
+        eval_agent = Agents(eval_env_agent, a2c_agent)
+    else:
+        pass # TODO: Implement discrete action space
+
+    critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
+
+    train_agent = TemporalAgent(train_agent)
+    eval_agent = TemporalAgent(eval_agent)
+    train_agent.seed(cfg.algorithm.stochasticity_seed)
+    return train_agent, eval_agent, a2c_agent, critic_agent
 
 
 class CriticAgent(salina.TAgent):
@@ -89,10 +107,6 @@ class A2CAgent(salina.TAgent):
 
     def set_hyperparameter(self, param_name, value):
         self.params[param_name] = value
-
-    def clone(self):
-        new = A2CAgent(self.params, self.observation_size, self.hidden_layer_sizes, self.action_size, self.stochastic, std_param=self.std_param)
-        return new
 
     def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
         # Compute temporal difference
@@ -179,37 +193,39 @@ class A2CParameterizedAgent(salina.TAgent):
     def compute_loss(self, **kwargs):
         return self.a2c_agent.compute_loss(**kwargs)
 
+def get_creward(eval_agent):
+    eval_workspace = Workspace() # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
+
+    eval_agent(eval_workspace, t=0, stop_variable='env/done', stochastic=False) # Run the evaluation agent until it reaches a terminal state on all its environments
+
+    rewards = eval_workspace['env/cumulated_reward'][-1] # Get the last cumulated reward of the agent, which is the reward of the last timestep (terminal state)
+
+    return rewards.mean()
+
 def create_agent(cfg):
-    environment = AutoResetEnvAgent(cfg)
-    # observation_size: the number of features of the observation (in Pendulum-v1, it is 3)
-    observation_size = environment.get_observation_size()
-    # hidden_layer_size: the number of neurons in the hidden layer
-    hidden_layer_sizes = list(cfg.algorithm.neural_network.hidden_layer_sizes)
-    # action_size: the number of parameters to output as actions (in Pendulum-v1, it is 1)
-    action_size = environment.get_action_size()
+    # 1) Start by creating the environment agents
+    train_env_agent = AutoResetEnvAgent(cfg)
+    eval_env_agent = NoAutoResetEnvAgent(cfg)
 
+    # 2) Create all the agents that we'll use for training and evaluating
+    train_agent, eval_agent, action_agent, critic_agent = create_a2c_agents(cfg, train_env_agent, eval_env_agent)
+
+    # 3) Create the tcritic_agent, which will be used to compute the value of each state
+    tcritic_agent = TemporalAgent(critic_agent)
+
+    # 4) Create the workspace of this member of the population
     workspace = Workspace()
+    return action_agent, tcritic_agent, train_agent, eval_agent, workspace
 
-    # The agent that we'll train will use the A2C algorithm
-    a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
-    # To generate the observations, we need a gym agent, which will provide the values in 'env/env_obs'
-    environment_agent = AutoResetEnvAgent(cfg)
-    temporal_agent = TemporalAgent(Agents(environment_agent, a2c_agent))
-    temporal_agent.seed(cfg.algorithm.stochasticity_seed)
-
-    return temporal_agent, workspace
-
-def a2c_train(cfg, agent, workspace, logger):
+def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalAgent, train_agent: TemporalAgent, eval_agent: TemporalAgent, workspace: Workspace, logger):
     epoch_logger = CrewardsLogger()
 
     total_timesteps = 0
 
-    five_last_rewards = torch.tensor([])
-
     # Configure the optimizer over the a2c agent
     optimizer_args = get_arguments(cfg.optimizer)
     optimizer = get_class(cfg.optimizer)(
-        agent.parameters(), **optimizer_args
+        nn.Sequential(action_agent, tcritic_agent.agent).parameters(), **optimizer_args
     )
 
     for epoch in range(cfg.algorithm.max_epochs):
@@ -219,17 +235,18 @@ def a2c_train(cfg, agent, workspace, logger):
             if consumed_budget > 0:
                 workspace.zero_grad()
                 workspace.copy_n_last_steps(1)
-                agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
+                train_agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
+                tcritic_agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
             else:
-                agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
-
+                train_agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
+                tcritic_agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
 
             steps = (workspace.time_size() - 1) * workspace.batch_size()
             consumed_budget += steps
             
             done = workspace["env/done"]
 
-            loss = agent.agent[1].compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+            loss = action_agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
             optimizer.zero_grad()
             loss.backward()
@@ -238,27 +255,20 @@ def a2c_train(cfg, agent, workspace, logger):
             creward = workspace["env/cumulated_reward"]
             creward = creward[done]
 
-            five_last_rewards = torch.cat((five_last_rewards, creward))[-5:]
-
-            logger.add_log("reward", five_last_rewards.mean(), total_timesteps + consumed_budget)
+            logger.add_log("reward", get_creward(eval_agent), total_timesteps + consumed_budget)
         
         total_timesteps += consumed_budget
 
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
         
-        #cumulated_reward = five_last_rewards.mean().item()
-        
-        #epoch_logger.log_epoch(total_timesteps, torch.tensor([cumulated_reward]))
-        #plot_hyperparams([agent.agent[1].get_agent()])
-
 
 @hydra.main(config_path=".", config_name="pbt.yaml")
 def run_a2c(cfg):
     # First, build the  logger
     logger = Logger(cfg)
-    agent, workspace = create_agent(cfg)
-    a2c_train(cfg, agent, workspace, logger=logger)
+    action_agent, tcritic_agent, train_agent, eval_agent, workspace = create_agent(cfg)
+    a2c_train(cfg, action_agent, tcritic_agent, train_agent, eval_agent, workspace, logger=logger)
 
 if __name__ == '__main__':
     run_a2c()
