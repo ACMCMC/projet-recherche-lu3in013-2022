@@ -77,6 +77,10 @@ class PBTAgent():
 
         # 4) Create the workspace of this member of the population
         self.workspace = Workspace()
+
+        # 5) Create the optimizer
+        self.optimizer = create_optimizer(cfg, self.action_agent, self.critic_agent)
+
     
     def train(self, **kwargs):
         return self.train_agent(**kwargs)
@@ -103,9 +107,11 @@ class PBTAgent():
         self.critic_agent = deepcopy(other.critic_agent)
         self.tcritic_agent = TemporalAgent(self.critic_agent)
         self.action_agent = deepcopy(other.action_agent)
+        self.train_env_agent = deepcopy(other.train_env_agent) # TODO: This is actually not necessary, as we don't need to copy the environment agents, because they are not optimized.
+        self.eval_env_agent = deepcopy(other.eval_env_agent)
         self.eval_agent = TemporalAgent(Agents(self.eval_env_agent, self.action_agent))
         self.train_agent = TemporalAgent(Agents(self.train_env_agent, self.action_agent))
-
+        self.optimizer = deepcopy(other.optimizer)
 
 def create_population(cfg):
     # Create the required number of agents
@@ -136,14 +142,7 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
     epoch_logger = CrewardsLogger()
     total_timesteps = 0
 
-    # 2) Create the optimizers of the agents
-    optimizers = {} # A dictionary of the optimizers of each agent
-    for agent in population:
-        # Configure the optimizer over the a2c agent
-        optimizer = create_optimizer(cfg, agent.action_agent, agent.critic_agent)
-        optimizers[agent] = optimizer
-
-    # 3) Train the agents
+    # 2) Train the agents
     for epoch in range(cfg.algorithm.max_epochs):
         print("Epoch: {}".format(epoch))
         for agent in population:
@@ -166,9 +165,9 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
                 
                 loss = agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
-                optimizer = optimizers[agent]
+                optimizer = agent.optimizer
                 optimizer.zero_grad()
-                loss.backward()
+                loss.sum().backward()
                 optimizer.step()
             
             
@@ -212,6 +211,7 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
 def main(cfg):
     # First, build the  logger
     logger = Logger(cfg)
+    torch.manual_seed(cfg.algorithm.stochasticity_seed)
     population, workspaces = create_population(cfg)
     train(cfg, population, workspaces, logger=logger)
 

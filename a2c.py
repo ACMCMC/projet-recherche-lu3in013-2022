@@ -267,6 +267,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
 def run_a2c(cfg):
     # First, build the  logger
     logger = Logger(cfg)
+    torch.manual_seed(cfg.algorithm.stochasticity_seed)
     action_agent, tcritic_agent, train_agent, eval_agent, workspace = create_agent(cfg)
     a2c_train(cfg, action_agent, tcritic_agent, train_agent, eval_agent, workspace, logger=logger)
 

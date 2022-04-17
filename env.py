@@ -14,6 +14,7 @@ class NoAutoResetEnvAgent(NoAutoResetGymAgent):
             n_envs=cfg.algorithm.number_environments
         )
         env = instantiate_class(cfg.env)
+        env.seed(cfg.algorithm.stochasticity_seed)
         self.observation_space = env.observation_space
         self.action_space = env.action_space
         del env
@@ -50,6 +51,7 @@ class AutoResetEnvAgent(AutoResetGymAgent):
             n_envs=cfg.algorithm.number_environments
         )
         env = instantiate_class(cfg.env)
+        env.seed(cfg.algorithm.stochasticity_seed)
         self.observation_space = env.observation_space
         self.action_space = env.action_space
         del env
