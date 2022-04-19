@@ -102,19 +102,18 @@ class PBTAgent:
     def mutate_hyperparameters(self, **kwargs):
         return self.action_agent.mutate_hyperparameters(**kwargs)
     
-    def copy(self, other):
-        self.critic_agent = deepcopy(other.critic_agent)
-        self.tcritic_agent = TemporalAgent(self.critic_agent)
-        self.action_agent = deepcopy(other.action_agent)
-        self.train_env_agent = deepcopy(other.train_env_agent) # TODO: This is actually not necessary, as we don't need to copy the environment agents, because they are not optimized.
-        self.eval_env_agent = deepcopy(other.eval_env_agent)
-        self.eval_agent = TemporalAgent(Agents(self.eval_env_agent, self.action_agent))
-        self.train_agent = TemporalAgent(Agents(self.train_env_agent, self.action_agent, self.critic_agent))
-        self.optimizer = deepcopy(other.optimizer)
+    def copy(self, other, cfg):
+        restore_agent = Agents(self.action_agent, self.critic_agent)
+        other_restore_agent = Agents(other.action_agent, other.critic_agent)
+        restore_agent.load_state_dict(other_restore_agent.state_dict())
+        restore_agent.eval()
+        self.optimizer = create_optimizer(cfg, self.action_agent, self.critic_agent)
     
-    def load(self, path):
-        self.train_agent.load_state_dict(load_model())
-        self.train_agent.eval()
+    def load(self, path, cfg):
+        restore_agent = Agents(self.action_agent, self.critic_agent)
+        restore_agent.load_state_dict(load_model(path))
+        restore_agent.eval()
+        self.optimizer = create_optimizer(cfg, self.action_agent, self.critic_agent)
 
 def create_population(cfg):
     # Create the required number of agents
@@ -171,6 +170,8 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
             
         total_timesteps += consumed_budget
 
+        all_agents_total_timesteps = total_timesteps * len(population)
+
         # They have all finished executing
         print('Finished epoch {}'.format(epoch))
 
@@ -182,25 +183,25 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
 
         mean_crewards = torch.mean(torch.stack(list(crewards.values())))
 
-        logger.add_log("reward", mean_crewards, total_timesteps + consumed_budget) # TODO: Print the total num of timesteps
+        logger.add_log("reward", mean_crewards, all_agents_total_timesteps) # TODO: Print the total num of timesteps
 
         # We sort the agents by their performance
         sort_performance(population, crewards)
 
         print('Cumulated rewards at epoch {}: {}'.format(epoch, crewards.values()))
 
-        epoch_logger.log_epoch(total_timesteps, torch.tensor(list(crewards.values())))
+        epoch_logger.log_epoch(all_agents_total_timesteps, torch.tensor(list(crewards.values())))
         plot_hyperparams([a.action_agent.a2c_agent for a in population])
 
         for bad_agent in population[-1 * int(cfg.algorithm.pbt_portion * len(population)) : ]:
             # Select randomly one agent to replace the current one
             agent_to_copy = select_pbt(cfg.algorithm.pbt_portion, population)
             print('Copying agent with creward = {} into agent with creward {}'.format(crewards[agent_to_copy], crewards[bad_agent]))
-            bad_agent.copy(agent_to_copy)
+            bad_agent.copy(agent_to_copy, cfg)
             bad_agent.mutate_hyperparameters()
         
-        for _, workspace in workspaces.items():
-            workspace.zero_grad()
+        #for _, workspace in workspaces.items():
+        #    workspace.zero_grad()
     
     epoch_logger.show()
 
@@ -211,7 +212,7 @@ def main(cfg):
     logger = Logger(cfg)
     torch.manual_seed(cfg.algorithm.stochasticity_seed)
     population, workspaces = create_population(cfg)
-    population[0].load('/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_200.pickle')
+    #population[0].load('/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_28.pickle', cfg)
     train(cfg, population, workspaces, logger=logger)
 
 if __name__ == '__main__':

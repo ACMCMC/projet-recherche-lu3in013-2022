@@ -17,7 +17,6 @@ from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from utils import build_nn, load_model, save_model
 from plot import CrewardsLogger, plot_hyperparams, Logger
 
-
 def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
     if train_env_agent.is_action_space_continuous():
         observation_size = train_env_agent.get_observation_size()
@@ -236,10 +235,8 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
                 workspace.zero_grad()
                 workspace.copy_n_last_steps(1)
                 train_agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
-                tcritic_agent(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
             else:
                 train_agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
-                tcritic_agent(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
 
             steps = (workspace.time_size() - 1) * workspace.batch_size()
             consumed_budget += steps
@@ -252,7 +249,8 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
 
             if (reward > max_reward):
                 max_reward = reward
-                save_model(train_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(reward)))
+                save_agent = Agents(action_agent, tcritic_agent.agent)
+                save_model(save_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(reward)))
                 print('Saved agent')
 
             optimizer.zero_grad()
@@ -271,6 +269,7 @@ def run_a2c(cfg):
     logger = Logger(cfg)
     torch.manual_seed(cfg.algorithm.stochasticity_seed)
     action_agent, tcritic_agent, train_agent, eval_agent, workspace = create_agent(cfg)
+    #train_agent.load_state_dict(load_model('/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_20.pickle'))
     a2c_train(cfg, action_agent, tcritic_agent, train_agent, eval_agent, workspace, logger=logger)
 
 if __name__ == '__main__':
