@@ -21,6 +21,8 @@ from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from plot import CrewardsLogger, Logger, plot_hyperparams
 from torch import nn
 
+from utils import load_model
+
 def make_env(**kwargs) -> gym.Env:
     # We set a timestep limit on the environment of max_episode_steps
     # We can also add a seed to the environment here
@@ -60,7 +62,7 @@ def _index_3d_2d(tensor_3d, tensor_2d):
     v = v.reshape(x, y)
     return v
 
-class PBTAgent():
+class PBTAgent:
     '''
     This class contains all the necessary agents for one member of the population.
     '''
@@ -85,9 +87,6 @@ class PBTAgent():
     def train(self, **kwargs):
         return self.train_agent(**kwargs)
     
-    def run_critic(self, **kwargs):
-        return self.tcritic_agent(**kwargs)
-    
     def get_creward(self):
         eval_workspace = Workspace() # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
 
@@ -110,8 +109,12 @@ class PBTAgent():
         self.train_env_agent = deepcopy(other.train_env_agent) # TODO: This is actually not necessary, as we don't need to copy the environment agents, because they are not optimized.
         self.eval_env_agent = deepcopy(other.eval_env_agent)
         self.eval_agent = TemporalAgent(Agents(self.eval_env_agent, self.action_agent))
-        self.train_agent = TemporalAgent(Agents(self.train_env_agent, self.action_agent))
+        self.train_agent = TemporalAgent(Agents(self.train_env_agent, self.action_agent, self.critic_agent))
         self.optimizer = deepcopy(other.optimizer)
+    
+    def load(self, path):
+        self.train_agent.load_state_dict(load_model())
+        self.train_agent.eval()
 
 def create_population(cfg):
     # Create the required number of agents
@@ -145,21 +148,16 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
     # 2) Train the agents
     for epoch in range(cfg.algorithm.max_epochs):
         print("Epoch: {}".format(epoch))
-        for agent in population:
+        for agent in population: # TODO: Not train the first one, print his model to see if it changes
             consumed_budget = 0
             workspace = workspaces[agent]
             while consumed_budget < cfg.algorithm.train_budget:
                 if consumed_budget > 0:
                     workspace.zero_grad()
                     workspace.copy_n_last_steps(1)
-                    agent.train(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1)
-                    # Compute the critic as well
-                    agent.run_critic(t=1, workspace=workspace, n_steps=workspace.time_size() - 1)                
+                    agent.train(t=1, workspace=workspace, n_steps=cfg.algorithm.num_timesteps - 1) # It computes the critic as well
                 else:
-                    agent.train(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps)
-                    # Compute the critic as well
-                    agent.run_critic(t=0, workspace=workspace, n_steps=workspace.time_size())                
-
+                    agent.train(t=0, workspace=workspace, n_steps=cfg.algorithm.num_timesteps) # It computes the critic as well
                 steps = (workspace.time_size() - 1) * workspace.batch_size()
                 consumed_budget += steps
                 
@@ -184,7 +182,7 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
 
         mean_crewards = torch.mean(torch.stack(list(crewards.values())))
 
-        logger.add_log("reward", mean_crewards, total_timesteps + consumed_budget)
+        logger.add_log("reward", mean_crewards, total_timesteps + consumed_budget) # TODO: Print the total num of timesteps
 
         # We sort the agents by their performance
         sort_performance(population, crewards)
@@ -213,6 +211,7 @@ def main(cfg):
     logger = Logger(cfg)
     torch.manual_seed(cfg.algorithm.stochasticity_seed)
     population, workspaces = create_population(cfg)
+    population[0].load('/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_200.pickle')
     train(cfg, population, workspaces, logger=logger)
 
 if __name__ == '__main__':

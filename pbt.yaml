@@ -8,10 +8,10 @@ logger:
 
 algorithm:
   max_epochs: 2000
-  population_size: 10
+  population_size: 1
   num_timesteps: 16
   train_budget: 1000
-  stochasticity_seed: 123
+  stochasticity_seed: 10
   number_environments: 8
   neural_network:
     hidden_layer_sizes: [24, 36]

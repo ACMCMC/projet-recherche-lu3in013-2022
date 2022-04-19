@@ -1,3 +1,4 @@
+import math
 import multiprocessing
 from copy import deepcopy
 from typing import Union
@@ -13,7 +14,7 @@ from salina.agents.asynchronous import AsynchronousAgent
 
 from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
-from utils import build_nn
+from utils import build_nn, load_model, save_model
 from plot import CrewardsLogger, plot_hyperparams, Logger
 
 
@@ -22,12 +23,11 @@ def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
         observation_size = train_env_agent.get_observation_size()
         action_size = train_env_agent.get_action_size()
         a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
-        train_agent = Agents(train_env_agent, a2c_agent)
+        critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
+        train_agent = Agents(train_env_agent, a2c_agent, critic_agent)
         eval_agent = Agents(eval_env_agent, a2c_agent)
     else:
         pass # TODO: Implement discrete action space
-
-    critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
 
     train_agent = TemporalAgent(train_agent)
     eval_agent = TemporalAgent(eval_agent)
@@ -57,7 +57,6 @@ class A2CAgent(salina.TAgent):
         # Create the action neural network
         # We use a function that takes a list of layer sizes and returns the neural network
         self.action_model = build_nn([observation_size] + list(hidden_layer_sizes) + [action_size], output_activation=nn.Tanh, activation=nn.ReLU)
-        # Create the critic neural network
 
         self.observation_size = observation_size # The size of the observations
         self.hidden_layer_sizes = hidden_layer_sizes # The sizes of the hidden layers
@@ -221,6 +220,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
     epoch_logger = CrewardsLogger()
 
     total_timesteps = 0
+    max_reward = 0
 
     # Configure the optimizer over the a2c agent
     optimizer_args = get_arguments(cfg.optimizer)
@@ -244,18 +244,20 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
             steps = (workspace.time_size() - 1) * workspace.batch_size()
             consumed_budget += steps
             
-            done = workspace["env/done"]
-
             loss = action_agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+
+            reward = get_creward(eval_agent)
+
+            logger.add_log("reward", reward, total_timesteps + consumed_budget)
+
+            if (reward > max_reward):
+                max_reward = reward
+                save_model(train_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(reward)))
+                print('Saved agent')
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-
-            creward = workspace["env/cumulated_reward"]
-            creward = creward[done]
-
-            logger.add_log("reward", get_creward(eval_agent), total_timesteps + consumed_budget)
         
         total_timesteps += consumed_budget
 

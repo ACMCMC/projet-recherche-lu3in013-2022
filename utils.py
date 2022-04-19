@@ -1,4 +1,5 @@
 from torch import nn
+import torch
 
 def build_nn(layers_sizes, activation=nn.ReLU, output_activation=nn.Identity):
     """
@@ -16,3 +17,20 @@ def build_nn(layers_sizes, activation=nn.ReLU, output_activation=nn.Identity):
         else:
             layers.append(output_activation())
     return nn.Sequential(*layers)
+
+def save_model(self, filename) -> None:
+        """
+        Save a neural network model into a file
+        :param filename: the filename, including the path
+        :return: nothing
+        """
+        torch.save(self, filename)
+
+def load_model(filename):
+    """
+    Load a neural network model from a file
+    :param filename: the filename, including the path
+    :return: the resulting pytorch network
+    """
+    net = torch.load(filename)
+    return net
