@@ -183,7 +183,7 @@ class A2CParameterizedAgent(salina.TAgent):
         self.a2c_agent = deepcopy(other.get_agent())
     
     def copy_hyperparams(self, other):
-        self.get_agent().parameters = deepcopy(other.get_agent().parameters)
+        self.get_agent().params = deepcopy(other.get_agent().params)
 
     def get_cumulated_reward(self):
         return self.a2c_agent.get_cumulated_reward()

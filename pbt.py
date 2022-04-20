@@ -90,7 +90,9 @@ class PBTAgent:
     def get_creward(self):
         eval_workspace = Workspace() # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
 
+        self.eval_agent.train(False) # We set the agent to evaluation mode
         self.eval_agent(eval_workspace, t=0, stop_variable='env/done', stochastic=False) # Run the evaluation agent until it reaches a terminal state on all its environments
+        self.train_agent.train(True) # The line above had turned training mode off for the action agent, so we turn it back on.
 
         rewards = eval_workspace['env/cumulated_reward'][-1] # Get the last cumulated reward of the agent, which is the reward of the last timestep (terminal state)
 
@@ -106,14 +108,12 @@ class PBTAgent:
         restore_agent = Agents(self.action_agent, self.critic_agent)
         other_restore_agent = Agents(other.action_agent, other.critic_agent)
         restore_agent.load_state_dict(other_restore_agent.state_dict())
-        restore_agent.eval()
         self.action_agent.copy_hyperparams(other.action_agent)
         self.optimizer = create_optimizer(cfg, self.action_agent, self.critic_agent)
     
     def load(self, path, cfg):
         restore_agent = Agents(self.action_agent, self.critic_agent)
         restore_agent.load_state_dict(load_model(path))
-        restore_agent.eval()
         self.optimizer = create_optimizer(cfg, self.action_agent, self.critic_agent)
 
 def create_population(cfg):
