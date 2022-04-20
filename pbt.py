@@ -107,6 +107,7 @@ class PBTAgent:
         other_restore_agent = Agents(other.action_agent, other.critic_agent)
         restore_agent.load_state_dict(other_restore_agent.state_dict())
         restore_agent.eval()
+        self.action_agent.copy_hyperparams(other.action_agent)
         self.optimizer = create_optimizer(cfg, self.action_agent, self.critic_agent)
     
     def load(self, path, cfg):
