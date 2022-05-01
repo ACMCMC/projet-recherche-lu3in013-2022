@@ -8,7 +8,7 @@ logger:
 
 algorithm:
   max_epochs: 2000
-  population_size: 10
+  population_size: 5
   num_timesteps: 16
   train_budget: 1000
   stochasticity_seed: 100
@@ -31,7 +31,7 @@ algorithm:
 
 env:
   classname: pbt.make_env
-  env_name: CartPoleContinuous-v1
+  env_name: Pendulum-v1
   max_episode_steps: 500
 
 optimizer:

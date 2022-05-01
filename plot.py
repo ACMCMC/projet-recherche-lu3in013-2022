@@ -29,17 +29,21 @@ def plot_hyperparams(agents_list):
 
 class CrewardsLogger:
     def __init__(self) -> None:
-        self.crewards: torch.Tensor = torch.tensor([]) # An empty tensor of the form ([ [],[] ], [ [],[] ], ...)
+        self.crewards: torch.Tensor = torch.tensor([]) # An empty tensor of the form ([ [],[],[] ], [ [],[],[] ], ...)
 
     def log_epoch(self, timestep, crewards):
         plt.close() # Clear the last figure
         mean_of_crewards = crewards.mean()
-        tensor_to_cat = torch.tensor([timestep, mean_of_crewards]).unsqueeze(-1) # Gives us a tensor like [[timestep], [mean_of_crewards]] 
+        std = crewards.std()
+
+
+        tensor_to_cat = torch.tensor([timestep, mean_of_crewards, std]).unsqueeze(-1) # Gives us a tensor like [[timestep], [mean_of_crewards]] 
         self.crewards = torch.cat((self.crewards, tensor_to_cat), dim=1)
         self.fig, self.ax = plt.subplots()
-        self.ax.set_ylim([0, self.crewards[1].max(0)[0].item()])
+        self.ax.set_ylim([self.crewards[1].min(0)[0].item(), 0])
         plt.scatter(self.crewards[0], self.crewards[1])
         plt.plot(self.crewards[0], self.crewards[1])
+        plt.fill_between(self.crewards[0], self.crewards[1] - self.crewards[2], self.crewards[1] + self.crewards[2], alpha=0.5)
         self.ax.set(xlabel='timestep', ylabel='creward', title='Evolution of crewards')
         self.ax.grid()
         plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/fig.png')
