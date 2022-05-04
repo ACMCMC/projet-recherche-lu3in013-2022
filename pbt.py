@@ -208,7 +208,7 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
 
         logger.add_log("reward", mean_crewards, all_agents_total_timesteps)
 
-        epoch_logger.log_epoch(all_agents_total_timesteps, torch.tensor(list(crewards.values())), population)
+        epoch_logger.log_epoch(all_agents_total_timesteps, crewards, population)
         epoch_logger.save()
 
         #plot_hyperparams([a.action_agent.a2c_agent for a in population_o])

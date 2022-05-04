@@ -7,8 +7,8 @@ logger:
   verbose: False
 
 algorithm:
-  max_epochs: 2000
-  population_size: 5
+  max_epochs: 100
+  population_size: 20
   num_timesteps: 16
   train_budget: 1000
   stochasticity_seed: 100
@@ -21,13 +21,13 @@ algorithm:
   hyperparameters:
     entropy_coef:
       min: 0.0001
-      max: 0.005
+      max: 0.1
     critic_coef:
-      min: 0.8
-      max: 1.2
+      min: 0.5
+      max: 1.5
     a2c_coef:
       min: 0.01
-      max: 0.3
+      max: 0.6
 
 env:
   classname: pbt.make_env

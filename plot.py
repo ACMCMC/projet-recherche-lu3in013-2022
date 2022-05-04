@@ -1,7 +1,7 @@
 from ftplib import all_errors
 import json
 import torch
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, ticker
 from salina import instantiate_class
 import numpy
 
@@ -45,7 +45,7 @@ class CrewardsLogger:
 
             # Write the entry for the agent
             self.data[timestep][i] = {
-                "reward": crewards[i].item(),
+                "reward": float(crewards[a]),
                 "hyperparameters": hyperparams
             }
     
@@ -74,6 +74,7 @@ class CrewardsLogger:
     def start_plot(self):
         plt.close()
         self.fig, self.ax = plt.subplots()
+        self.ax.get_xaxis().set_major_locator(ticker.AutoLocator())
     
     def end_plot(self, file):
         plt.savefig(file)
@@ -113,8 +114,20 @@ class CrewardsLogger:
         plt.plot(timesteps, mean_values, color='blue')
         for a in agents:
             plt.plot(timesteps, all_values.select(1, a), alpha=0.2, color='black')
-        self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
-        self.ax.grid()
+        self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Evolution of ' + hyperparam)
+        self.ax.grid(which='major')
+
+    def plot_hyperparam_mean_and_std(self, hyperparam):
+        timesteps = self.data.keys()
+        all_values = self.get_all_hyperparam_values(hyperparam)
+        self.ax.set_ylim([0, all_values.max().item()])
+        mean_values = all_values.mean(1)
+        std_values = all_values.std(1)
+        plt.scatter(timesteps, mean_values, color='blue')
+        plt.plot(timesteps, mean_values, color='blue')
+        plt.fill_between(timesteps, mean_values - std_values, mean_values + std_values, alpha=0.5, color='blue')
+        self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Evolution of ' + hyperparam)
+        self.ax.grid(which='major')
 
 
 if __name__ == "__main__":
@@ -129,3 +142,18 @@ if __name__ == "__main__":
     logger.start_plot()
     logger.plot_hyperparam_individuals('a2c_coef')
     logger.end_plot('a2c_coef_inds.png')
+    logger.start_plot()
+    logger.plot_hyperparam_mean_and_std('a2c_coef')
+    logger.end_plot('a2c_coef_mean_and_std.png')
+    logger.start_plot()
+    logger.plot_hyperparam_individuals('critic_coef')
+    logger.end_plot('critic_coef_inds.png')
+    logger.start_plot()
+    logger.plot_hyperparam_mean_and_std('critic_coef')
+    logger.end_plot('critic_coef_mean_and_std.png')
+    logger.start_plot()
+    logger.plot_hyperparam_individuals('entropy_coef')
+    logger.end_plot('entropy_coef_inds.png')
+    logger.start_plot()
+    logger.plot_hyperparam_mean_and_std('entropy_coef')
+    logger.end_plot('entropy_coef_mean_and_std.png')
