@@ -1,7 +1,9 @@
+from ftplib import all_errors
 import json
 import torch
 from matplotlib import pyplot as plt
 from salina import instantiate_class
+import numpy
 
 class Logger():
   def __init__(self, cfg):
@@ -54,15 +56,52 @@ class CrewardsLogger:
     def open(self, file):
         with open(file, 'r') as handle:
             self.data = json.load(handle)
+    
+    def get_all_rewards(self):
+        all_rewards = torch.tensor([])
+        for timestep in self.data.keys():
+            timestep_rewards = torch.tensor([agent['reward'] for agent in self.data[timestep].values()])
+            all_rewards=torch.cat((all_rewards, timestep_rewards.unsqueeze(0)))
+        return all_rewards
 
-    def show(self):
-        plt.close() # Clear the last figure
+    def start_plot(self):
+        plt.close()
         self.fig, self.ax = plt.subplots()
-        self.ax.set_ylim([self.crewards[1].min(0)[0].item(), 0])
-        plt.scatter(self.crewards[0], self.crewards[1])
-        plt.plot(self.crewards[0], self.crewards[1])
-        plt.fill_between(self.crewards[0], self.crewards[1] - self.crewards[2], self.crewards[1] + self.crewards[2], alpha=0.5)
-        self.ax.set(xlabel='timestep', ylabel='creward', title='Evolution of crewards')
+    
+    def end_plot(self, file):
+        plt.savefig(file)
+
+    def plot_rewards_mean_and_individuals(self):
+        timesteps = self.data.keys()
+        all_rewards = self.get_all_rewards()
+        self.ax.set_ylim([0, all_rewards.max().item()])
+        agents = range(all_rewards.size(1))
+        mean_rewards = all_rewards.mean(1)
+        plt.scatter(timesteps, mean_rewards, color='blue')
+        plt.plot(timesteps, mean_rewards, color='blue')
+        for a in agents:
+            plt.plot(timesteps, all_rewards.select(1, a), alpha=0.3, color='black')
+        self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
         self.ax.grid()
-        plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/fig.png')
-        plt.show()
+
+    def plot_rewards_mean_and_std(self):
+        timesteps = self.data.keys()
+        all_rewards = self.get_all_rewards()
+        self.ax.set_ylim([0, all_rewards.max().item()])
+        mean_rewards = all_rewards.mean(1)
+        std_rewards = all_rewards.std(1)
+        plt.scatter(timesteps, mean_rewards, color='blue')
+        plt.plot(timesteps, mean_rewards, color='blue')
+        plt.fill_between(timesteps, mean_rewards - std_rewards, mean_rewards + std_rewards, alpha=0.5, color='blue')
+        self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
+        self.ax.grid()
+
+if __name__ == "__main__":
+    logger = CrewardsLogger()
+    logger.open('./output.json')
+    logger.start_plot()
+    logger.plot_rewards_mean_and_individuals()
+    logger.end_plot('individuals.png')
+    logger.start_plot()
+    logger.plot_rewards_mean_and_std()
+    logger.end_plot('rew_std.png')
