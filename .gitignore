@@ -4,6 +4,7 @@ outputs/
 *.png
 saved_agents/
 upmc_outputs/
+*.eps
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
