@@ -63,6 +63,13 @@ class CrewardsLogger:
             timestep_rewards = torch.tensor([agent['reward'] for agent in self.data[timestep].values()])
             all_rewards=torch.cat((all_rewards, timestep_rewards.unsqueeze(0)))
         return all_rewards
+    
+    def get_all_hyperparam_values(self, hyperparam):
+        all_values = torch.tensor([])
+        for timestep in self.data.keys():
+            timestep_values = torch.tensor([agent['hyperparameters'][hyperparam] for agent in self.data[timestep].values()])
+            all_values=torch.cat((all_values, timestep_values.unsqueeze(0)))
+        return all_values
 
     def start_plot(self):
         plt.close()
@@ -80,7 +87,7 @@ class CrewardsLogger:
         plt.scatter(timesteps, mean_rewards, color='blue')
         plt.plot(timesteps, mean_rewards, color='blue')
         for a in agents:
-            plt.plot(timesteps, all_rewards.select(1, a), alpha=0.3, color='black')
+            plt.plot(timesteps, all_rewards.select(1, a), alpha=0.2, color='black')
         self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
         self.ax.grid()
 
@@ -95,6 +102,20 @@ class CrewardsLogger:
         plt.fill_between(timesteps, mean_rewards - std_rewards, mean_rewards + std_rewards, alpha=0.5, color='blue')
         self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
         self.ax.grid()
+    
+    def plot_hyperparam_individuals(self, hyperparam):
+        timesteps = self.data.keys()
+        all_values = self.get_all_hyperparam_values(hyperparam)
+        self.ax.set_ylim([0, all_values.max().item()])
+        agents = range(all_values.size(1))
+        mean_values = all_values.mean(1)
+        plt.scatter(timesteps, mean_values, color='blue')
+        plt.plot(timesteps, mean_values, color='blue')
+        for a in agents:
+            plt.plot(timesteps, all_values.select(1, a), alpha=0.2, color='black')
+        self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
+        self.ax.grid()
+
 
 if __name__ == "__main__":
     logger = CrewardsLogger()
@@ -105,3 +126,6 @@ if __name__ == "__main__":
     logger.start_plot()
     logger.plot_rewards_mean_and_std()
     logger.end_plot('rew_std.png')
+    logger.start_plot()
+    logger.plot_hyperparam_individuals('a2c_coef')
+    logger.end_plot('a2c_coef_inds.png')
