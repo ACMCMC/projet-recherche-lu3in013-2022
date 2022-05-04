@@ -1,0 +1,1346 @@
+{
+    "5400": {
+        "0": {
+            "reward": 21.25,
+            "hyperparameters": {
+                "entropy_coef": 0.003414867678657174,
+                "critic_coef": 1.1015644073486328,
+                "a2c_coef": 0.08618026226758957
+            }
+        },
+        "1": {
+            "reward": 30.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004818757995963097,
+                "critic_coef": 0.8022258281707764,
+                "a2c_coef": 0.2178882658481598
+            }
+        },
+        "2": {
+            "reward": 21.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0012755081988871098,
+                "critic_coef": 1.0772078037261963,
+                "a2c_coef": 0.07441329210996628
+            }
+        },
+        "3": {
+            "reward": 24.625,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 30.125,
+            "hyperparameters": {
+                "entropy_coef": 0.004475520458072424,
+                "critic_coef": 0.9696868062019348,
+                "a2c_coef": 0.19992797076702118
+            }
+        }
+    },
+    "10800": {
+        "0": {
+            "reward": 21.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0038550063967704774,
+                "critic_coef": 0.6417806625366211,
+                "a2c_coef": 0.26146591901779176
+            }
+        },
+        "1": {
+            "reward": 16.375,
+            "hyperparameters": {
+                "entropy_coef": 0.004818757995963097,
+                "critic_coef": 0.8022258281707764,
+                "a2c_coef": 0.2178882658481598
+            }
+        },
+        "2": {
+            "reward": 19.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0012755081988871098,
+                "critic_coef": 1.0772078037261963,
+                "a2c_coef": 0.07441329210996628
+            }
+        },
+        "3": {
+            "reward": 26.375,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 19.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004475520458072424,
+                "critic_coef": 0.9696868062019348,
+                "a2c_coef": 0.19992797076702118
+            }
+        }
+    },
+    "16200": {
+        "0": {
+            "reward": 13.625,
+            "hyperparameters": {
+                "entropy_coef": 0.0038550063967704774,
+                "critic_coef": 0.6417806625366211,
+                "a2c_coef": 0.26146591901779176
+            }
+        },
+        "1": {
+            "reward": 20.125,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 15.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0012755081988871098,
+                "critic_coef": 1.0772078037261963,
+                "a2c_coef": 0.07441329210996628
+            }
+        },
+        "3": {
+            "reward": 15.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 21.125,
+            "hyperparameters": {
+                "entropy_coef": 0.004475520458072424,
+                "critic_coef": 0.9696868062019348,
+                "a2c_coef": 0.19992797076702118
+            }
+        }
+    },
+    "21600": {
+        "0": {
+            "reward": 15.625,
+            "hyperparameters": {
+                "entropy_coef": 0.005370624549686909,
+                "critic_coef": 0.7757494449615479,
+                "a2c_coef": 0.15994237661361696
+            }
+        },
+        "1": {
+            "reward": 20.125,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 13.625,
+            "hyperparameters": {
+                "entropy_coef": 0.0012755081988871098,
+                "critic_coef": 1.0772078037261963,
+                "a2c_coef": 0.07441329210996628
+            }
+        },
+        "3": {
+            "reward": 21.125,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 13.25,
+            "hyperparameters": {
+                "entropy_coef": 0.004475520458072424,
+                "critic_coef": 0.9696868062019348,
+                "a2c_coef": 0.19992797076702118
+            }
+        }
+    },
+    "27000": {
+        "0": {
+            "reward": 29.0,
+            "hyperparameters": {
+                "entropy_coef": 0.005370624549686909,
+                "critic_coef": 0.7757494449615479,
+                "a2c_coef": 0.15994237661361696
+            }
+        },
+        "1": {
+            "reward": 22.5,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 14.625,
+            "hyperparameters": {
+                "entropy_coef": 0.0012755081988871098,
+                "critic_coef": 1.0772078037261963,
+                "a2c_coef": 0.07441329210996628
+            }
+        },
+        "3": {
+            "reward": 24.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 26.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.1557892084121704
+            }
+        }
+    },
+    "32400": {
+        "0": {
+            "reward": 17.875,
+            "hyperparameters": {
+                "entropy_coef": 0.005370624549686909,
+                "critic_coef": 0.7757494449615479,
+                "a2c_coef": 0.15994237661361696
+            }
+        },
+        "1": {
+            "reward": 18.5,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 19.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004296499639749527,
+                "critic_coef": 0.6205995559692383,
+                "a2c_coef": 0.19193085193634035
+            }
+        },
+        "3": {
+            "reward": 18.25,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 18.0,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.1557892084121704
+            }
+        }
+    },
+    "37800": {
+        "0": {
+            "reward": 16.375,
+            "hyperparameters": {
+                "entropy_coef": 0.003437199711799622,
+                "critic_coef": 0.744719467163086,
+                "a2c_coef": 0.2303170223236084
+            }
+        },
+        "1": {
+            "reward": 21.0,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 22.5,
+            "hyperparameters": {
+                "entropy_coef": 0.004296499639749527,
+                "critic_coef": 0.6205995559692383,
+                "a2c_coef": 0.19193085193634035
+            }
+        },
+        "3": {
+            "reward": 24.125,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 19.875,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.1557892084121704
+            }
+        }
+    },
+    "43200": {
+        "0": {
+            "reward": 22.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.10385947227478028
+            }
+        },
+        "1": {
+            "reward": 29.875,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 18.5,
+            "hyperparameters": {
+                "entropy_coef": 0.004296499639749527,
+                "critic_coef": 0.6205995559692383,
+                "a2c_coef": 0.19193085193634035
+            }
+        },
+        "3": {
+            "reward": 25.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 18.5,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.1557892084121704
+            }
+        }
+    },
+    "48600": {
+        "0": {
+            "reward": 33.5,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.10385947227478028
+            }
+        },
+        "1": {
+            "reward": 28.0,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 20.75,
+            "hyperparameters": {
+                "entropy_coef": 0.004296499639749527,
+                "critic_coef": 0.6205995559692383,
+                "a2c_coef": 0.19193085193634035
+            }
+        },
+        "3": {
+            "reward": 27.375,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 35.25,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "54000": {
+        "0": {
+            "reward": 29.0,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.10385947227478028
+            }
+        },
+        "1": {
+            "reward": 17.625,
+            "hyperparameters": {
+                "entropy_coef": 0.003715106099843979,
+                "critic_coef": 0.8356000900268555,
+                "a2c_coef": 0.1557892084121704
+            }
+        },
+        "2": {
+            "reward": 25.625,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "3": {
+            "reward": 18.5,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 32.625,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "59400": {
+        "0": {
+            "reward": 28.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.10385947227478028
+            }
+        },
+        "1": {
+            "reward": 29.625,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "2": {
+            "reward": 32.625,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "3": {
+            "reward": 23.375,
+            "hyperparameters": {
+                "entropy_coef": 0.004643882624804974,
+                "critic_coef": 1.0445001125335693,
+                "a2c_coef": 0.12982434034347534
+            }
+        },
+        "4": {
+            "reward": 29.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "64800": {
+        "0": {
+            "reward": 36.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.10385947227478028
+            }
+        },
+        "1": {
+            "reward": 25.875,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "2": {
+            "reward": 31.875,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "3": {
+            "reward": 31.5,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "4": {
+            "reward": 31.875,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "70200": {
+        "0": {
+            "reward": 26.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0055726591497659685,
+                "critic_coef": 1.2534001350402832,
+                "a2c_coef": 0.10385947227478028
+            }
+        },
+        "1": {
+            "reward": 41.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004458127319812775,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.08308757781982423
+            }
+        },
+        "2": {
+            "reward": 28.375,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "3": {
+            "reward": 35.5,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "4": {
+            "reward": 30.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "75600": {
+        "0": {
+            "reward": 32.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00534975278377533,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.06647006225585939
+            }
+        },
+        "1": {
+            "reward": 29.125,
+            "hyperparameters": {
+                "entropy_coef": 0.004458127319812775,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.08308757781982423
+            }
+        },
+        "2": {
+            "reward": 20.875,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "3": {
+            "reward": 31.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "4": {
+            "reward": 38.5,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "81000": {
+        "0": {
+            "reward": 51.625,
+            "hyperparameters": {
+                "entropy_coef": 0.00534975278377533,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.06647006225585939
+            }
+        },
+        "1": {
+            "reward": 44.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004458127319812775,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.08308757781982423
+            }
+        },
+        "2": {
+            "reward": 56.125,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 39.75,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "4": {
+            "reward": 66.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "86400": {
+        "0": {
+            "reward": 33.875,
+            "hyperparameters": {
+                "entropy_coef": 0.00534975278377533,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.06647006225585939
+            }
+        },
+        "1": {
+            "reward": 54.75,
+            "hyperparameters": {
+                "entropy_coef": 0.004458127319812775,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.08308757781982423
+            }
+        },
+        "2": {
+            "reward": 50.25,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 46.0,
+            "hyperparameters": {
+                "entropy_coef": 0.0053497527837753295,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "4": {
+            "reward": 53.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "91800": {
+        "0": {
+            "reward": 65.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0035665018558502203,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.09970509338378908
+            }
+        },
+        "1": {
+            "reward": 46.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004458127319812775,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.08308757781982423
+            }
+        },
+        "2": {
+            "reward": 80.125,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 70.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0053497527837753295,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "4": {
+            "reward": 57.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "97200": {
+        "0": {
+            "reward": 73.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0035665018558502203,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.09970509338378908
+            }
+        },
+        "1": {
+            "reward": 93.25,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.11964611206054687
+            }
+        },
+        "2": {
+            "reward": 94.125,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 57.875,
+            "hyperparameters": {
+                "entropy_coef": 0.0053497527837753295,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "4": {
+            "reward": 75.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "102600": {
+        "0": {
+            "reward": 61.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0035665018558502203,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.09970509338378908
+            }
+        },
+        "1": {
+            "reward": 91.25,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.11964611206054687
+            }
+        },
+        "2": {
+            "reward": 96.25,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 94.75,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 111.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "108000": {
+        "0": {
+            "reward": 146.625,
+            "hyperparameters": {
+                "entropy_coef": 0.0053497527837753295,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "1": {
+            "reward": 86.125,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.11964611206054687
+            }
+        },
+        "2": {
+            "reward": 90.75,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 140.25,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 133.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "113400": {
+        "0": {
+            "reward": 147.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0053497527837753295,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "1": {
+            "reward": 89.75,
+            "hyperparameters": {
+                "entropy_coef": 0.006419703340530395,
+                "critic_coef": 0.6417408691406251,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "2": {
+            "reward": 143.125,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 96.875,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 166.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "118800": {
+        "0": {
+            "reward": 50.875,
+            "hyperparameters": {
+                "entropy_coef": 0.0053497527837753295,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "1": {
+            "reward": 156.5,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "2": {
+            "reward": 142.875,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 143.5,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 199.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "124200": {
+        "0": {
+            "reward": 160.5,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 220.5,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "2": {
+            "reward": 160.5,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "3": {
+            "reward": 321.625,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 312.125,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "129600": {
+        "0": {
+            "reward": 397.75,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 73.625,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 0.8021760864257813,
+                "a2c_coef": 0.1495576400756836
+            }
+        },
+        "2": {
+            "reward": 290.0,
+            "hyperparameters": {
+                "entropy_coef": 0.0034238417816162114,
+                "critic_coef": 1.155133564453125,
+                "a2c_coef": 0.21536300170898437
+            }
+        },
+        "3": {
+            "reward": 140.625,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 434.75,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "135000": {
+        "0": {
+            "reward": 447.625,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "2": {
+            "reward": 274.25,
+            "hyperparameters": {
+                "entropy_coef": 0.0034238417816162114,
+                "critic_coef": 1.155133564453125,
+                "a2c_coef": 0.21536300170898437
+            }
+        },
+        "3": {
+            "reward": 437.625,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 492.375,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "140400": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 156.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "2": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "145800": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.17946916809082028
+            }
+        },
+        "2": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.0044581273198127745,
+                "critic_coef": 1.0027201080322266,
+                "a2c_coef": 0.18694705009460447
+            }
+        }
+    },
+    "151200": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 442.25,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.17946916809082028
+            }
+        },
+        "2": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 467.125,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        }
+    },
+    "156600": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.17946916809082028
+            }
+        },
+        "2": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        }
+    },
+    "162000": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.17946916809082028
+            }
+        },
+        "2": {
+            "reward": 435.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.17946916809082028
+            }
+        }
+    },
+    "167400": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.17946916809082028
+            }
+        },
+        "2": {
+            "reward": 229.5,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 449.25,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.17946916809082028
+            }
+        }
+    },
+    "172800": {
+        "0": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.00356650185585022,
+                "critic_coef": 1.203264129638672,
+                "a2c_coef": 0.22433646011352534
+            }
+        },
+        "1": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.17946916809082028
+            }
+        },
+        "2": {
+            "reward": 474.375,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.2692037521362304
+            }
+        },
+        "3": {
+            "reward": 500.0,
+            "hyperparameters": {
+                "entropy_coef": 0.004279802227020264,
+                "critic_coef": 1.4439169555664062,
+                "a2c_coef": 0.1794691680908203
+            }
+        },
+        "4": {
+            "reward": 166.125,
+            "hyperparameters": {
+                "entropy_coef": 0.002853201484680176,
+                "critic_coef": 0.9626113037109376,
+                "a2c_coef": 0.17946916809082028
+            }
+        }
+    }
+}
