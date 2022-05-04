@@ -1,3 +1,4 @@
+import json
 import torch
 from matplotlib import pyplot as plt
 from salina import instantiate_class
@@ -29,16 +30,33 @@ def plot_hyperparams(agents_list):
 
 class CrewardsLogger:
     def __init__(self) -> None:
-        self.crewards: torch.Tensor = torch.tensor([]) # An empty tensor of the form ([ [],[],[] ], [ [],[],[] ], ...)
+        self.data = {}
 
-    def log_epoch(self, timestep, crewards):
+    def log_epoch(self, timestep, crewards, agents):
+        self.data[timestep] = {}
+        for (i, a) in enumerate(agents):
+            # Prepare the hyperparameters
+            hyperparams = {}
+            for hyperparam in a.action_agent.a2c_agent.params.keys():
+                hyperparams[hyperparam] = float(
+                    a.action_agent.a2c_agent.params[hyperparam])
+
+            # Write the entry for the agent
+            self.data[timestep][i] = {
+                "reward": crewards[i].item(),
+                "hyperparameters": hyperparams
+            }
+    
+    def save(self):
+        with open('/home/acmc/repos/projet-recherche-lu3in013-2022/output.json', 'w') as outfile:
+            json.dump(self.data, outfile, indent=4)
+
+    def open(self, file):
+        with open(file, 'r') as handle:
+            self.data = json.load(handle)
+
+    def show(self):
         plt.close() # Clear the last figure
-        mean_of_crewards = crewards.mean()
-        std = crewards.std()
-
-
-        tensor_to_cat = torch.tensor([timestep, mean_of_crewards, std]).unsqueeze(-1) # Gives us a tensor like [[timestep], [mean_of_crewards]] 
-        self.crewards = torch.cat((self.crewards, tensor_to_cat), dim=1)
         self.fig, self.ax = plt.subplots()
         self.ax.set_ylim([self.crewards[1].min(0)[0].item(), 0])
         plt.scatter(self.crewards[0], self.crewards[1])
@@ -47,6 +65,4 @@ class CrewardsLogger:
         self.ax.set(xlabel='timestep', ylabel='creward', title='Evolution of crewards')
         self.ax.grid()
         plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/fig.png')
-    
-    def show(self):
         plt.show()

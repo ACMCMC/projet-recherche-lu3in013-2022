@@ -158,7 +158,7 @@ def create_optimizer(cfg: OmegaConf, action_agent: Agent, critic_agent: Agent):
     return optimizer
 
 
-def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], data: Dict[int, Agent], logger: TFLogger):
+def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     # 1) Prepare the logger and initialize the variables
     epoch_logger = CrewardsLogger()
     total_timesteps = 0
@@ -206,35 +206,21 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], d
 
         mean_crewards = torch.mean(torch.stack(list(crewards.values())))
 
-        # TODO: Print the total num of timesteps
         logger.add_log("reward", mean_crewards, all_agents_total_timesteps)
+
+        epoch_logger.log_epoch(all_agents_total_timesteps, torch.tensor(list(crewards.values())), population)
+        epoch_logger.save()
+
+        #plot_hyperparams([a.action_agent.a2c_agent for a in population_o])
+
+        print('Cumulated rewards at epoch {}: {}'.format(
+            epoch, crewards.values()))
 
         # We will reorder the population according to their crewards, but we'll do it in a different list so that we retain the order of the original population
         population_r = population.copy()
 
         # We sort the agents by their performance
         sort_performance(population_r, crewards)
-
-        print('Cumulated rewards at epoch {}: {}'.format(
-            epoch, crewards.values()))
-
-        epoch_logger.log_epoch(all_agents_total_timesteps, torch.tensor(list(crewards.values())))
-        #plot_hyperparams([a.action_agent.a2c_agent for a in population_o])
-
-        data[all_agents_total_timesteps] = {}
-        for (i, a) in enumerate(population):
-            hyperparams = {}
-            for hyperparam in a.action_agent.a2c_agent.params.keys():
-                hyperparams[hyperparam] = 0.0
-            for hyperparam in hyperparams.keys():
-                hyperparams[hyperparam] = float(
-                    a.action_agent.a2c_agent.params[hyperparam])
-                # print(hyperparams)
-
-            data[all_agents_total_timesteps][i+1] = {
-                "creward": float(a.get_creward()),
-                "hyperparams": hyperparams
-            }
 
         for bad_agent in population_r[-1 * int(cfg.algorithm.pbt_portion * len(population_r)):]:
             # Select randomly one agent to replace the current one
@@ -248,8 +234,6 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], d
         #    workspace.zero_grad()
 
             # print(data)
-            with open('/home/diego/projet-recherche-lu3in013-2022/data.json', 'w') as outfile:
-                json.dump(data, outfile)
             # epoch_logger.show()
 
 
@@ -259,9 +243,8 @@ def main(cfg):
     logger = Logger(cfg)
     torch.manual_seed(cfg.algorithm.stochasticity_seed)
     population, workspaces = create_population(cfg)
-    data = {}
     #population[0].load('/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_28.pickle', cfg)
-    train(cfg, population, workspaces, data, logger=logger)
+    train(cfg, population, workspaces, logger=logger)
 
 
 if __name__ == '__main__':
