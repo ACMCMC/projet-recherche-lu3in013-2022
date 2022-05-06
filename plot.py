@@ -74,6 +74,7 @@ class CrewardsLogger:
     def start_plot(self):
         plt.close()
         self.fig, self.ax = plt.subplots()
+        self.fig.set_size_inches(10,6)
         self.ax.get_xaxis().set_major_locator(ticker.AutoLocator())
     
     def end_plot(self, file):
@@ -86,10 +87,10 @@ class CrewardsLogger:
         agents = range(all_rewards.size(1))
         mean_rewards = all_rewards.mean(1)
         for a in agents:
-            plt.plot(timesteps, all_rewards.select(1, a), alpha=0.2, color='gray')
+            plt.plot(timesteps, all_rewards.select(1, a), color='#cccccc', linewidth=0.5)
         plt.scatter(timesteps, mean_rewards, color=line_color)
         plt.plot(timesteps, mean_rewards, color=line_color)
-        self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
+        self.ax.set(xlabel='timestep', ylabel='reward', title='Évolutions individuelles de la récompense')
         self.ax.grid()
 
     def plot_rewards_mean_and_std(self, line_color='blue'):
@@ -98,10 +99,10 @@ class CrewardsLogger:
         self.ax.set_ylim([0, all_rewards.max().item()])
         mean_rewards = all_rewards.mean(1)
         std_rewards = all_rewards.std(1)
+        plt.fill_between(timesteps, mean_rewards - std_rewards, mean_rewards + std_rewards, color='#cccccc')
         plt.scatter(timesteps, mean_rewards, color=line_color)
         plt.plot(timesteps, mean_rewards, color=line_color)
-        plt.fill_between(timesteps, mean_rewards - std_rewards, mean_rewards + std_rewards, alpha=0.5, color=line_color)
-        self.ax.set(xlabel='timestep', ylabel='reward', title='Evolution of rewards')
+        self.ax.set(xlabel='timestep', ylabel='reward', title='Moyenne et écart type des récompenses')
         self.ax.grid()
     
     def plot_hyperparam_individuals(self, hyperparam, line_color='blue'):
@@ -111,10 +112,10 @@ class CrewardsLogger:
         agents = range(all_values.size(1))
         mean_values = all_values.mean(1)
         for a in agents:
-            plt.plot(timesteps, all_values.select(1, a), alpha=0.2, color='gray')
+            plt.plot(timesteps, all_values.select(1, a), color='#cccccc', linewidth=0.5)
         plt.scatter(timesteps, mean_values, color=line_color)
         plt.plot(timesteps, mean_values, color=line_color)
-        self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Evolution of ' + hyperparam)
+        self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Évolutions individuelles de ' + hyperparam)
         self.ax.grid(which='major')
 
     def plot_hyperparam_mean_and_std(self, hyperparam, line_color='blue'):
@@ -123,15 +124,15 @@ class CrewardsLogger:
         self.ax.set_ylim([0, all_values.max().item()])
         mean_values = all_values.mean(1)
         std_values = all_values.std(1)
+        plt.fill_between(timesteps, mean_values - std_values, mean_values + std_values, color='#cccccc')
         plt.scatter(timesteps, mean_values, color=line_color)
         plt.plot(timesteps, mean_values, color=line_color)
-        plt.fill_between(timesteps, mean_values - std_values, mean_values + std_values, alpha=0.5, color=line_color)
-        self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Evolution of ' + hyperparam)
+        self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Moyenne et écart type de ' + hyperparam)
         self.ax.grid(which='major')
 
 
 if __name__ == "__main__":
-    size = 100
+    size = 40
 
     logger = CrewardsLogger()
     logger.open('./output_size_{}.json'.format(size))
