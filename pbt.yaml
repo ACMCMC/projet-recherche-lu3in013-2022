@@ -7,7 +7,7 @@ logger:
   verbose: False
 
 algorithm:
-  max_epochs: 1000
+  max_epochs: 5000
   population_size: 10
   num_timesteps: 16
   train_budget: 1000
