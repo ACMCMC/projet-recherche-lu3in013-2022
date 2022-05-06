@@ -2,6 +2,7 @@ import math
 import multiprocessing
 from copy import deepcopy
 from typing import Union
+from salina.rl.functional import gae
 
 import hydra
 import omegaconf
@@ -51,7 +52,7 @@ class A2CAgent(salina.TAgent):
     '''This agent implements an Advantage Actor-Critic agent (A2C).
     The hyperparameters of the agent are customizable.'''
 
-    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, stochastic=True, std_param=None, discount_factor=0.95):
+    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, stochastic=True, std_param=None):
         super().__init__()
         # Create the action neural network
         # We use a function that takes a list of layer sizes and returns the neural network
@@ -61,7 +62,6 @@ class A2CAgent(salina.TAgent):
         self.hidden_layer_sizes = hidden_layer_sizes # The sizes of the hidden layers
         self.action_size = action_size # The size of the actions (output of the action model)
         self.stochastic = stochastic # Whether to use stochastic or deterministic actions
-        self.discount_factor = discount_factor # The discount factor for the temporal difference
         self.params = omegaconf.DictConfig(content=parameters) # The hyperparameters of the agent
         if std_param is None:
             init_variance = torch.randn(action_size, 1)
@@ -97,7 +97,7 @@ class A2CAgent(salina.TAgent):
         return v
     
     def compute_a2c_loss(self, action_logprobs: torch.Tensor, td: float) -> float:
-        a2c_loss = action_logprobs[:-1] * td.detach() # TODO: Is it OK to calculate it like this?
+        a2c_loss = action_logprobs[:-1] * td.detach()
         return a2c_loss.mean()
 
     def get_hyperparameter(self, param_name):
@@ -106,22 +106,28 @@ class A2CAgent(salina.TAgent):
     def set_hyperparameter(self, param_name, value):
         self.params[param_name] = value
 
-    def compute_critic_loss(self, reward, done, critic) -> Union[float, float]:
+    def compute_critic_loss(self, cfg, reward, must_bootstrap, critic) -> Union[float, float]:
         # Compute temporal difference
-        target = reward[1:] + self.discount_factor * critic[1:].detach() * (1 - done[1:].float())
-        td = target - critic[:-1]
+        # target = reward[:-1] + cfg.algorithm.discount_factor * critic[1:].detach() * (must_bootstrap.float())
+        # td = target - critic[:-1]
+        td = gae(critic, reward, must_bootstrap, cfg.algorithm.discount_factor, cfg.algorithm.gae)
 
         # Compute critic loss
         td_error = td ** 2
         critic_loss = td_error.mean()
         return critic_loss, td
     
-    def compute_loss(self, workspace: Workspace, timestep, logger) -> float:
-        critic, done, action_logprobs, reward, action, entropy = workspace[
-            "critic", "env/done", "action_logprobs", "env/reward", "action", "entropy"
+    def compute_loss(self, cfg, train_workspace: Workspace, timestep, logger) -> float:
+        entropy = train_workspace["entropy"]
+
+        transition_workspace = get_transitions(train_workspace)
+        critic, done, action_logprobs, reward, action, truncated = transition_workspace[
+            "critic", "env/done", "action_logprobs", "env/reward", "action", "env/truncated"
         ]
 
-        critic_loss, td = self.compute_critic_loss(reward, done, critic)
+        must_bootstrap = torch.logical_or(~done[1], truncated[1])
+
+        critic_loss, td = self.compute_critic_loss(cfg, reward, must_bootstrap, critic)
 
         entropy_loss = entropy.mean()
 
@@ -137,13 +143,42 @@ class A2CAgent(salina.TAgent):
 
         return loss
 
+def get_transitions(workspace):
+    """
+    Takes in a workspace from salina:
+    [(step1),(step2),(step3), ... ]
+    return a workspace of transitions :
+    [
+        [step1,step2],
+        [step2,step3]
+        ...
+    ]
+    Filters every transitions [step_final,step_initial]
+    """
+    transitions = {}
+    done = workspace["env/done"][:-1]
+    for key in workspace.keys():
+        array = workspace[key]
+
+        # Now, we remove the transitions of the form (terminal_state -> initial_state)
+        x = array[:-1][~done]
+        x_next = array[1:][~done]
+        transitions[key] = torch.stack([x, x_next])
+    
+    workspace_without_transitions = Workspace()
+    for k,v in transitions.items():
+        workspace_without_transitions.set_full(k, v)
+    
+    return workspace_without_transitions
+
+
 
 class A2CParameterizedAgent(salina.TAgent):
     '''
     This agent is in charge of mutating the hyperparameters of an A2C agent.
     '''
 
-    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, mutation_rate, stochastic=True, discount_factor=0.95):
+    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, mutation_rate, stochastic=True):
         super().__init__()
 
         self.mutation_rate = mutation_rate
@@ -155,7 +190,7 @@ class A2CParameterizedAgent(salina.TAgent):
             self.params_metadata[param] = {'min': parameters[param].min, 'max': parameters[param].max}
             simplified_parameters[param] = generated_val
 
-        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_sizes=hidden_layer_sizes, action_size=action_size, stochastic=stochastic, discount_factor=discount_factor)
+        self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_sizes=hidden_layer_sizes, action_size=action_size, stochastic=stochastic)
         
     def mutate_hyperparameters(self):
         '''This function mutates, randomly, all the hyperparameters of this agent, according to the mutation rate'''
@@ -173,11 +208,11 @@ class A2CParameterizedAgent(salina.TAgent):
     def get_agent(self):
         return self.a2c_agent
 
-    def compute_critic_loss(self, reward, done, critic):
-        return self.a2c_agent.compute_critic_loss(reward, done, critic)
+    def compute_critic_loss(self, **kwargs):
+        return self.a2c_agent.compute_critic_loss(**kwargs)
     
-    def compute_a2c_loss(self, action_probs, action, td):
-        return self.a2c_agent.compute_a2c_loss(action_probs, action)
+    def compute_a2c_loss(self, **kwargs):
+        return self.a2c_agent.compute_a2c_loss(**kwargs)
 
     def copy(self, other):
         self.a2c_agent = deepcopy(other.get_agent())
@@ -244,7 +279,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
             steps = (workspace.time_size() - 1) * workspace.batch_size()
             consumed_budget += steps
             
-            loss = action_agent.compute_loss(workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+            loss = action_agent.compute_loss(cfg=cfg, workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
             reward = get_creward(eval_agent)
 
@@ -258,6 +293,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
 
             optimizer.zero_grad()
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(action_agent.parameters(), cfg.max_grad_norm)
             optimizer.step()
         
         total_timesteps += consumed_budget

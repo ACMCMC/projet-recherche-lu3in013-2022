@@ -18,6 +18,8 @@ algorithm:
   mutation_rate: 0.2
   pbt_portion: 0.2
   discount_factor: 0.95
+  gae: 0.3
+  max_grad_norm: 0.5
   hyperparameters:
     entropy_coef:
       min: 0.0001
