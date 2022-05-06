@@ -76,8 +76,8 @@ class CustomLogger:
         self.fig, self.ax = plt.subplots()
         self.fig.set_size_inches(10,6)
         self.ax.get_xaxis().set_major_locator(ticker.AutoLocator())
-        self.ax.ticklabel_format(axis='both', style='sci')
         self.ax.grid()
+        self.ax.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
     
     def end_plot(self, file):
         plt.savefig(file)
@@ -135,9 +135,9 @@ class CustomLogger:
 if __name__ == "__main__":
     for size in [5, 10, 20, 40, 100]:
         logger = CustomLogger()
-        logger.open('./output_size_{}.json'.format(size))
+        logger.open('./output_size_{}.json'.format(10))
 
-        output_dir = './graphs/size_{}/'.format(size)
+        output_dir = './graphs/size_{}/'.format(10)
 
         # Graphs in PNG
         logger.start_plot()

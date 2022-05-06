@@ -271,15 +271,6 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
             
             loss = action_agent.compute_loss(cfg=cfg, train_workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
-            reward = get_creward(eval_agent)
-
-            logger.add_log("reward", reward, total_timesteps + consumed_budget)
-
-            if (reward > max_reward):
-                max_reward = reward
-                save_agent = Agents(action_agent, tcritic_agent.agent)
-                save_model(save_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(reward)))
-                print('Saved agent')
 
             optimizer.zero_grad()
             loss.backward()
@@ -288,8 +279,17 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
         
         total_timesteps += consumed_budget
 
-        # They have all finished executing
         print('Finished epoch {}'.format(epoch))
+
+        reward = get_creward(eval_agent)
+
+        logger.add_log("reward", reward, total_timesteps)
+
+        if (reward > max_reward):
+            max_reward = reward
+            save_agent = Agents(action_agent, tcritic_agent.agent)
+            save_model(save_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(reward)))
+            print('Saved agent')
         
 
 @hydra.main(config_path=".", config_name="pbt.yaml")

@@ -7,12 +7,12 @@ logger:
   verbose: False
 
 algorithm:
-  max_epochs: 5000
+  max_epochs: 10000
   population_size: 10
-  num_timesteps: 16
-  train_budget: 1000
-  stochasticity_seed: 100
-  number_environments: 8
+  num_timesteps: 8
+  train_budget: 100
+  stochasticity_seed: 5
+  number_environments: 1
   neural_network:
     hidden_layer_sizes: [64, 64]
   mutation_rate: 0.2
@@ -22,19 +22,19 @@ algorithm:
   max_grad_norm: 0.5
   hyperparameters:
     entropy_coef:
-      min: 0.0
+      min: 2.55e-7
       max: 0.05
     critic_coef:
-      min: 0.5
-      max: 1.5
+      min: 0.4
+      max: 1.6
     a2c_coef:
-      min: 0.0
-      max: 2.0
+      min: 1.0
+      max: 1.9
 
 env:
   classname: env.make_gym_env
   env_name: Pendulum-v1
-  max_episode_steps: 500
+  max_episode_steps: 200
 
 optimizer:
   classname: torch.optim.Adam
