@@ -1,6 +1,6 @@
 import gym
 from omegaconf import OmegaConf
-from .gym import AutoResetGymAgent, NoAutoResetGymAgent
+from .gym_agents import AutoResetGymAgent, NoAutoResetGymAgent
 from salina import get_class, get_arguments, instantiate_class
 
 class NoAutoResetEnvAgent(NoAutoResetGymAgent):
@@ -9,8 +9,9 @@ class NoAutoResetEnvAgent(NoAutoResetGymAgent):
     '''
     def __init__(self, cfg: OmegaConf):
         super().__init__(
-            get_class(cfg.env),
-            get_arguments(cfg.env),
+            max_episode_steps=cfg.env.max_episode_steps,
+            make_env_fn=get_class(cfg.env),
+            make_env_args=get_arguments(cfg.env),
             n_envs=cfg.algorithm.number_environments
         )
         env = instantiate_class(cfg.env)
