@@ -34,7 +34,6 @@ algorithm:
 env:
   classname: env.make_gym_env
   env_name: CartPoleContinuous-v1
-  max_episode_steps: 500 # Pendulum: 200, CartPoleContinuous: 500
 
 optimizer:
   classname: torch.optim.Adam
