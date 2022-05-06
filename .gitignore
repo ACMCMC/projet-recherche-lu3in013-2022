@@ -1,10 +1,8 @@
 # Specific files to this repo
 outputs/
 .vscode
-*.png
 saved_agents/
 upmc_outputs/
-*.eps
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
