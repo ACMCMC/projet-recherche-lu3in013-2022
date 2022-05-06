@@ -1,5 +1,7 @@
+from datetime import datetime
 from ftplib import all_errors
 import json
+import os
 import sys
 import torch
 from matplotlib import pyplot as plt, ticker
@@ -32,8 +34,14 @@ def plot_hyperparams(agents_list):
     plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/hyperparams.png')
 
 class CustomLogger:
-    def __init__(self) -> None:
+    def __init__(self, config=None) -> None:
         self.data = {}
+        self.dir_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        if config:
+            self.environment_name = config.env.env_name
+            self.population_size = config.algorithm.population_size
+            self.output_location = os.path.join(self.dir_location, 'raw_data')
+            self.output_filename = os.path.join(self.output_location, 'output_{env}_{size}_{time}.json'.format(env=self.environment_name, size=self.population_size, time=datetime.now().strftime("%d-%m_%H:%M:%S")))
 
     def log_epoch(self, timestep, crewards, agents):
         self.data[timestep] = {}
@@ -51,11 +59,11 @@ class CustomLogger:
             }
     
     def save(self):
-        with open('/home/acmc/repos/projet-recherche-lu3in013-2022/output.json', 'w') as outfile:
+        with open(self.output_filename, 'w') as outfile:
             json.dump(self.data, outfile, indent=4)
 
     def open(self, file):
-        with open(file, 'r') as handle:
+        with open(os.path.join(self.dir_location, file), 'r') as handle:
             self.data = json.load(handle)
     
     def get_all_rewards(self):
@@ -134,12 +142,16 @@ class CustomLogger:
 
 
 if __name__ == "__main__":
-    size = int(sys.argv[1])
+    filename = sys.argv[1]
 
     logger = CustomLogger()
-    logger.open('./output_size_{}.json'.format(size))
+    logger.open(filename)
 
-    output_dir = './graphs/size_{}/'.format(size)
+    output_dir = 'graphs/{}/'.format(os.path.basename(filename))
+    try:
+        os.mkdir(output_dir) # Create the directory if it does not exist
+    except FileExistsError:
+        pass
 
     # Graphs in PNG
     logger.start_plot()

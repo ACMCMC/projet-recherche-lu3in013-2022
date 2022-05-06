@@ -244,7 +244,7 @@ def create_agent(cfg):
     return action_agent, tcritic_agent, train_agent, eval_agent, workspace
 
 def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalAgent, train_agent: TemporalAgent, eval_agent: TemporalAgent, workspace: Workspace, logger):
-    epoch_logger = CustomLogger()
+    epoch_logger = CustomLogger(cfg)
 
     total_timesteps = 0
     max_reward = 0
