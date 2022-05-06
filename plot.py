@@ -77,7 +77,7 @@ class CustomLogger:
         self.fig.set_size_inches(10,6)
         self.ax.get_xaxis().set_major_locator(ticker.AutoLocator())
         self.ax.grid()
-        self.ax.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+        self.ax.ticklabel_format(axis='x', style='sci', scilimits=(0,0))
     
     def end_plot(self, file):
         plt.savefig(file)
@@ -85,19 +85,19 @@ class CustomLogger:
     def plot_rewards_mean_and_individuals(self, line_color='blue'):
         timesteps = self.data.keys()
         all_rewards = self.get_all_rewards()
-        self.ax.set_ylim([0, all_rewards.max().item()])
+        self.ax.set_ylim([min(0, all_rewards.min().item()), max(0, all_rewards.max().item())])
         mean_rewards = all_rewards.mean(1)
         agents = range(all_rewards.size(1))
         timesteps = [int(t) / len(agents) for t in self.data.keys()]  # Adjust the timesteps, to show the number of timesteps that each agent has done
         for a in agents:
-            plt.plot(timesteps, all_rewards.select(1, a), color='grey', alpha=0.3, linewidth=0.3)
+            plt.plot(timesteps, all_rewards.select(1, a), color='grey', alpha=0.3, linewidth=1)
         #plt.scatter(timesteps, mean_rewards, color=line_color)
         plt.plot(timesteps, mean_rewards, color=line_color, linewidth=2)
         self.ax.set(xlabel='timestep', ylabel='reward', title='Évolutions individuelles de la récompense')
 
     def plot_rewards_mean_and_std(self, line_color='blue'):
         all_rewards = self.get_all_rewards()
-        self.ax.set_ylim([0, all_rewards.max().item()])
+        self.ax.set_ylim([min(0, all_rewards.min().item()), max(0, all_rewards.max().item())])
         mean_rewards = all_rewards.mean(1)
         std_rewards = all_rewards.std(1)
         agents = range(all_rewards.size(1))
@@ -114,7 +114,7 @@ class CustomLogger:
         timesteps = [int(t) / len(agents) for t in self.data.keys()]  # Adjust the timesteps, to show the number of timesteps that each agent has done
         mean_values = all_values.mean(1)
         for a in agents:
-            plt.plot(timesteps, all_values.select(1, a), color='grey', alpha=0.3, linewidth=0.3)
+            plt.plot(timesteps, all_values.select(1, a), color='grey', alpha=0.3, linewidth=1)
         #plt.scatter(timesteps, mean_values, color=line_color)
         plt.plot(timesteps, mean_values, color=line_color, linewidth=2)
         self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Évolutions individuelles de ' + hyperparam)
