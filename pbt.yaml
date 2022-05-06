@@ -9,8 +9,8 @@ logger:
 algorithm:
   max_epochs: 10000
   population_size: 10
-  num_timesteps: 8
-  train_budget: 100
+  num_timesteps: 16
+  train_budget: 500
   stochasticity_seed: 5
   number_environments: 1
   neural_network:
@@ -22,14 +22,14 @@ algorithm:
   max_grad_norm: 0.5
   hyperparameters:
     entropy_coef:
-      min: 2.55e-7
+      min: 1.0e-8
       max: 0.05
     critic_coef:
-      min: 0.4
-      max: 1.6
+      min: 0.2
+      max: 1.0
     a2c_coef:
-      min: 1.0
-      max: 1.9
+      min: 0.5
+      max: 1.5
 
 env:
   classname: env.make_gym_env
