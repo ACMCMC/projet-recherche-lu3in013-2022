@@ -15,7 +15,7 @@ from salina.agents.asynchronous import AsynchronousAgent
 from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from utils import build_nn, load_model, save_model
-from plot import CrewardsLogger, plot_hyperparams, Logger
+from plot import CustomLogger, plot_hyperparams, Logger
 
 def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
     if train_env_agent.is_action_space_continuous():
@@ -219,7 +219,7 @@ def create_agent(cfg):
     return action_agent, tcritic_agent, train_agent, eval_agent, workspace
 
 def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalAgent, train_agent: TemporalAgent, eval_agent: TemporalAgent, workspace: Workspace, logger):
-    epoch_logger = CrewardsLogger()
+    epoch_logger = CustomLogger()
 
     total_timesteps = 0
     max_reward = 0

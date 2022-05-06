@@ -19,7 +19,7 @@ from a2c import A2CParameterizedAgent, CriticAgent, create_a2c_agents
 
 from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
-from plot import CrewardsLogger, Logger, plot_hyperparams
+from plot import CustomLogger, Logger, plot_hyperparams
 from torch import nn
 
 from utils import load_model
@@ -160,7 +160,7 @@ def create_optimizer(cfg: OmegaConf, action_agent: Agent, critic_agent: Agent):
 
 def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], logger: TFLogger):
     # 1) Prepare the logger and initialize the variables
-    epoch_logger = CrewardsLogger()
+    epoch_logger = CustomLogger()
     total_timesteps = 0
 
     # 2) Train the agents

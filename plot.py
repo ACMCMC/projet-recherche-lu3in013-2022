@@ -30,7 +30,7 @@ def plot_hyperparams(agents_list):
     plt.xticks(range(1, len(hyperparams) + 1), hyperparams.keys())
     plt.savefig('/home/acmc/repos/projet-recherche-lu3in013-2022/hyperparams.png')
 
-class CrewardsLogger:
+class CustomLogger:
     def __init__(self) -> None:
         self.data = {}
 
@@ -90,9 +90,9 @@ class CrewardsLogger:
         agents = range(all_rewards.size(1))
         timesteps = [int(t) / len(agents) for t in self.data.keys()]  # Adjust the timesteps, to show the number of timesteps that each agent has done
         for a in agents:
-            plt.plot(timesteps, all_rewards.select(1, a), color='grey', alpha=0.2, linewidth=0.2)
+            plt.plot(timesteps, all_rewards.select(1, a), color='grey', alpha=0.3, linewidth=0.3)
         #plt.scatter(timesteps, mean_rewards, color=line_color)
-        plt.plot(timesteps, mean_rewards, color=line_color, linewidth=3)
+        plt.plot(timesteps, mean_rewards, color=line_color, linewidth=2)
         self.ax.set(xlabel='timestep', ylabel='reward', title='Évolutions individuelles de la récompense')
 
     def plot_rewards_mean_and_std(self, line_color='blue'):
@@ -104,7 +104,7 @@ class CrewardsLogger:
         timesteps = [int(t) / len(agents) for t in self.data.keys()]  # Adjust the timesteps, to show the number of timesteps that each agent has done
         plt.fill_between(timesteps, mean_rewards - std_rewards, mean_rewards + std_rewards, color=line_color, alpha=0.5)
         #plt.scatter(timesteps, mean_rewards, color=line_color)
-        plt.plot(timesteps, mean_rewards, color=line_color, linewidth=3)
+        plt.plot(timesteps, mean_rewards, color=line_color, linewidth=2)
         self.ax.set(xlabel='timestep', ylabel='reward', title='Moyenne et écart type des récompenses')
     
     def plot_hyperparam_individuals(self, hyperparam, line_color='blue'):
@@ -114,9 +114,9 @@ class CrewardsLogger:
         timesteps = [int(t) / len(agents) for t in self.data.keys()]  # Adjust the timesteps, to show the number of timesteps that each agent has done
         mean_values = all_values.mean(1)
         for a in agents:
-            plt.plot(timesteps, all_values.select(1, a), color='grey', alpha=0.2, linewidth=0.2)
+            plt.plot(timesteps, all_values.select(1, a), color='grey', alpha=0.3, linewidth=0.3)
         #plt.scatter(timesteps, mean_values, color=line_color)
-        plt.plot(timesteps, mean_values, color=line_color, linewidth=3)
+        plt.plot(timesteps, mean_values, color=line_color, linewidth=2)
         self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Évolutions individuelles de ' + hyperparam)
 
     def plot_hyperparam_mean_and_std(self, hyperparam, line_color='blue'):
@@ -128,13 +128,13 @@ class CrewardsLogger:
         timesteps = [int(t) / len(agents) for t in self.data.keys()]  # Adjust the timesteps, to show the number of timesteps that each agent has done
         plt.fill_between(timesteps, mean_values - std_values, mean_values + std_values, color=line_color, alpha=0.5)
         #plt.scatter(timesteps, mean_values, color=line_color)
-        plt.plot(timesteps, mean_values, color=line_color, linewidth=3)
+        plt.plot(timesteps, mean_values, color=line_color, linewidth=2)
         self.ax.set(xlabel='timestep', ylabel=hyperparam, title='Moyenne et écart type de ' + hyperparam)
 
 
 if __name__ == "__main__":
     for size in [5, 10, 20, 40, 100]:
-        logger = CrewardsLogger()
+        logger = CustomLogger()
         logger.open('./output_size_{}.json'.format(size))
 
         output_dir = './graphs/size_{}/'.format(size)
