@@ -34,3 +34,20 @@ def load_model(filename):
     """
     net = torch.load(filename)
     return net
+
+def gae(critic, reward, must_bootstrap, discount_factor, gae_coef):
+    mb = must_bootstrap.float()
+    td = reward[:-1] + discount_factor * critic[1:].detach() * mb - critic[:-1]
+    # handling td0 case
+    if gae_coef == 0.0:
+        return td
+
+    td_shape = td.shape[0]
+    gae_val = td[-1]
+    gae_vals = [gae_val]
+    for t in range(td_shape - 2, -1, -1):
+        gae_val = td[t] + discount_factor * gae_coef * mb[:-1][t] * gae_val
+        gae_vals.append(gae_val)
+    gae_vals = list([g.unsqueeze(0) for g in reversed(gae_vals)])
+    gae_vals = torch.cat(gae_vals, dim=0)
+    return gae_vals

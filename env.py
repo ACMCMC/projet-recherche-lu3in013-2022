@@ -1,7 +1,11 @@
 import gym
+from gym.wrappers import TimeLimit
 from omegaconf import OmegaConf
-from .gym_agents import AutoResetGymAgent, NoAutoResetGymAgent
+from gym_agents import AutoResetGymAgent, NoAutoResetGymAgent
 from salina import get_class, get_arguments, instantiate_class
+
+def make_gym_env(max_episode_steps, env_name):
+    return TimeLimit(gym.make(env_name), max_episode_steps=max_episode_steps)
 
 class NoAutoResetEnvAgent(NoAutoResetGymAgent):
     '''
@@ -47,8 +51,9 @@ class AutoResetEnvAgent(AutoResetGymAgent):
     '''
     def __init__(self, cfg: OmegaConf):
         super().__init__(
-            get_class(cfg.env),
-            get_arguments(cfg.env),
+            max_episode_steps=cfg.env.max_episode_steps,
+            make_env_fn=get_class(cfg.env),
+            make_env_args=get_arguments(cfg.env),
             n_envs=cfg.algorithm.number_environments
         )
         env = instantiate_class(cfg.env)

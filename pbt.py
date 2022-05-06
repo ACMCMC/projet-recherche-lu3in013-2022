@@ -1,33 +1,21 @@
 from copy import deepcopy
-import multiprocessing
 from typing import Dict, List
 
-import gym
 import hydra
 import matplotlib.pyplot as plt
 import torch
-import json
-from gym.wrappers import TimeLimit
 from omegaconf import OmegaConf
 from salina import (Agent, Workspace, get_arguments, get_class,
                     instantiate_class)
 from salina.agents import Agents, TemporalAgent
 from salina.logger import TFLogger
-from a2c import A2CParameterizedAgent, CriticAgent, create_a2c_agents
+from a2c import create_a2c_agents
 
-from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from plot import CustomLogger, Logger, plot_hyperparams
 from torch import nn
 
 from utils import load_model
-
-
-def make_env(**kwargs) -> gym.Env:
-    # We set a timestep limit on the environment of max_episode_steps
-    # We can also add a seed to the environment here
-    return TimeLimit(gym.make(kwargs['env_name']), kwargs['max_episode_steps'])
-
 
 def visualize_performances(workspaces: List[Workspace]):
     # We visualize the performances of the agents
@@ -71,14 +59,14 @@ class PBTAgent:
     This class contains all the necessary agents for one member of the population.
     '''
 
-    def __init__(self, cfg: OmegaConf) -> None:
+    def __init__(self, cfg: OmegaConf, kwargs_action_agent=None) -> None:
         # 1) Start by creating the environment agents
         self.train_env_agent = AutoResetEnvAgent(cfg)
         self.eval_env_agent = NoAutoResetEnvAgent(cfg)
 
         # 2) Create all the agents that we'll use for training and evaluating
         self.train_agent, self.eval_agent, self.action_agent, self.critic_agent = create_a2c_agents(
-            cfg, self.train_env_agent, self.eval_env_agent)
+            cfg, self.train_env_agent, self.eval_env_agent, kwargs_action_agent=kwargs_action_agent)
 
         # 3) Create the tcritic_agent, which will be used to compute the value of each state
         self.tcritic_agent = TemporalAgent(self.critic_agent)
@@ -128,6 +116,9 @@ class PBTAgent:
         restore_agent.load_state_dict(load_model(path))
         self.optimizer = create_optimizer(
             cfg, self.action_agent, self.critic_agent)
+    
+    def train_parameters(self):
+        return self.train_agent.parameters()
 
 
 def create_population(cfg):
@@ -135,9 +126,15 @@ def create_population(cfg):
     population = []  # Population staying in the same order
     workspaces = {}  # A dictionary of the workspace of each agent
 
+    # We'll generate evenly spaced initialization values for the hyperparameters, each agent will get one of them
+    initializations = {}
+    for k in cfg.algorithm.hyperparameters:
+        initializations[k] = torch.linspace(cfg.algorithm.hyperparameters[k]['min'], cfg.algorithm.hyperparameters[k]['max'], cfg.algorithm.population_size)
+
     for i in range(cfg.algorithm.population_size):
         # 1) Create the necessary agents
-        pbt_agent = PBTAgent(cfg)
+        initialization_values = {k: initializations[k][i].item() for k in initializations}
+        pbt_agent = PBTAgent(cfg, kwargs_action_agent={'generated_parameters': initialization_values})
 
         # 2) Create the workspace of the agent
         workspace = Workspace()
@@ -182,11 +179,12 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
                 consumed_budget += steps
 
                 loss = agent.compute_loss(
-                    workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+                    cfg=cfg, train_workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
                 optimizer = agent.optimizer
                 optimizer.zero_grad()
-                loss.sum().backward()
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(agent.train_parameters(), cfg.algorithm.max_grad_norm)
                 optimizer.step()
 
         total_timesteps += consumed_budget

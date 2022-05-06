@@ -2,7 +2,6 @@ import math
 import multiprocessing
 from copy import deepcopy
 from typing import Union
-from salina.rl.functional import gae
 
 import hydra
 import omegaconf
@@ -13,16 +12,15 @@ from salina import Workspace, get_arguments, get_class
 from salina.agents import Agents, TemporalAgent
 from salina.agents.asynchronous import AsynchronousAgent
 
-from common import get_cumulated_reward
 from env import AutoResetEnvAgent, NoAutoResetEnvAgent
-from utils import build_nn, load_model, save_model
+from utils import build_nn, load_model, save_model, gae
 from plot import CustomLogger, plot_hyperparams, Logger
 
-def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
+def create_a2c_agents(cfg, train_env_agent, eval_env_agent, kwargs_action_agent={}):
     if train_env_agent.is_action_space_continuous():
         observation_size = train_env_agent.get_observation_size()
         action_size = train_env_agent.get_action_size()
-        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate)
+        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, **kwargs_action_agent)
         critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
         train_agent = Agents(train_env_agent, a2c_agent, critic_agent)
         eval_agent = Agents(eval_env_agent, a2c_agent)
@@ -56,7 +54,7 @@ class A2CAgent(salina.TAgent):
         super().__init__()
         # Create the action neural network
         # We use a function that takes a list of layer sizes and returns the neural network
-        self.action_model = build_nn([observation_size] + list(hidden_layer_sizes) + [action_size], output_activation=nn.Tanh, activation=nn.ReLU)
+        self.action_model = build_nn([observation_size] + list(hidden_layer_sizes) + [action_size], activation=nn.ReLU)
 
         self.observation_size = observation_size # The size of the observations
         self.hidden_layer_sizes = hidden_layer_sizes # The sizes of the hidden layers
@@ -77,25 +75,15 @@ class A2CAgent(salina.TAgent):
         self.set(("entropy", t), dist.entropy())
 
         if self.stochastic:
-            action = torch.tanh(dist.sample())
+            action = dist.sample()
         else:
-            action = torch.tanh(scores)
+            action = scores
 
         logprobs = dist.log_prob(action).sum(axis=-1)
 
         self.set(("action", t), action)
         self.set(("action_logprobs", t), logprobs)
 
-    @staticmethod
-    def _index_3d_tensor_with_2d_tensor(tensor_3d: torch.Tensor, tensor_2d: torch.Tensor):
-        # TODO: What is the purpose of this function?
-        x, y, z = tensor_3d.size()
-        t = tensor_3d.reshape(x*y, z)
-        tt = tensor_2d.reshape(x*y)
-        v = t[torch.arrange(x*y), tt]
-        v = v.reshape(x, y)
-        return v
-    
     def compute_a2c_loss(self, action_logprobs: torch.Tensor, td: float) -> float:
         a2c_loss = action_logprobs[:-1] * td.detach()
         return a2c_loss.mean()
@@ -178,7 +166,7 @@ class A2CParameterizedAgent(salina.TAgent):
     This agent is in charge of mutating the hyperparameters of an A2C agent.
     '''
 
-    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, mutation_rate, stochastic=True):
+    def __init__(self, parameters, observation_size, hidden_layer_sizes, action_size, mutation_rate, stochastic=True, generated_parameters=None):
         super().__init__()
 
         self.mutation_rate = mutation_rate
@@ -186,9 +174,11 @@ class A2CParameterizedAgent(salina.TAgent):
         simplified_parameters = omegaconf.DictConfig(content={}) # The A2C Agent only sees a dictionary of (param_name, param_value) entries
         self.params_metadata = omegaconf.DictConfig(content={}) # This wrapper will store the metadata for the parameters of the A2C agent, so it knows how to change them when needed
         for param in parameters:
-            generated_val = torch.distributions.Uniform(parameters[param].min, parameters[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
+            if generated_parameters is None: # If no initialization for the parameters is provided, we use our own initialization
+                simplified_parameters[param] = torch.distributions.Uniform(parameters[param].min, parameters[param].max).sample().item() # We get a 0D tensor, so we do .item(), to get the value
+            else:
+                simplified_parameters[param] = generated_parameters[param]
             self.params_metadata[param] = {'min': parameters[param].min, 'max': parameters[param].max}
-            simplified_parameters[param] = generated_val
 
         self.a2c_agent = A2CAgent(parameters=simplified_parameters, observation_size=observation_size, hidden_layer_sizes=hidden_layer_sizes, action_size=action_size, stochastic=stochastic)
         
@@ -293,7 +283,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
 
             optimizer.zero_grad()
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(action_agent.parameters(), cfg.max_grad_norm)
+            torch.nn.utils.clip_grad_norm_(action_agent.parameters(), cfg.algorithm.max_grad_norm)
             optimizer.step()
         
         total_timesteps += consumed_budget
