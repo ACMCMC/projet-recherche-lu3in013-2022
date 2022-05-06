@@ -7,7 +7,7 @@ logger:
   verbose: False
 
 algorithm:
-  max_epochs: 10000
+  max_epochs: 250
   population_size: 10
   num_timesteps: 16
   train_budget: 500
@@ -33,7 +33,7 @@ algorithm:
 
 env:
   classname: env.make_gym_env
-  env_name: Pendulum-v1
+  env_name: CartPoleContinuous-v1
   max_episode_steps: 200
 
 optimizer:
