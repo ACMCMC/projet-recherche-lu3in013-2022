@@ -3,6 +3,7 @@ from gym.wrappers import TimeLimit
 from omegaconf import OmegaConf
 from gym_agents import AutoResetGymAgent, NoAutoResetGymAgent
 from salina import get_class, get_arguments, instantiate_class
+import my_gym
 
 def make_gym_env(max_episode_steps, env_name):
     return TimeLimit(gym.make(env_name), max_episode_steps=max_episode_steps)
