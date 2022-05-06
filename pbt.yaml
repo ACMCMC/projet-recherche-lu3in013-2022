@@ -7,18 +7,18 @@ logger:
   verbose: False
 
 algorithm:
-  max_epochs: 500
+  max_epochs: 1000
   population_size: 10
   num_timesteps: 16
   train_budget: 1000
   stochasticity_seed: 100
   number_environments: 8
   neural_network:
-    hidden_layer_sizes: [24, 36]
+    hidden_layer_sizes: [64, 64]
   mutation_rate: 0.2
   pbt_portion: 0.2
   discount_factor: 0.95
-  gae: 0.3
+  gae: 0.8
   max_grad_norm: 0.5
   hyperparameters:
     entropy_coef:
