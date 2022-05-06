@@ -22,7 +22,7 @@ def create_a2c_agents(cfg, train_env_agent, eval_env_agent):
     if train_env_agent.is_action_space_continuous():
         observation_size = train_env_agent.get_observation_size()
         action_size = train_env_agent.get_action_size()
-        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate, discount_factor=cfg.algorithm.discount_factor)
+        a2c_agent = A2CParameterizedAgent(cfg.algorithm.hyperparameters, observation_size, cfg.algorithm.neural_network.hidden_layer_sizes, action_size, cfg.algorithm.mutation_rate)
         critic_agent = CriticAgent(observation_size, cfg.algorithm.neural_network.hidden_layer_sizes)
         train_agent = Agents(train_env_agent, a2c_agent, critic_agent)
         eval_agent = Agents(eval_env_agent, a2c_agent)
@@ -279,7 +279,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
             steps = (workspace.time_size() - 1) * workspace.batch_size()
             consumed_budget += steps
             
-            loss = action_agent.compute_loss(cfg=cfg, workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
+            loss = action_agent.compute_loss(cfg=cfg, train_workspace=workspace, timestep=total_timesteps + consumed_budget, logger=logger)
 
             reward = get_creward(eval_agent)
 

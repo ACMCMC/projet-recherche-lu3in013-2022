@@ -1,6 +1,6 @@
 import gym
 from omegaconf import OmegaConf
-from salina.agents.gyma import AutoResetGymAgent, NoAutoResetGymAgent
+from .gym import AutoResetGymAgent, NoAutoResetGymAgent
 from salina import get_class, get_arguments, instantiate_class
 
 class NoAutoResetEnvAgent(NoAutoResetGymAgent):

@@ -12,8 +12,6 @@ from omegaconf import OmegaConf
 from salina import (Agent, Workspace, get_arguments, get_class,
                     instantiate_class)
 from salina.agents import Agents, TemporalAgent
-from salina.agents.asynchronous import AsynchronousAgent
-from salina.agents.gyma import AutoResetGymAgent
 from salina.logger import TFLogger
 from a2c import A2CParameterizedAgent, CriticAgent, create_a2c_agents
 
