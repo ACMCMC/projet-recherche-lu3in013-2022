@@ -12,9 +12,9 @@ algorithm:
   num_timesteps: 16
   train_budget: 500
   stochasticity_seed: 5
-  number_environments: 1
+  number_environments: 8
   neural_network:
-    hidden_layer_sizes: [64, 64]
+    hidden_layer_sizes: [25, 25] # Pendulum: [64,64]; CartPoleContinuous: [25,25]
   mutation_rate: 0.2
   pbt_portion: 0.2
   discount_factor: 0.95
@@ -34,7 +34,7 @@ algorithm:
 env:
   classname: env.make_gym_env
   env_name: CartPoleContinuous-v1
-  max_episode_steps: 200
+  max_episode_steps: 500 # Pendulum: 200, CartPoleContinuous: 500
 
 optimizer:
   classname: torch.optim.Adam
