@@ -314,72 +314,74 @@ if __name__ == "__main__":
     # python plot.py raw_data/output_Pendulum-v1_5_06-05_21:24:38.json raw_data/output_Pendulum-v1_10_06-05_22:32:19.json raw_data/output_Pendulum-v1_20_06-05_22:33:41.json raw_data/output_Pendulum-v1_40_06-05_22:34:33.json raw_data/output_Pendulum-v1_100_06-05_22:35:12.json
 
     filelist = []
-    for i in range(5):
-        filelist.append(sys.argv[i+1])
-    combined_dirname = re.sub(
-        r'(output_[^_]+_)\d+(.+)', r'\1all\2', filelist[0])
+    for i in sys.argv[1:]:
+        filelist.append(i)
 
-    output_dir = './graphs/{}/'.format(os.path.basename(combined_dirname))
-    try:
-        os.mkdir(output_dir)  # Create the directory if it does not exist
-    except FileExistsError:
-        pass
+    if len(sys.argv) == 6:
+        combined_dirname = re.sub(
+            r'(output_[^_]+_)\d+(.+)', r'\1all\2', filelist[0])
 
-    graphmaker = CombinedGraphMaker()
-    for i in filelist:
-        graphmaker.load(i)
+        output_dir = './graphs/{}/'.format(os.path.basename(combined_dirname))
+        try:
+            os.mkdir(output_dir)  # Create the directory if it does not exist
+        except FileExistsError:
+            pass
 
-    # Graphs in PNG
-    graphmaker.start_plot()
-    graphmaker.plot_rewards_mean_and_individuals()
-    graphmaker.end_plot(output_dir + 'reward_individuals.png')
-    graphmaker.start_plot()
-    graphmaker.plot_rewards_mean_and_std()
-    graphmaker.end_plot(output_dir + 'reward_std.png')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_individuals('a2c_coef')
-    graphmaker.end_plot(output_dir + 'a2c_coef_inds.png')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_mean_and_std('a2c_coef')
-    graphmaker.end_plot(output_dir + 'a2c_coef_mean_and_std.png')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_individuals('critic_coef')
-    graphmaker.end_plot(output_dir + 'critic_coef_inds.png')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_mean_and_std('critic_coef')
-    graphmaker.end_plot(output_dir + 'critic_coef_mean_and_std.png')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_individuals('entropy_coef')
-    graphmaker.end_plot(output_dir + 'entropy_coef_inds.png')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_mean_and_std('entropy_coef')
-    graphmaker.end_plot(output_dir + 'entropy_coef_mean_and_std.png')
+        graphmaker = CombinedGraphMaker()
+        for i in filelist:
+            graphmaker.load(i)
 
-    # Graphs in PDF, for LaTeX
-    graphmaker.start_plot()
-    graphmaker.plot_rewards_mean_and_individuals()
-    graphmaker.end_plot(output_dir + 'reward_individuals.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_rewards_mean_and_std()
-    graphmaker.end_plot(output_dir + 'reward_std.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_individuals('a2c_coef')
-    graphmaker.end_plot(output_dir + 'a2c_coef_inds.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_mean_and_std('a2c_coef')
-    graphmaker.end_plot(output_dir + 'a2c_coef_mean_and_std.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_individuals('critic_coef')
-    graphmaker.end_plot(output_dir + 'critic_coef_inds.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_mean_and_std('critic_coef')
-    graphmaker.end_plot(output_dir + 'critic_coef_mean_and_std.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_individuals('entropy_coef')
-    graphmaker.end_plot(output_dir + 'entropy_coef_inds.pdf')
-    graphmaker.start_plot()
-    graphmaker.plot_hyperparam_mean_and_std('entropy_coef')
-    graphmaker.end_plot(output_dir + 'entropy_coef_mean_and_std.pdf')
+        # Graphs in PNG
+        graphmaker.start_plot()
+        graphmaker.plot_rewards_mean_and_individuals()
+        graphmaker.end_plot(output_dir + 'reward_individuals.png')
+        graphmaker.start_plot()
+        graphmaker.plot_rewards_mean_and_std()
+        graphmaker.end_plot(output_dir + 'reward_std.png')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_individuals('a2c_coef')
+        graphmaker.end_plot(output_dir + 'a2c_coef_inds.png')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_mean_and_std('a2c_coef')
+        graphmaker.end_plot(output_dir + 'a2c_coef_mean_and_std.png')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_individuals('critic_coef')
+        graphmaker.end_plot(output_dir + 'critic_coef_inds.png')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_mean_and_std('critic_coef')
+        graphmaker.end_plot(output_dir + 'critic_coef_mean_and_std.png')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_individuals('entropy_coef')
+        graphmaker.end_plot(output_dir + 'entropy_coef_inds.png')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_mean_and_std('entropy_coef')
+        graphmaker.end_plot(output_dir + 'entropy_coef_mean_and_std.png')
+
+        # Graphs in PDF, for LaTeX
+        graphmaker.start_plot()
+        graphmaker.plot_rewards_mean_and_individuals()
+        graphmaker.end_plot(output_dir + 'reward_individuals.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_rewards_mean_and_std()
+        graphmaker.end_plot(output_dir + 'reward_std.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_individuals('a2c_coef')
+        graphmaker.end_plot(output_dir + 'a2c_coef_inds.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_mean_and_std('a2c_coef')
+        graphmaker.end_plot(output_dir + 'a2c_coef_mean_and_std.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_individuals('critic_coef')
+        graphmaker.end_plot(output_dir + 'critic_coef_inds.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_mean_and_std('critic_coef')
+        graphmaker.end_plot(output_dir + 'critic_coef_mean_and_std.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_individuals('entropy_coef')
+        graphmaker.end_plot(output_dir + 'entropy_coef_inds.pdf')
+        graphmaker.start_plot()
+        graphmaker.plot_hyperparam_mean_and_std('entropy_coef')
+        graphmaker.end_plot(output_dir + 'entropy_coef_mean_and_std.pdf')
 
     for file in filelist:
         output_dir = './graphs/{}/'.format(os.path.basename(file))
