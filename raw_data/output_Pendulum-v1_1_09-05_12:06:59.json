@@ -1,0 +1,5002 @@
+{
+    "600": {
+        "0": {
+            "reward": -1564.1221923828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "1200": {
+        "0": {
+            "reward": -1497.8851318359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "1800": {
+        "0": {
+            "reward": -1557.55859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "2400": {
+        "0": {
+            "reward": -1540.1943359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "3000": {
+        "0": {
+            "reward": -1573.153076171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "3600": {
+        "0": {
+            "reward": -1740.9610595703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "4200": {
+        "0": {
+            "reward": -1735.53759765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "4800": {
+        "0": {
+            "reward": -1819.310302734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "5400": {
+        "0": {
+            "reward": -1697.107666015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "6000": {
+        "0": {
+            "reward": -1485.6453857421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "6600": {
+        "0": {
+            "reward": -1432.8607177734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "7200": {
+        "0": {
+            "reward": -1477.6695556640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "7800": {
+        "0": {
+            "reward": -1439.752197265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "8400": {
+        "0": {
+            "reward": -1457.289794921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "9000": {
+        "0": {
+            "reward": -1459.66455078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "9600": {
+        "0": {
+            "reward": -1451.36962890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "10200": {
+        "0": {
+            "reward": -1457.49365234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "10800": {
+        "0": {
+            "reward": -1438.2149658203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "11400": {
+        "0": {
+            "reward": -1497.12451171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "12000": {
+        "0": {
+            "reward": -1721.91064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "12600": {
+        "0": {
+            "reward": -1474.69287109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "13200": {
+        "0": {
+            "reward": -1470.6220703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "13800": {
+        "0": {
+            "reward": -1371.33984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "14400": {
+        "0": {
+            "reward": -1394.9581298828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "15000": {
+        "0": {
+            "reward": -1467.3240966796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "15600": {
+        "0": {
+            "reward": -1497.9599609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "16200": {
+        "0": {
+            "reward": -1490.51318359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "16800": {
+        "0": {
+            "reward": -1456.947021484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "17400": {
+        "0": {
+            "reward": -1464.324462890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "18000": {
+        "0": {
+            "reward": -1527.7713623046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "18600": {
+        "0": {
+            "reward": -1490.4453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "19200": {
+        "0": {
+            "reward": -1461.710205078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "19800": {
+        "0": {
+            "reward": -1365.4112548828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "20400": {
+        "0": {
+            "reward": -1433.935546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "21000": {
+        "0": {
+            "reward": -1383.3656005859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "21600": {
+        "0": {
+            "reward": -1362.703857421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "22200": {
+        "0": {
+            "reward": -1315.2969970703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "22800": {
+        "0": {
+            "reward": -1193.9248046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "23400": {
+        "0": {
+            "reward": -1175.7451171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "24000": {
+        "0": {
+            "reward": -1302.7410888671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "24600": {
+        "0": {
+            "reward": -1363.073974609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "25200": {
+        "0": {
+            "reward": -1363.7762451171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "25800": {
+        "0": {
+            "reward": -1349.09912109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "26400": {
+        "0": {
+            "reward": -1388.628662109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "27000": {
+        "0": {
+            "reward": -1396.5880126953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "27600": {
+        "0": {
+            "reward": -1413.2369384765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "28200": {
+        "0": {
+            "reward": -1403.5955810546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "28800": {
+        "0": {
+            "reward": -1418.9644775390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "29400": {
+        "0": {
+            "reward": -1360.3985595703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "30000": {
+        "0": {
+            "reward": -1357.3011474609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "30600": {
+        "0": {
+            "reward": -1356.116455078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "31200": {
+        "0": {
+            "reward": -1361.1859130859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "31800": {
+        "0": {
+            "reward": -1356.927490234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "32400": {
+        "0": {
+            "reward": -1393.579345703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "33000": {
+        "0": {
+            "reward": -1358.431884765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "33600": {
+        "0": {
+            "reward": -1346.0716552734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "34200": {
+        "0": {
+            "reward": -1240.3084716796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "34800": {
+        "0": {
+            "reward": -1363.6253662109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "35400": {
+        "0": {
+            "reward": -1427.83251953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "36000": {
+        "0": {
+            "reward": -1332.962890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "36600": {
+        "0": {
+            "reward": -1354.41943359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "37200": {
+        "0": {
+            "reward": -1392.4090576171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "37800": {
+        "0": {
+            "reward": -1412.440673828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "38400": {
+        "0": {
+            "reward": -1419.303466796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "39000": {
+        "0": {
+            "reward": -1480.7900390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "39600": {
+        "0": {
+            "reward": -1414.4287109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "40200": {
+        "0": {
+            "reward": -1396.500244140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "40800": {
+        "0": {
+            "reward": -1429.3699951171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "41400": {
+        "0": {
+            "reward": -1438.0335693359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "42000": {
+        "0": {
+            "reward": -1449.8681640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "42600": {
+        "0": {
+            "reward": -1461.314453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "43200": {
+        "0": {
+            "reward": -1449.8665771484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "43800": {
+        "0": {
+            "reward": -1447.41943359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "44400": {
+        "0": {
+            "reward": -1436.0032958984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "45000": {
+        "0": {
+            "reward": -1474.0068359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "45600": {
+        "0": {
+            "reward": -1474.095703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "46200": {
+        "0": {
+            "reward": -1451.449951171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "46800": {
+        "0": {
+            "reward": -1463.6236572265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "47400": {
+        "0": {
+            "reward": -1435.80810546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "48000": {
+        "0": {
+            "reward": -1443.0760498046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "48600": {
+        "0": {
+            "reward": -1474.485107421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "49200": {
+        "0": {
+            "reward": -1376.4439697265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "49800": {
+        "0": {
+            "reward": -1451.9986572265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "50400": {
+        "0": {
+            "reward": -1382.77587890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "51000": {
+        "0": {
+            "reward": -1440.7958984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "51600": {
+        "0": {
+            "reward": -1407.504150390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "52200": {
+        "0": {
+            "reward": -1423.252685546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "52800": {
+        "0": {
+            "reward": -1440.340087890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "53400": {
+        "0": {
+            "reward": -1377.094970703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "54000": {
+        "0": {
+            "reward": -1396.2525634765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "54600": {
+        "0": {
+            "reward": -1435.8326416015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "55200": {
+        "0": {
+            "reward": -1427.109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "55800": {
+        "0": {
+            "reward": -1416.3255615234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "56400": {
+        "0": {
+            "reward": -1434.8817138671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "57000": {
+        "0": {
+            "reward": -1404.6357421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "57600": {
+        "0": {
+            "reward": -1421.955078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "58200": {
+        "0": {
+            "reward": -1428.523193359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "58800": {
+        "0": {
+            "reward": -1453.549072265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "59400": {
+        "0": {
+            "reward": -1412.5526123046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "60000": {
+        "0": {
+            "reward": -1398.688720703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "60600": {
+        "0": {
+            "reward": -1384.417236328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "61200": {
+        "0": {
+            "reward": -1386.916015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "61800": {
+        "0": {
+            "reward": -1449.865478515625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "62400": {
+        "0": {
+            "reward": -1345.5404052734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "63000": {
+        "0": {
+            "reward": -1348.2705078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "63600": {
+        "0": {
+            "reward": -1370.6175537109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "64200": {
+        "0": {
+            "reward": -1375.8992919921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "64800": {
+        "0": {
+            "reward": -1419.7303466796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "65400": {
+        "0": {
+            "reward": -1361.055908203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "66000": {
+        "0": {
+            "reward": -1458.3046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "66600": {
+        "0": {
+            "reward": -1440.920654296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "67200": {
+        "0": {
+            "reward": -1474.1197509765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "67800": {
+        "0": {
+            "reward": -1416.924072265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "68400": {
+        "0": {
+            "reward": -1480.2022705078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "69000": {
+        "0": {
+            "reward": -1361.95263671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "69600": {
+        "0": {
+            "reward": -1411.865478515625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "70200": {
+        "0": {
+            "reward": -1469.26513671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "70800": {
+        "0": {
+            "reward": -1369.4656982421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "71400": {
+        "0": {
+            "reward": -1439.221923828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "72000": {
+        "0": {
+            "reward": -1383.180419921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "72600": {
+        "0": {
+            "reward": -1412.3919677734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "73200": {
+        "0": {
+            "reward": -1403.142333984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "73800": {
+        "0": {
+            "reward": -1438.7515869140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "74400": {
+        "0": {
+            "reward": -1363.855712890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "75000": {
+        "0": {
+            "reward": -1387.1092529296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "75600": {
+        "0": {
+            "reward": -1381.3890380859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "76200": {
+        "0": {
+            "reward": -1400.5428466796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "76800": {
+        "0": {
+            "reward": -1420.8583984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "77400": {
+        "0": {
+            "reward": -1088.33349609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "78000": {
+        "0": {
+            "reward": -1103.8125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "78600": {
+        "0": {
+            "reward": -902.2095947265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "79200": {
+        "0": {
+            "reward": -1392.19775390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "79800": {
+        "0": {
+            "reward": -1312.6846923828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "80400": {
+        "0": {
+            "reward": -1151.7852783203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "81000": {
+        "0": {
+            "reward": -1372.4483642578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "81600": {
+        "0": {
+            "reward": -1244.579345703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "82200": {
+        "0": {
+            "reward": -1278.5926513671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "82800": {
+        "0": {
+            "reward": -1392.2789306640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "83400": {
+        "0": {
+            "reward": -1376.4176025390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "84000": {
+        "0": {
+            "reward": -1191.422607421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "84600": {
+        "0": {
+            "reward": -1200.0269775390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "85200": {
+        "0": {
+            "reward": -1218.1697998046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "85800": {
+        "0": {
+            "reward": -1219.1116943359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "86400": {
+        "0": {
+            "reward": -1387.026611328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "87000": {
+        "0": {
+            "reward": -1203.6356201171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "87600": {
+        "0": {
+            "reward": -1423.7685546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "88200": {
+        "0": {
+            "reward": -1103.2479248046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "88800": {
+        "0": {
+            "reward": -1225.4727783203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "89400": {
+        "0": {
+            "reward": -911.0821533203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "90000": {
+        "0": {
+            "reward": -1289.3880615234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "90600": {
+        "0": {
+            "reward": -1448.578369140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "91200": {
+        "0": {
+            "reward": -1272.2181396484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "91800": {
+        "0": {
+            "reward": -1118.9056396484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "92400": {
+        "0": {
+            "reward": -1092.250732421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "93000": {
+        "0": {
+            "reward": -1303.8037109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "93600": {
+        "0": {
+            "reward": -1105.614990234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "94200": {
+        "0": {
+            "reward": -1274.614990234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "94800": {
+        "0": {
+            "reward": -1105.1129150390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "95400": {
+        "0": {
+            "reward": -1298.59423828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "96000": {
+        "0": {
+            "reward": -1421.3109130859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "96600": {
+        "0": {
+            "reward": -1294.580810546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "97200": {
+        "0": {
+            "reward": -1468.53173828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "97800": {
+        "0": {
+            "reward": -1430.021728515625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "98400": {
+        "0": {
+            "reward": -1379.5810546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "99000": {
+        "0": {
+            "reward": -1479.578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "99600": {
+        "0": {
+            "reward": -1467.05126953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "100200": {
+        "0": {
+            "reward": -1479.624755859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "100800": {
+        "0": {
+            "reward": -1120.27978515625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "101400": {
+        "0": {
+            "reward": -1456.74072265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "102000": {
+        "0": {
+            "reward": -1468.32666015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "102600": {
+        "0": {
+            "reward": -1268.3905029296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "103200": {
+        "0": {
+            "reward": -1456.2095947265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "103800": {
+        "0": {
+            "reward": -1074.9210205078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "104400": {
+        "0": {
+            "reward": -1476.2552490234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "105000": {
+        "0": {
+            "reward": -1268.2972412109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "105600": {
+        "0": {
+            "reward": -1442.8192138671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "106200": {
+        "0": {
+            "reward": -1075.8707275390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "106800": {
+        "0": {
+            "reward": -1399.37158203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "107400": {
+        "0": {
+            "reward": -1198.7724609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "108000": {
+        "0": {
+            "reward": -1199.0107421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "108600": {
+        "0": {
+            "reward": -1060.59326171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "109200": {
+        "0": {
+            "reward": -1224.4189453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "109800": {
+        "0": {
+            "reward": -868.0394897460938,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "110400": {
+        "0": {
+            "reward": -1226.3857421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "111000": {
+        "0": {
+            "reward": -1249.8985595703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "111600": {
+        "0": {
+            "reward": -1400.26611328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "112200": {
+        "0": {
+            "reward": -1272.189453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "112800": {
+        "0": {
+            "reward": -1247.0439453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "113400": {
+        "0": {
+            "reward": -1439.77685546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "114000": {
+        "0": {
+            "reward": -886.3707885742188,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "114600": {
+        "0": {
+            "reward": -1443.807861328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "115200": {
+        "0": {
+            "reward": -1266.8966064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "115800": {
+        "0": {
+            "reward": -1242.258544921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "116400": {
+        "0": {
+            "reward": -1299.3133544921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "117000": {
+        "0": {
+            "reward": -1275.8017578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "117600": {
+        "0": {
+            "reward": -1281.2841796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "118200": {
+        "0": {
+            "reward": -1282.090576171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "118800": {
+        "0": {
+            "reward": -1293.7779541015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "119400": {
+        "0": {
+            "reward": -1121.7513427734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "120000": {
+        "0": {
+            "reward": -1271.4803466796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "120600": {
+        "0": {
+            "reward": -1287.3770751953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "121200": {
+        "0": {
+            "reward": -1115.47802734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "121800": {
+        "0": {
+            "reward": -1256.05126953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "122400": {
+        "0": {
+            "reward": -1115.3533935546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "123000": {
+        "0": {
+            "reward": -1451.8570556640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "123600": {
+        "0": {
+            "reward": -1467.08984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "124200": {
+        "0": {
+            "reward": -1259.364013671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "124800": {
+        "0": {
+            "reward": -1270.0673828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "125400": {
+        "0": {
+            "reward": -1285.9071044921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "126000": {
+        "0": {
+            "reward": -925.9544067382812,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "126600": {
+        "0": {
+            "reward": -1452.951904296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "127200": {
+        "0": {
+            "reward": -1112.30712890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "127800": {
+        "0": {
+            "reward": -1424.64501953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "128400": {
+        "0": {
+            "reward": -1052.55322265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "129000": {
+        "0": {
+            "reward": -1253.0311279296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "129600": {
+        "0": {
+            "reward": -1063.454833984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "130200": {
+        "0": {
+            "reward": -1273.0291748046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "130800": {
+        "0": {
+            "reward": -1412.854248046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "131400": {
+        "0": {
+            "reward": -1448.4000244140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "132000": {
+        "0": {
+            "reward": -1444.64404296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "132600": {
+        "0": {
+            "reward": -1275.7744140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "133200": {
+        "0": {
+            "reward": -1095.917724609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "133800": {
+        "0": {
+            "reward": -1268.0970458984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "134400": {
+        "0": {
+            "reward": -1089.250244140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "135000": {
+        "0": {
+            "reward": -1311.8994140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "135600": {
+        "0": {
+            "reward": -1282.5533447265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "136200": {
+        "0": {
+            "reward": -1484.8140869140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "136800": {
+        "0": {
+            "reward": -1267.611572265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "137400": {
+        "0": {
+            "reward": -1305.170654296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "138000": {
+        "0": {
+            "reward": -1275.705810546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "138600": {
+        "0": {
+            "reward": -1279.72607421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "139200": {
+        "0": {
+            "reward": -1287.1259765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "139800": {
+        "0": {
+            "reward": -1299.0513916015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "140400": {
+        "0": {
+            "reward": -1111.1702880859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "141000": {
+        "0": {
+            "reward": -1093.864013671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "141600": {
+        "0": {
+            "reward": -1112.6064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "142200": {
+        "0": {
+            "reward": -1493.355224609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "142800": {
+        "0": {
+            "reward": -1266.0484619140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "143400": {
+        "0": {
+            "reward": -1305.6717529296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "144000": {
+        "0": {
+            "reward": -1471.172119140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "144600": {
+        "0": {
+            "reward": -1459.1480712890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "145200": {
+        "0": {
+            "reward": -1278.3016357421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "145800": {
+        "0": {
+            "reward": -1439.53564453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "146400": {
+        "0": {
+            "reward": -934.44921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "147000": {
+        "0": {
+            "reward": -1274.855712890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "147600": {
+        "0": {
+            "reward": -1090.1217041015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "148200": {
+        "0": {
+            "reward": -1112.9617919921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "148800": {
+        "0": {
+            "reward": -1285.458740234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "149400": {
+        "0": {
+            "reward": -1136.3018798828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "150000": {
+        "0": {
+            "reward": -1225.581787109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "150600": {
+        "0": {
+            "reward": -1459.9285888671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "151200": {
+        "0": {
+            "reward": -1288.076904296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "151800": {
+        "0": {
+            "reward": -1451.253662109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "152400": {
+        "0": {
+            "reward": -1283.341552734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "153000": {
+        "0": {
+            "reward": -1096.1107177734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "153600": {
+        "0": {
+            "reward": -1485.093994140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "154200": {
+        "0": {
+            "reward": -1459.333984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "154800": {
+        "0": {
+            "reward": -1474.673583984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "155400": {
+        "0": {
+            "reward": -1286.111572265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "156000": {
+        "0": {
+            "reward": -1492.71533203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "156600": {
+        "0": {
+            "reward": -1473.9022216796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "157200": {
+        "0": {
+            "reward": -1128.18798828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "157800": {
+        "0": {
+            "reward": -1298.734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "158400": {
+        "0": {
+            "reward": -1269.3509521484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "159000": {
+        "0": {
+            "reward": -1469.974609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "159600": {
+        "0": {
+            "reward": -1099.301513671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "160200": {
+        "0": {
+            "reward": -1291.498046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "160800": {
+        "0": {
+            "reward": -1119.0654296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "161400": {
+        "0": {
+            "reward": -1290.9912109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "162000": {
+        "0": {
+            "reward": -1282.187744140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "162600": {
+        "0": {
+            "reward": -1104.716552734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "163200": {
+        "0": {
+            "reward": -1305.1661376953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "163800": {
+        "0": {
+            "reward": -1282.064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "164400": {
+        "0": {
+            "reward": -1288.6495361328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "165000": {
+        "0": {
+            "reward": -1473.8963623046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "165600": {
+        "0": {
+            "reward": -1106.13037109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "166200": {
+        "0": {
+            "reward": -1460.248046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "166800": {
+        "0": {
+            "reward": -1297.865478515625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "167400": {
+        "0": {
+            "reward": -1095.8140869140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "168000": {
+        "0": {
+            "reward": -1466.1053466796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "168600": {
+        "0": {
+            "reward": -1085.4195556640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "169200": {
+        "0": {
+            "reward": -1431.4642333984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "169800": {
+        "0": {
+            "reward": -1445.58056640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "170400": {
+        "0": {
+            "reward": -1439.2525634765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "171000": {
+        "0": {
+            "reward": -1474.0068359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "171600": {
+        "0": {
+            "reward": -1066.8272705078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "172200": {
+        "0": {
+            "reward": -1253.0291748046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "172800": {
+        "0": {
+            "reward": -1442.4600830078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "173400": {
+        "0": {
+            "reward": -1434.3880615234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "174000": {
+        "0": {
+            "reward": -730.8953247070312,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "174600": {
+        "0": {
+            "reward": -1060.350341796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "175200": {
+        "0": {
+            "reward": -1059.335205078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "175800": {
+        "0": {
+            "reward": -1395.251708984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "176400": {
+        "0": {
+            "reward": -1051.4754638671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "177000": {
+        "0": {
+            "reward": -1366.59716796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "177600": {
+        "0": {
+            "reward": -1086.2392578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "178200": {
+        "0": {
+            "reward": -1086.5877685546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "178800": {
+        "0": {
+            "reward": -1249.772705078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "179400": {
+        "0": {
+            "reward": -1286.8856201171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "180000": {
+        "0": {
+            "reward": -888.8439331054688,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "180600": {
+        "0": {
+            "reward": -1101.6231689453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "181200": {
+        "0": {
+            "reward": -735.6361694335938,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "181800": {
+        "0": {
+            "reward": -1097.3720703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "182400": {
+        "0": {
+            "reward": -1100.3387451171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "183000": {
+        "0": {
+            "reward": -1096.7669677734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "183600": {
+        "0": {
+            "reward": -1253.4644775390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "184200": {
+        "0": {
+            "reward": -1097.127197265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "184800": {
+        "0": {
+            "reward": -1088.3165283203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "185400": {
+        "0": {
+            "reward": -1457.112548828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "186000": {
+        "0": {
+            "reward": -1452.965087890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "186600": {
+        "0": {
+            "reward": -1269.283447265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "187200": {
+        "0": {
+            "reward": -1442.61572265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "187800": {
+        "0": {
+            "reward": -1307.04638671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "188400": {
+        "0": {
+            "reward": -1423.7685546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "189000": {
+        "0": {
+            "reward": -1440.975830078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "189600": {
+        "0": {
+            "reward": -1102.859619140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "190200": {
+        "0": {
+            "reward": -1086.2857666015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "190800": {
+        "0": {
+            "reward": -1426.0216064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "191400": {
+        "0": {
+            "reward": -1254.15234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "192000": {
+        "0": {
+            "reward": -1225.28857421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "192600": {
+        "0": {
+            "reward": -1388.2686767578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "193200": {
+        "0": {
+            "reward": -1275.6409912109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "193800": {
+        "0": {
+            "reward": -1074.0592041015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "194400": {
+        "0": {
+            "reward": -1253.562744140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "195000": {
+        "0": {
+            "reward": -1084.2755126953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "195600": {
+        "0": {
+            "reward": -1096.217041015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "196200": {
+        "0": {
+            "reward": -1392.230712890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "196800": {
+        "0": {
+            "reward": -1090.2958984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "197400": {
+        "0": {
+            "reward": -1247.168212890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "198000": {
+        "0": {
+            "reward": -1077.214599609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "198600": {
+        "0": {
+            "reward": -1241.7982177734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "199200": {
+        "0": {
+            "reward": -1238.737060546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "199800": {
+        "0": {
+            "reward": -1429.9168701171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "200400": {
+        "0": {
+            "reward": -1440.0721435546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "201000": {
+        "0": {
+            "reward": -1420.4171142578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "201600": {
+        "0": {
+            "reward": -1056.1300048828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "202200": {
+        "0": {
+            "reward": -1414.375244140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "202800": {
+        "0": {
+            "reward": -549.0611572265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "203400": {
+        "0": {
+            "reward": -1069.307373046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "204000": {
+        "0": {
+            "reward": -1435.197509765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "204600": {
+        "0": {
+            "reward": -1457.489013671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "205200": {
+        "0": {
+            "reward": -1394.9676513671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "205800": {
+        "0": {
+            "reward": -1256.3555908203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "206400": {
+        "0": {
+            "reward": -1427.368408203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "207000": {
+        "0": {
+            "reward": -1401.572509765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "207600": {
+        "0": {
+            "reward": -1067.8941650390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "208200": {
+        "0": {
+            "reward": -1250.097412109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "208800": {
+        "0": {
+            "reward": -1240.273681640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "209400": {
+        "0": {
+            "reward": -1426.3890380859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "210000": {
+        "0": {
+            "reward": -1379.408447265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "210600": {
+        "0": {
+            "reward": -1363.9818115234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "211200": {
+        "0": {
+            "reward": -1474.763916015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "211800": {
+        "0": {
+            "reward": -1521.7218017578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "212400": {
+        "0": {
+            "reward": -1472.793212890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "213000": {
+        "0": {
+            "reward": -1536.72705078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "213600": {
+        "0": {
+            "reward": -1543.609130859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "214200": {
+        "0": {
+            "reward": -1411.4774169921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "214800": {
+        "0": {
+            "reward": -1464.8394775390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "215400": {
+        "0": {
+            "reward": -1435.901611328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "216000": {
+        "0": {
+            "reward": -1465.742919921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "216600": {
+        "0": {
+            "reward": -1502.733642578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "217200": {
+        "0": {
+            "reward": -1423.711181640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "217800": {
+        "0": {
+            "reward": -1494.033203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "218400": {
+        "0": {
+            "reward": -1399.121337890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "219000": {
+        "0": {
+            "reward": -1527.2598876953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "219600": {
+        "0": {
+            "reward": -1612.9599609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "220200": {
+        "0": {
+            "reward": -1358.93115234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "220800": {
+        "0": {
+            "reward": -1461.141845703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "221400": {
+        "0": {
+            "reward": -1356.1019287109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "222000": {
+        "0": {
+            "reward": -1346.7469482421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "222600": {
+        "0": {
+            "reward": -1390.68408203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "223200": {
+        "0": {
+            "reward": -1538.2254638671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "223800": {
+        "0": {
+            "reward": -1622.283447265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "224400": {
+        "0": {
+            "reward": -1277.52197265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "225000": {
+        "0": {
+            "reward": -1575.1064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "225600": {
+        "0": {
+            "reward": -1453.8905029296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "226200": {
+        "0": {
+            "reward": -1458.9903564453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "226800": {
+        "0": {
+            "reward": -1489.2091064453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "227400": {
+        "0": {
+            "reward": -1537.794921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "228000": {
+        "0": {
+            "reward": -1383.2464599609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "228600": {
+        "0": {
+            "reward": -1505.15625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "229200": {
+        "0": {
+            "reward": -1421.2054443359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "229800": {
+        "0": {
+            "reward": -1503.276611328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "230400": {
+        "0": {
+            "reward": -1419.7755126953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "231000": {
+        "0": {
+            "reward": -1339.91552734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "231600": {
+        "0": {
+            "reward": -1521.114013671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "232200": {
+        "0": {
+            "reward": -1533.643310546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "232800": {
+        "0": {
+            "reward": -1544.056640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "233400": {
+        "0": {
+            "reward": -1535.8009033203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "234000": {
+        "0": {
+            "reward": -1496.43115234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "234600": {
+        "0": {
+            "reward": -1236.678955078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "235200": {
+        "0": {
+            "reward": -1580.8831787109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "235800": {
+        "0": {
+            "reward": -1402.6953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "236400": {
+        "0": {
+            "reward": -1400.138671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "237000": {
+        "0": {
+            "reward": -1455.82421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "237600": {
+        "0": {
+            "reward": -1577.1964111328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "238200": {
+        "0": {
+            "reward": -1354.8060302734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "238800": {
+        "0": {
+            "reward": -1405.8936767578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "239400": {
+        "0": {
+            "reward": -1436.2333984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "240000": {
+        "0": {
+            "reward": -1506.6802978515625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "240600": {
+        "0": {
+            "reward": -1636.171630859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "241200": {
+        "0": {
+            "reward": -1397.3134765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "241800": {
+        "0": {
+            "reward": -1449.8853759765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "242400": {
+        "0": {
+            "reward": -1624.2093505859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "243000": {
+        "0": {
+            "reward": -1473.2208251953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "243600": {
+        "0": {
+            "reward": -1580.4677734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "244200": {
+        "0": {
+            "reward": -1563.3448486328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "244800": {
+        "0": {
+            "reward": -1358.67626953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "245400": {
+        "0": {
+            "reward": -1555.96875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "246000": {
+        "0": {
+            "reward": -1607.8917236328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "246600": {
+        "0": {
+            "reward": -1462.314208984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "247200": {
+        "0": {
+            "reward": -1550.94189453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "247800": {
+        "0": {
+            "reward": -1430.1575927734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "248400": {
+        "0": {
+            "reward": -1455.756591796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "249000": {
+        "0": {
+            "reward": -1324.1134033203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "249600": {
+        "0": {
+            "reward": -1421.6298828125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "250200": {
+        "0": {
+            "reward": -1470.6279296875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "250800": {
+        "0": {
+            "reward": -1388.6260986328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "251400": {
+        "0": {
+            "reward": -1572.9384765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "252000": {
+        "0": {
+            "reward": -1478.7398681640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "252600": {
+        "0": {
+            "reward": -1458.067626953125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "253200": {
+        "0": {
+            "reward": -1556.0262451171875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "253800": {
+        "0": {
+            "reward": -1573.797119140625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "254400": {
+        "0": {
+            "reward": -1507.772216796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "255000": {
+        "0": {
+            "reward": -1378.535888671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "255600": {
+        "0": {
+            "reward": -1474.9276123046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "256200": {
+        "0": {
+            "reward": -1509.7467041015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "256800": {
+        "0": {
+            "reward": -1501.932861328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "257400": {
+        "0": {
+            "reward": -1224.7435302734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "258000": {
+        "0": {
+            "reward": -1424.3763427734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "258600": {
+        "0": {
+            "reward": -1528.279052734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "259200": {
+        "0": {
+            "reward": -1209.872314453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "259800": {
+        "0": {
+            "reward": -1536.148193359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "260400": {
+        "0": {
+            "reward": -1517.6312255859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "261000": {
+        "0": {
+            "reward": -1340.6220703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "261600": {
+        "0": {
+            "reward": -1454.8260498046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "262200": {
+        "0": {
+            "reward": -1560.0982666015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "262800": {
+        "0": {
+            "reward": -1428.211669921875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "263400": {
+        "0": {
+            "reward": -1473.057861328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "264000": {
+        "0": {
+            "reward": -1418.342041015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "264600": {
+        "0": {
+            "reward": -1443.762939453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "265200": {
+        "0": {
+            "reward": -1385.2398681640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "265800": {
+        "0": {
+            "reward": -1572.60107421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "266400": {
+        "0": {
+            "reward": -1437.986083984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "267000": {
+        "0": {
+            "reward": -1397.719482421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "267600": {
+        "0": {
+            "reward": -1396.6273193359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "268200": {
+        "0": {
+            "reward": -1438.0694580078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "268800": {
+        "0": {
+            "reward": -1293.0584716796875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "269400": {
+        "0": {
+            "reward": -1498.58642578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "270000": {
+        "0": {
+            "reward": -1447.571533203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "270600": {
+        "0": {
+            "reward": -1486.6610107421875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "271200": {
+        "0": {
+            "reward": -1332.247314453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "271800": {
+        "0": {
+            "reward": -1327.376708984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "272400": {
+        "0": {
+            "reward": -1536.2259521484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "273000": {
+        "0": {
+            "reward": -1391.6373291015625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "273600": {
+        "0": {
+            "reward": -1408.58056640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "274200": {
+        "0": {
+            "reward": -1385.3284912109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "274800": {
+        "0": {
+            "reward": -1547.4664306640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "275400": {
+        "0": {
+            "reward": -1452.2457275390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "276000": {
+        "0": {
+            "reward": -1380.4906005859375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "276600": {
+        "0": {
+            "reward": -1479.4158935546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "277200": {
+        "0": {
+            "reward": -1441.113037109375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "277800": {
+        "0": {
+            "reward": -1584.2088623046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "278400": {
+        "0": {
+            "reward": -1528.0838623046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "279000": {
+        "0": {
+            "reward": -1411.27197265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "279600": {
+        "0": {
+            "reward": -1460.350830078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "280200": {
+        "0": {
+            "reward": -1276.1385498046875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "280800": {
+        "0": {
+            "reward": -1457.626220703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "281400": {
+        "0": {
+            "reward": -1453.56396484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "282000": {
+        "0": {
+            "reward": -1538.841552734375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "282600": {
+        "0": {
+            "reward": -1392.46484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "283200": {
+        "0": {
+            "reward": -1314.61328125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "283800": {
+        "0": {
+            "reward": -1381.4393310546875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "284400": {
+        "0": {
+            "reward": -1571.4830322265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "285000": {
+        "0": {
+            "reward": -1620.080078125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "285600": {
+        "0": {
+            "reward": -1540.2296142578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "286200": {
+        "0": {
+            "reward": -1396.5933837890625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "286800": {
+        "0": {
+            "reward": -1309.931640625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "287400": {
+        "0": {
+            "reward": -1483.8582763671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "288000": {
+        "0": {
+            "reward": -1596.329345703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "288600": {
+        "0": {
+            "reward": -1461.731689453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "289200": {
+        "0": {
+            "reward": -1421.8948974609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "289800": {
+        "0": {
+            "reward": -1447.2642822265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "290400": {
+        "0": {
+            "reward": -1396.469970703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "291000": {
+        "0": {
+            "reward": -1218.695068359375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "291600": {
+        "0": {
+            "reward": -1426.8740234375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "292200": {
+        "0": {
+            "reward": -1432.8575439453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "292800": {
+        "0": {
+            "reward": -1445.879638671875,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "293400": {
+        "0": {
+            "reward": -1493.233642578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "294000": {
+        "0": {
+            "reward": -1602.6683349609375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "294600": {
+        "0": {
+            "reward": -1449.2764892578125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "295200": {
+        "0": {
+            "reward": -1469.8941650390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "295800": {
+        "0": {
+            "reward": -1462.0977783203125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "296400": {
+        "0": {
+            "reward": -1473.978759765625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "297000": {
+        "0": {
+            "reward": -1397.6396484375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "297600": {
+        "0": {
+            "reward": -1495.691650390625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "298200": {
+        "0": {
+            "reward": -1329.892822265625,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "298800": {
+        "0": {
+            "reward": -1524.501708984375,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "299400": {
+        "0": {
+            "reward": -1505.4610595703125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    },
+    "300000": {
+        "0": {
+            "reward": -1368.0684814453125,
+            "hyperparameters": {
+                "entropy_coef": 9.999999747378752e-05,
+                "critic_coef": 0.4000000059604645,
+                "a2c_coef": 1.0
+            }
+        }
+    }
+}
