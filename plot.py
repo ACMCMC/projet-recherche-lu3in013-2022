@@ -4,6 +4,7 @@ import json
 import os
 import re
 import sys
+import matplotlib
 import torch
 from matplotlib import pyplot as plt, ticker
 from salina import instantiate_class
@@ -104,6 +105,12 @@ class CustomLogger:
         self.ax.get_xaxis().set_major_locator(ticker.AutoLocator())
         self.ax.grid()
         self.ax.ticklabel_format(axis='x', style='sci', scilimits=(0, 0))
+        matplotlib.rc('font',
+        #    family='DejaVu Sans',
+        #    weight='bold',
+            size=16)
+        #plt.xlabel('xlabel', fontsize=14)
+        #plt.ylabel('ylabel', fontsize=14)
 
     def end_plot(self, file):
         plt.savefig(file)
@@ -111,8 +118,8 @@ class CustomLogger:
     def plot_rewards_mean_and_individuals(self, line_color='blue'):
         timesteps = self.data.keys()
         all_rewards = self.get_all_rewards()
-        self.ax.set_ylim([min(0, all_rewards.min().item()),
-                         max(0, all_rewards.max().item())])
+        self.ax.set_ylim([min(0, all_rewards.min().item() * 1.1),
+                         max(0, all_rewards.max().item() * 1.1)])
         mean_rewards = all_rewards.mean(1)
         agents = range(all_rewards.size(1))
         # Adjust the timesteps, to show the number of timesteps that each agent has done
@@ -128,8 +135,8 @@ class CustomLogger:
 
     def plot_rewards_mean_and_std(self, line_color='blue'):
         all_rewards = self.get_all_rewards()
-        self.ax.set_ylim([min(0, all_rewards.min().item()),
-                         max(0, all_rewards.max().item())])
+        self.ax.set_ylim([min(0, all_rewards.min().item() * 1.1),
+                         max(0, all_rewards.max().item() * 1.1)])
         mean_rewards = all_rewards.mean(1)
         std_rewards = all_rewards.std(1)
         agents = range(all_rewards.size(1))
@@ -145,7 +152,7 @@ class CustomLogger:
 
     def plot_hyperparam_individuals(self, hyperparam, line_color='blue'):
         all_values = self.get_all_hyperparam_values(hyperparam)
-        self.ax.set_ylim([0, all_values.max().item()])
+        self.ax.set_ylim([0, all_values.max().item() * 1.1])
         agents = range(all_values.size(1))
         # Adjust the timesteps, to show the number of timesteps that each agent has done
         timesteps = [int(t) / len(agents) for t in self.data.keys()]
@@ -161,7 +168,7 @@ class CustomLogger:
 
     def plot_hyperparam_mean_and_std(self, hyperparam, line_color='blue'):
         all_values = self.get_all_hyperparam_values(hyperparam)
-        self.ax.set_ylim([0, all_values.max().item()])
+        self.ax.set_ylim([0, all_values.max().item() * 1.1])
         mean_values = all_values.mean(1)
         std_values = all_values.std(1)
         agents = range(all_values.size(1))
@@ -203,6 +210,12 @@ class CombinedGraphMaker:
         self.ax.get_xaxis().set_major_locator(ticker.AutoLocator())
         self.ax.grid()
         self.ax.ticklabel_format(axis='x', style='sci', scilimits=(0, 0))
+        matplotlib.rc('font',
+        #    family='DejaVu Sans',
+        #    weight='bold',
+            size= 16)
+        #plt.xlabel('xlabel', fontsize=14)
+        #plt.ylabel('ylabel', fontsize=14)
 
     def end_plot(self, file):
         plt.savefig(file)
@@ -241,8 +254,8 @@ class CombinedGraphMaker:
             plt.plot(timesteps, mean_rewards,
                      color=self.colors[i], linewidth=LINEWIDTH_MEAN, label=i)
             all_rewards_all_sizes = torch.cat([all_rewards_all_sizes, all_rewards], dim=1)
-        self.ax.set_ylim([min(0, all_rewards_all_sizes.min().item()),
-                         max(0, all_rewards_all_sizes.max().item())])
+        self.ax.set_ylim([min(0, all_rewards_all_sizes.min().item() * 1.1),
+                         max(0, all_rewards_all_sizes.max().item() * 1.1)])
         plt.legend()
         self.ax.set(xlabel='timestep', ylabel='reward',
                     title='Combinaison des évolutions individuelles de la récompense')
@@ -263,8 +276,8 @@ class CombinedGraphMaker:
             plt.plot(timesteps, mean_rewards,
                      color=self.colors[i], linewidth=LINEWIDTH_MEAN, label=i)
             all_rewards_all_sizes = torch.cat([all_rewards_all_sizes, all_rewards], dim=1)
-        self.ax.set_ylim([min(0, all_rewards_all_sizes.min().item()),
-                         max(0, all_rewards_all_sizes.max().item())])
+        self.ax.set_ylim([min(0, all_rewards_all_sizes.min().item() * 1.1),
+                         max(0, all_rewards_all_sizes.max().item() * 1.1)])
         plt.legend()
         self.ax.set(xlabel='timestep', ylabel='reward',
                     title='Moyenne et écart type combinés des récompenses')
