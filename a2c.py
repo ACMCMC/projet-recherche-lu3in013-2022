@@ -276,7 +276,7 @@ def a2c_train(cfg, action_agent: A2CParameterizedAgent, tcritic_agent: TemporalA
             loss.backward()
             torch.nn.utils.clip_grad_norm_(action_agent.parameters(), cfg.algorithm.max_grad_norm)
             optimizer.step()
-        
+
         total_timesteps += consumed_budget
 
         print('Finished epoch {}'.format(epoch))

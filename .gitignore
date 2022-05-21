@@ -3,6 +3,7 @@ outputs/
 .vscode
 saved_agents/
 upmc_outputs/
+renders*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
