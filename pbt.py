@@ -254,10 +254,10 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
         
         # Save the best agent
         best_agent = population_r[0]
-        # best_reward = crewards[best_agent]
-        # save_agent = Agents(best_agent.action_agent, best_agent.critic_agent)
-        # save_model(save_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(best_reward)))
-        best_agent.run_simulation()
+        best_reward = crewards[best_agent]
+        save_agent = Agents(best_agent.action_agent, best_agent.critic_agent)
+        save_model(save_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(best_reward)))
+        # best_agent.run_simulation()
 
 
         # for _, workspace in workspaces.items():
