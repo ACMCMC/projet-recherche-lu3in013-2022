@@ -1,8 +1,10 @@
 from copy import deepcopy
+import math
 from typing import Dict, List
 
 import hydra
 import matplotlib.pyplot as plt
+import pygame
 import torch
 from omegaconf import OmegaConf
 from salina import (Agent, Workspace, get_arguments, get_class,
@@ -15,7 +17,7 @@ from env import AutoResetEnvAgent, NoAutoResetEnvAgent
 from plot import CustomLogger, Logger, plot_hyperparams
 from torch import nn
 
-from utils import load_model
+from utils import load_model, save_model
 
 def visualize_performances(workspaces: List[Workspace]):
     # We visualize the performances of the agents
@@ -59,7 +61,7 @@ class PBTAgent:
     This class contains all the necessary agents for one member of the population.
     '''
 
-    def __init__(self, cfg: OmegaConf, kwargs_action_agent=None) -> None:
+    def __init__(self, cfg: OmegaConf, kwargs_action_agent={}) -> None:
         # 1) Start by creating the environment agents
         self.train_env_agent = AutoResetEnvAgent(cfg)
         self.eval_env_agent = NoAutoResetEnvAgent(cfg)
@@ -77,6 +79,12 @@ class PBTAgent:
         # 5) Create the optimizer
         self.optimizer = create_optimizer(
             cfg, self.action_agent, self.critic_agent)
+        
+        # 6) Create an agent to run simulations on the screen, it will be the same as the eval_agent but only using one environment (we'd get a lot of simulations otherwise)
+        one_env_cfg = cfg.copy()
+        one_env_cfg.algorithm.number_environments = 1
+        self.simulation_env_agent = NoAutoResetEnvAgent(one_env_cfg)
+        self.simulation_agent = TemporalAgent(Agents(self.simulation_env_agent, self.action_agent))
 
     def train(self, **kwargs):
         return self.train_agent(**kwargs)
@@ -96,6 +104,24 @@ class PBTAgent:
         rewards = eval_workspace['env/cumulated_reward'][-1]
 
         return rewards.mean()
+
+    def run_simulation(self):
+        # This is a fresh new workspace that we will use to evaluate the performance of this agent, and we'll discard it afterwards.
+        eval_workspace = Workspace()
+
+        self.simulation_agent.train(False)  # We set the agent to evaluation mode
+        # Run the evaluation agent until it reaches a terminal state on all its environments
+        self.simulation_agent(eval_workspace, t=0,
+                        stop_variable='env/done', stochastic=False, save_render=True)
+        # The line above had turned training mode off for the action agent, so we turn it back on.
+        self.train_agent.train(True)
+
+        for env in self.simulation_env_agent.envs:
+            env.close() # Close all of the windows that we opened
+        pygame.display.quit()
+        pygame.quit()
+
+        return eval_workspace
 
     def compute_loss(self, **kwargs):
         return self.action_agent.compute_loss(**kwargs)
@@ -225,6 +251,14 @@ def train(cfg, population: List[PBTAgent], workspaces: Dict[Agent, Workspace], l
                 crewards[agent_to_copy], crewards[bad_agent]))
             bad_agent.copy(agent_to_copy, cfg)
             bad_agent.mutate_hyperparameters()
+        
+        # Save the best agent
+        best_agent = population_r[0]
+        # best_reward = crewards[best_agent]
+        # save_agent = Agents(best_agent.action_agent, best_agent.critic_agent)
+        # save_model(save_agent.state_dict(), '/home/acmc/repos/projet-recherche-lu3in013-2022/saved_agents/agent_{}.pickle'.format(math.floor(best_reward)))
+        best_agent.run_simulation()
+
 
         # for _, workspace in workspaces.items():
         #    workspace.zero_grad()

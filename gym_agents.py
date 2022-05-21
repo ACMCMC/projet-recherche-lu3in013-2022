@@ -144,7 +144,7 @@ class GymAgent(TAgent):
         else:
             assert isinstance(observation, dict)
         if save_render:
-            image = env.render(mode="image").unsqueeze(0)
+            image = torch.from_numpy(env.render(mode="rgb_array").copy())
             observation["rendering"] = image
 
         self.finished[k] = False
@@ -182,7 +182,7 @@ class GymAgent(TAgent):
         else:
             assert isinstance(observation, dict)
         if save_render:
-            image = env.render(mode="image").unsqueeze(0)
+            image = torch.from_numpy(env.render(mode="rgb_array").copy())
             observation["rendering"] = image
         ret = {
             **observation,

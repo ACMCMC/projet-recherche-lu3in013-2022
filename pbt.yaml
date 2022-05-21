@@ -9,12 +9,12 @@ logger:
 algorithm:
   max_epochs: 500
   population_size: 10
-  num_timesteps: 4
+  num_timesteps: 16
   train_budget: 500
-  stochasticity_seed: 100
-  number_environments: 1
+  stochasticity_seed: 5
+  number_environments: 8
   neural_network:
-    hidden_layer_sizes: [64, 64] # Pendulum: [64,64]; CartPoleContinuous: [25,25]
+    hidden_layer_sizes: [25, 25] # Pendulum: [64,64]; CartPoleContinuous: [25,25]
   mutation_rate: 0.2
   pbt_portion: 0.2
   discount_factor: 0.95
@@ -33,7 +33,7 @@ algorithm:
 
 env:
   classname: env.make_gym_env
-  env_name: Pendulum-v1
+  env_name: CartPoleContinuous-v1
 
 optimizer:
   classname: torch.optim.Adam
